@@ -1,0 +1,10 @@
+documents/
+references/
+WIN2000_DEBUG/
+Debug/
+Release/
+*.tmp
+*.db
+Scoreweaver.vcproj.*
+*.ncb
+*.suo
