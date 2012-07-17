@@ -1,4 +1,4 @@
-LIBRARY TextService.dll
+LIBRARY Scoreweaver.dll
 
 EXPORTS
         DllGetClassObject               PRIVATE
