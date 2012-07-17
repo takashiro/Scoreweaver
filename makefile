@@ -1,10 +1,15 @@
 #----- set the project name --------------------------------------------------------------
-Proj = TextService
+Proj = Scoreweaver
 
 #----- Include the PSDK's WIN32.MAK to pick up defines -----------------------------------
 !include <win32.mak>
 
 #----- OUTDIR is defined in WIN32.MAK This is the name of the destination directory ------
+!IFDEF NODEBUG
+OUTDIR = Release
+!ELSE
+OUTDIR = Debug
+!ENDIF
 all: $(OUTDIR)\$(Proj).dll
 
 LINK32_OBJS= \
@@ -163,7 +168,7 @@ $(OUTDIR)\$(FILE).obj : .\$(FILE).cpp $(OUTDIR)
 #PLEASE REFER TO WIN32.MAK for the different Resource Compiler options WIN32.MAK provides
 
 # Build rule for resource file
-FILE=TextService
+FILE=Scoreweaver
 
 $(OUTDIR)\$(FILE).res: .\$(FILE).rc $(OUTDIR)
     $(rc) $(rcflags) $(rcvars) /fo $(OUTDIR)\$(FILE).res .\$(FILE).rc

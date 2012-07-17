@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="Scoreweaver"
 	ProjectGUID="{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}"
+	RootNamespace="Scoreweaver"
 	Keyword="MakeFileProj"
 	TargetFrameworkVersion="0"
 	>
@@ -23,11 +24,11 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake"
-				ReBuildCommandLine="nmake"
-				CleanCommandLine=""
+				BuildCommandLine="nmake&#x0D;&#x0A;mt -manifest $(IntDir)/$(ProjectName).dll.manifest -outputresource:$(IntDir)/$(ProjectName).dll;2"
+				ReBuildCommandLine="rmdir /S /Q $(IntDir)&#x0D;&#x0A;nmake&#x0D;&#x0A;mt -manifest $(IntDir)/$(ProjectName).dll.manifest -outputresource:$(IntDir)/$(ProjectName).dll;2"
+				CleanCommandLine="rmdir /S /Q $(IntDir)"
 				Output=""
-				PreprocessorDefinitions="WIN32;_DEBUG;"
+				PreprocessorDefinitions="WIN32;DEBUG;"
 				IncludeSearchPath=""
 				ForcedIncludes=""
 				AssemblySearchPath=""
@@ -43,9 +44,9 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake"
-				ReBuildCommandLine="nmake"
-				CleanCommandLine=""
+				BuildCommandLine="nmake nodebug=1&#x0D;&#x0A;mt -manifest $(IntDir)/$(ProjectName).dll.manifest -outputresource:$(IntDir)/$(ProjectName).dll;2"
+				ReBuildCommandLine="rmdir /S /Q $(IntDir)&#x0D;&#x0A;nmake nodebug=1&#x0D;&#x0A;mt -manifest $(IntDir)/$(ProjectName).dll.manifest -outputresource:$(IntDir)/$(ProjectName).dll;2"
+				CleanCommandLine="rmdir /S /Q $(IntDir)"
 				Output=""
 				PreprocessorDefinitions="WIN32;NDEBUG;"
 				IncludeSearchPath=""
@@ -207,6 +208,10 @@
 		</File>
 		<File
 			RelativePath=".\debug\BuildLog.htm"
+			>
+		</File>
+		<File
+			RelativePath=".\makefile"
 			>
 		</File>
 	</Files>
