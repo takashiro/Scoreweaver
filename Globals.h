@@ -25,16 +25,18 @@
 void DllAddRef();
 void DllRelease();
 
+#ifndef ARRAYSIZE
 #define ARRAYSIZE(a) (sizeof(a)/sizeof(a[0]))
+#endif
 
-#define TEXTSERVICE_LANGID    MAKELANGID(LANG_JAPANESE, SUBLANG_DEFAULT)
+#define TEXTSERVICE_LANGID    MAKELANGID(LANG_CHINESE, SUBLANG_DEFAULT)
 
-#define TEXTSERVICE_DESC    L"Sample Text Service"
-#define TEXTSERVICE_DESC_A   "Sample Text Service"
+#define TEXTSERVICE_DESC    L"古琴谱输入法"
+#define TEXTSERVICE_DESC_A   "古琴谱输入法"
 #define TEXTSERVICE_MODEL   TEXT("Apartment")
 
 #define TEXTSERVICE_ICON_INDEX  0
-#define LANGBAR_ITEM_DESC   L"Sample Text Service Button"
+#define LANGBAR_ITEM_DESC   L"古琴谱输入法"
 
 //+---------------------------------------------------------------------------
 //
@@ -44,11 +46,15 @@ void DllRelease();
 // null-terminate the destination buffer; this function does.
 //----------------------------------------------------------------------------
 
-inline void SafeStringCopy(WCHAR *pchDst, ULONG cchMax, const WCHAR *pchSrc)
+inline void SafeStringCopy(WCHAR *pchDst, ULONG cchMax, const WCHAR *pchSrc, ULONG dstLen = 0)
 {
     if (cchMax > 0)
     {
-        wcsncpy(pchDst, pchSrc, cchMax);
+		#if _MSC_VER <= 1200  // VC7.0以下的版本
+			wcsncpy(pchDst, pchSrc, cchMax);
+		#else
+			wcsncpy_s(pchDst, dstLen, pchSrc, cchMax);
+		#endif
         pchDst[cchMax-1] = '\0';
     }
 }
