@@ -32,9 +32,9 @@
 //
 // The descriptions of the menu item of the language bar button.
 //
-static WCHAR c_szMenuItemDescription0[] = L"Config";
-static WCHAR c_szMenuItemDescription1[] = L"About Us";
-static WCHAR c_szMenuItemDescriptionOpenClose[] = L"Open/Close";
+static WCHAR c_szMenuItemDescription0[] = L"配置(&C)";
+static WCHAR c_szMenuItemDescription1[] = L"关于我们(&A)";
+static WCHAR c_szMenuItemDescriptionOpenClose[] = L"开启/关闭(&O)";
 
 //+---------------------------------------------------------------------------
 //
@@ -96,7 +96,7 @@ CLangBarItemButton::CLangBarItemButton(CTextService *pTextService)
     _tfLangBarItemInfo.guidItem = c_guidLangBarItemButton;   // GUID of this LangBarItem.
     _tfLangBarItemInfo.dwStyle = TF_LBI_STYLE_BTN_MENU;      // This LangBar is a button type with a menu.
     _tfLangBarItemInfo.ulSort = 0;                           // The position of this LangBar Item is not specified.
-    SafeStringCopy(_tfLangBarItemInfo.szDescription, ARRAYSIZE(_tfLangBarItemInfo.szDescription), LANGBAR_ITEM_DESC);                        // Set the description of this LangBar Item.
+    SafeStringCopy(_tfLangBarItemInfo.szDescription, ARRAYSIZE(_tfLangBarItemInfo.szDescription), LANGBAR_ITEM_DESC, ARRAYSIZE(_tfLangBarItemInfo.szDescription));                        // Set the description of this LangBar Item.
 
     // Initialize the sink pointer to NULL.
     _pLangBarItemSink = NULL;
