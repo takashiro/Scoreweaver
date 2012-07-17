@@ -32,9 +32,9 @@
 //
 // The descriptions of the menu item of the language bar button.
 //
-static WCHAR c_szMenuItemDescription0[] = L"Menu Item Description 0";
-static WCHAR c_szMenuItemDescription1[] = L"Menu Item Description 1";
-static WCHAR c_szMenuItemDescriptionOpenClose[] = L"Open";
+static WCHAR c_szMenuItemDescription0[] = L"Config";
+static WCHAR c_szMenuItemDescription1[] = L"About Us";
+static WCHAR c_szMenuItemDescriptionOpenClose[] = L"Open/Close";
 
 //+---------------------------------------------------------------------------
 //
