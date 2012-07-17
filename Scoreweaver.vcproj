@@ -24,7 +24,7 @@
 			>
 			<Tool
 				Name="VCNMakeTool"
-				BuildCommandLine="nmake&#x0D;&#x0A;mt -manifest $(IntDir)/$(ProjectName).dll.manifest -outputresource:$(IntDir)/$(ProjectName).dll;2"
+				BuildCommandLine="del $(IntDir)/$(ProjectName).dll&#x0D;&#x0A;del $(IntDir)/$(ProjectName).dll.manifest&#x0D;&#x0A;nmake&#x0D;&#x0A;mt -manifest $(IntDir)/$(ProjectName).dll.manifest -outputresource:$(IntDir)/$(ProjectName).dll;2"
 				ReBuildCommandLine="rmdir /S /Q $(IntDir)&#x0D;&#x0A;nmake&#x0D;&#x0A;mt -manifest $(IntDir)/$(ProjectName).dll.manifest -outputresource:$(IntDir)/$(ProjectName).dll;2"
 				CleanCommandLine="rmdir /S /Q $(IntDir)"
 				Output=""
