@@ -16,400 +16,7 @@
 #include "Globals.h"
 #include "TextService.h"
 #include "Resource.h"
-
-//
-// The cookie for the sink to CLangBarItemButton.
-//
-#define TEXTSERVICE_LANGBARITEMSINK_COOKIE 0x0fab0fab
-
-//
-// The ids of the menu item of the language bar button.
-//
-#define MENUITEM_INDEX_0 0
-#define MENUITEM_INDEX_1 1
-#define MENUITEM_INDEX_OPENCLOSE 2
-
-//
-// The descriptions of the menu item of the language bar button.
-//
-static WCHAR c_szMenuItemDescription0[] = L"配置(&C)";
-static WCHAR c_szMenuItemDescription1[] = L"关于我们(&A)";
-static WCHAR c_szMenuItemDescriptionOpenClose[] = L"开启/关闭(&O)";
-
-//+---------------------------------------------------------------------------
-//
-// CLangBarItemButton class
-//
-//----------------------------------------------------------------------------
-
-class CLangBarItemButton : public ITfLangBarItemButton,
-                           public ITfSource
-{
-public:
-    CLangBarItemButton(CTextService *pTextService);
-    ~CLangBarItemButton();
-
-    // IUnknown
-    STDMETHODIMP QueryInterface(REFIID riid, void **ppvObj);
-    STDMETHODIMP_(ULONG) AddRef(void);
-    STDMETHODIMP_(ULONG) Release(void);
-
-    // ITfLangBarItem
-    STDMETHODIMP GetInfo(TF_LANGBARITEMINFO *pInfo);
-    STDMETHODIMP GetStatus(DWORD *pdwStatus);
-    STDMETHODIMP Show(BOOL fShow);
-    STDMETHODIMP GetTooltipString(BSTR *pbstrToolTip);
-
-    // ITfLangBarItemButton
-    STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea);
-    STDMETHODIMP InitMenu(ITfMenu *pMenu);
-    STDMETHODIMP OnMenuSelect(UINT wID);
-    STDMETHODIMP GetIcon(HICON *phIcon);
-    STDMETHODIMP GetText(BSTR *pbstrText);
-
-    // ITfSource
-    STDMETHODIMP AdviseSink(REFIID riid, IUnknown *punk, DWORD *pdwCookie);
-    STDMETHODIMP UnadviseSink(DWORD dwCookie);
-
-private:
-    ITfLangBarItemSink *_pLangBarItemSink;
-    TF_LANGBARITEMINFO _tfLangBarItemInfo;
-
-    CTextService *_pTextService;
-    LONG _cRef;
-};
-
-//+---------------------------------------------------------------------------
-//
-// ctor
-//
-//----------------------------------------------------------------------------
-
-CLangBarItemButton::CLangBarItemButton(CTextService *pTextService)
-{
-    DllAddRef();
-
-    //
-    // initialize TF_LANGBARITEMINFO structure.
-    //
-    _tfLangBarItemInfo.clsidService = c_clsidTextService;    // This LangBarItem belongs to this TextService.
-    _tfLangBarItemInfo.guidItem = c_guidLangBarItemButton;   // GUID of this LangBarItem.
-    _tfLangBarItemInfo.dwStyle = TF_LBI_STYLE_BTN_MENU;      // This LangBar is a button type with a menu.
-    _tfLangBarItemInfo.ulSort = 0;                           // The position of this LangBar Item is not specified.
-    SafeStringCopy(_tfLangBarItemInfo.szDescription, ARRAYSIZE(_tfLangBarItemInfo.szDescription), LANGBAR_ITEM_DESC, ARRAYSIZE(_tfLangBarItemInfo.szDescription));                        // Set the description of this LangBar Item.
-
-    // Initialize the sink pointer to NULL.
-    _pLangBarItemSink = NULL;
-
-    _pTextService = pTextService;
-    _pTextService->AddRef();
-
-    _cRef = 1;
-}
-
-//+---------------------------------------------------------------------------
-//
-// dtor
-//
-//----------------------------------------------------------------------------
-
-CLangBarItemButton::~CLangBarItemButton()
-{
-    DllRelease();
-    _pTextService->Release();
-}
-
-//+---------------------------------------------------------------------------
-//
-// QueryInterface
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::QueryInterface(REFIID riid, void **ppvObj)
-{
-    if (ppvObj == NULL)
-        return E_INVALIDARG;
-
-    *ppvObj = NULL;
-
-    if (IsEqualIID(riid, IID_IUnknown) ||
-        IsEqualIID(riid, IID_ITfLangBarItem) ||
-        IsEqualIID(riid, IID_ITfLangBarItemButton))
-    {
-        *ppvObj = (ITfLangBarItemButton *)this;
-    }
-    else if (IsEqualIID(riid, IID_ITfSource))
-    {
-        *ppvObj = (ITfSource *)this;
-    }
-
-    if (*ppvObj)
-    {
-        AddRef();
-        return S_OK;
-    }
-
-    return E_NOINTERFACE;
-}
-
-
-//+---------------------------------------------------------------------------
-//
-// AddRef
-//
-//----------------------------------------------------------------------------
-
-STDAPI_(ULONG) CLangBarItemButton::AddRef()
-{
-    return ++_cRef;
-}
-
-//+---------------------------------------------------------------------------
-//
-// Release
-//
-//----------------------------------------------------------------------------
-
-STDAPI_(ULONG) CLangBarItemButton::Release()
-{
-    LONG cr = --_cRef;
-
-    assert(_cRef >= 0);
-
-    if (_cRef == 0)
-    {
-        delete this;
-    }
-
-    return cr;
-}
-
-//+---------------------------------------------------------------------------
-//
-// GetInfo
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::GetInfo(TF_LANGBARITEMINFO *pInfo)
-{
-    *pInfo = _tfLangBarItemInfo;
-    return S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// GetStatus
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::GetStatus(DWORD *pdwStatus)
-{
-    *pdwStatus = 0;
-    return S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// Show
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::Show(BOOL fShow)
-{
-    return E_NOTIMPL;
-}
-
-//+---------------------------------------------------------------------------
-//
-// GetTooltipString
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::GetTooltipString(BSTR *pbstrToolTip)
-{
-    *pbstrToolTip = SysAllocString(LANGBAR_ITEM_DESC);
-
-    return (*pbstrToolTip == NULL) ? E_OUTOFMEMORY : S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// OnClick
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea)
-{
-    return S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// InitMenu
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::InitMenu(ITfMenu *pMenu)
-{
-    // 
-    // Add the fisrt menu item.
-    // 
-    pMenu->AddMenuItem(MENUITEM_INDEX_0,
-                       0, 
-                       NULL, 
-                       NULL, 
-                       c_szMenuItemDescription0, 
-                       (ULONG)wcslen(c_szMenuItemDescription0), 
-                       NULL);
-
-    // 
-    // Add the second menu item.
-    // 
-    pMenu->AddMenuItem(MENUITEM_INDEX_1,
-                       0, 
-                       NULL, 
-                       NULL, 
-                       c_szMenuItemDescription1, 
-                       (ULONG)wcslen(c_szMenuItemDescription1), 
-                       NULL);
-
-    // 
-    // Add the keyboard open close item.
-    // 
-    DWORD dwFlags = 0;
-    if (_pTextService->_IsKeyboardDisabled())
-        dwFlags |= TF_LBMENUF_GRAYED;
-    else if (_pTextService->_IsKeyboardOpen())
-        dwFlags |= TF_LBMENUF_CHECKED;
-
-    pMenu->AddMenuItem(MENUITEM_INDEX_OPENCLOSE,
-                       dwFlags, 
-                       NULL, 
-                       NULL, 
-                       c_szMenuItemDescriptionOpenClose, 
-                       (ULONG)wcslen(c_szMenuItemDescriptionOpenClose), 
-                       NULL);
-
-    return S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// OnMenuSelect
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::OnMenuSelect(UINT wID)
-{
-    BOOL fOpen;
-
-    //
-    // This is callback when the menu item is selected.
-    //
-    switch (wID)
-    {
-        case MENUITEM_INDEX_0:
-            break;
-
-        case MENUITEM_INDEX_1:
-            break;
-
-        case MENUITEM_INDEX_OPENCLOSE:
-            fOpen = _pTextService->_IsKeyboardOpen();
-            _pTextService->_SetKeyboardOpen(fOpen ? FALSE : TRUE);
-            break;
-    }
-
-    return S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// GetIcon
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::GetIcon(HICON *phIcon)
-{
-    *phIcon = (HICON)LoadImage(g_hInst, TEXT("IDI_TEXTSERVICE"), IMAGE_ICON, 16, 16, 0);
- 
-    return (*phIcon != NULL) ? S_OK : E_FAIL;
-}
-
-//+---------------------------------------------------------------------------
-//
-// GetText
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::GetText(BSTR *pbstrText)
-{
-    *pbstrText = SysAllocString(LANGBAR_ITEM_DESC);
-
-    return (*pbstrText == NULL) ? E_OUTOFMEMORY : S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// AdviseSink
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::AdviseSink(REFIID riid, IUnknown *punk, DWORD *pdwCookie)
-{
-    //
-    // We allow only ITfLangBarItemSink interface.
-    //
-    if (!IsEqualIID(IID_ITfLangBarItemSink, riid))
-        return CONNECT_E_CANNOTCONNECT;
-
-    //
-    // We support only one sink.
-    //
-    if (_pLangBarItemSink != NULL)
-        return CONNECT_E_ADVISELIMIT;
-
-    //
-    // Query the ITfLangBarItemSink interface and store it into _pLangBarItemSink.
-    //
-    if (punk->QueryInterface(IID_ITfLangBarItemSink, (void **)&_pLangBarItemSink) != S_OK)
-    {
-        _pLangBarItemSink = NULL;
-        return E_NOINTERFACE;
-    }
-
-    //
-    // return our cookie.
-    //
-    *pdwCookie = TEXTSERVICE_LANGBARITEMSINK_COOKIE;
-    return S_OK;
-}
-
-//+---------------------------------------------------------------------------
-//
-// UnadviseSink
-//
-//----------------------------------------------------------------------------
-
-STDAPI CLangBarItemButton::UnadviseSink(DWORD dwCookie)
-{
-    // 
-    // Check the given cookie.
-    // 
-    if (dwCookie != TEXTSERVICE_LANGBARITEMSINK_COOKIE)
-        return CONNECT_E_NOCONNECTION;
-
-    //
-    // If there is nno connected sink, the method fails.
-    //
-    if (_pLangBarItemSink == NULL)
-        return CONNECT_E_NOCONNECTION;
-
-    _pLangBarItemSink->Release();
-    _pLangBarItemSink = NULL;
-
-    return S_OK;
-}
+#include "LanguageBarItemButton.h"
 
 //+---------------------------------------------------------------------------
 //
@@ -427,15 +34,28 @@ BOOL CTextService::_InitLanguageBar()
 
     fRet = FALSE;
 
-    if ((_pLangBarItem = new CLangBarItemButton(this)) == NULL)
-        goto Exit;
+    /*if ((_pLangBarButton[0] = new ModeSwitchButton(this)) == NULL)
+        goto Exit;*/
 
-    if (pLangBarItemMgr->AddItem(_pLangBarItem) != S_OK)
-    {
-        _pLangBarItem->Release();
-        _pLangBarItem = NULL;
+	if ((_pToolButton = new ToolButton(this)) == NULL)
         goto Exit;
-    }
+	
+	if (pLangBarItemMgr->AddItem(_pToolButton) != S_OK)
+	{
+		_pToolButton->Release();
+		_pToolButton = NULL;
+		goto Exit;
+	}
+
+	/*if ((_pModeSwitchButton = new ModeSwitchButton(this)) == NULL)
+        goto Exit;
+	
+	if (pLangBarItemMgr->AddItem(_pModeSwitchButton) != S_OK)
+	{
+		_pModeSwitchButton->Release();
+		_pModeSwitchButton = NULL;
+		goto Exit;
+	}*/
 
     fRet = TRUE;
 
@@ -454,15 +74,27 @@ void CTextService::_UninitLanguageBar()
 {
     ITfLangBarItemMgr *pLangBarItemMgr;
 
-    if (_pLangBarItem == NULL)
-        return;
+	if (_pToolButton == NULL)
+		return;
 
-    if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
-    {
-        pLangBarItemMgr->RemoveItem(_pLangBarItem);
-        pLangBarItemMgr->Release();
-    }
+	if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
+	{
+		pLangBarItemMgr->RemoveItem(_pToolButton);
+	}
 
-    _pLangBarItem->Release();
-    _pLangBarItem = NULL;
+	_pToolButton->Release();
+	_pToolButton = NULL;
+
+	/*if (_pModeSwitchButton == NULL)
+		return;
+
+	if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
+	{
+		pLangBarItemMgr->RemoveItem(_pModeSwitchButton);
+	}
+
+	_pModeSwitchButton->Release();
+	_pModeSwitchButton = NULL;*/
+
+	pLangBarItemMgr->Release();
 }

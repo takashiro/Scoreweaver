@@ -131,7 +131,10 @@ private:
     ITfContext   *_pTextEditSinkContext;
     DWORD _dwTextEditSinkCookie;
 
-    CLangBarItemButton *_pLangBarItem;
+	// Buttons on Language Bar
+	//CLangBarItemButton *_pLangBarButton[LANGBAR_ITEMNUM];
+	CLangBarItemButton *_pModeSwitchButton;
+	CLangBarItemButton *_pToolButton;
 
     // the current composition object.
     ITfComposition *_pComposition;

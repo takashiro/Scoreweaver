@@ -90,6 +90,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\LanguageBarItemButton.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Resource.h"
 				>
 			</File>
@@ -104,7 +108,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\TextService.rc"
+				RelativePath=".\Scoreweaver.rc"
 				>
 			</File>
 		</Filter>
@@ -167,6 +171,10 @@
 			</File>
 			<File
 				RelativePath=".\LanguageBar.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\LanguageBarItemButton.cpp"
 				>
 			</File>
 			<File

@@ -17,6 +17,7 @@ LINK32_OBJS= \
 	$(OUTDIR)\ThreadMgrEventSink.obj \
 	$(OUTDIR)\TextEditSink.obj \
 	$(OUTDIR)\LanguageBar.obj \
+	$(OUTDIR)\LanguageBarItemButton.obj \
 	$(OUTDIR)\KeyEventSink.obj \
 	$(OUTDIR)\Compartment.obj \
 	$(OUTDIR)\KeyHandler.obj \
@@ -74,6 +75,11 @@ $(OUTDIR)\$(FILE).obj : .\$(FILE).cpp $(OUTDIR)
     $(cc) $(cdebug) $(cflags) $(cvarsdll) /Fo"$(OUTDIR)\\" /Fd"$(OUTDIR)\\" .\$(FILE).cpp
 
 FILE=LanguageBar
+
+$(OUTDIR)\$(FILE).obj : .\$(FILE).cpp $(OUTDIR)
+    $(cc) $(cdebug) $(cflags) $(cvarsdll) /Fo"$(OUTDIR)\\" /Fd"$(OUTDIR)\\" .\$(FILE).cpp
+
+FILE=LanguageBarItemButton
 
 $(OUTDIR)\$(FILE).obj : .\$(FILE).cpp $(OUTDIR)
     $(cc) $(cdebug) $(cflags) $(cvarsdll) /Fo"$(OUTDIR)\\" /Fd"$(OUTDIR)\\" .\$(FILE).cpp

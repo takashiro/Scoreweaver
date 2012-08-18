@@ -38,6 +38,8 @@ void DllRelease();
 #define TEXTSERVICE_ICON_INDEX  0
 #define LANGBAR_ITEM_DESC   L"π≈«Ÿ∆◊ ‰»Î∑®"
 
+#define LANGBAR_ITEMNUM 2
+
 //+---------------------------------------------------------------------------
 //
 // SafeStringCopy
