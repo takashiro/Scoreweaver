@@ -50,6 +50,8 @@ public:
     STDMETHODIMP AdviseSink(REFIID riid, IUnknown *punk, DWORD *pdwCookie);
     STDMETHODIMP UnadviseSink(DWORD dwCookie);
 
+	void repaint(DWORD flags = TF_LBI_BTNALL);
+
 protected:
     ITfLangBarItemSink *_pLangBarItemSink;
     TF_LANGBARITEMINFO _tfLangBarItemInfo;

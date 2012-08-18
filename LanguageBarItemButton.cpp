@@ -185,10 +185,8 @@ STDAPI CLangBarItemButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcAr
 //
 //----------------------------------------------------------------------------
 
-STDAPI CLangBarItemButton::GetIcon(HICON *phIcon)
-{
+STDAPI CLangBarItemButton::GetIcon(HICON *phIcon){
     *phIcon = (HICON)LoadImage(g_hInst, TEXT(icon_id), IMAGE_ICON, 16, 16, 0);
- 
     return (*phIcon != NULL) ? S_OK : E_FAIL;
 }
 
@@ -294,6 +292,10 @@ STDAPI CLangBarItemButton::OnMenuSelect(UINT wID)
     return S_OK;
 }
 
+void CLangBarItemButton::repaint(DWORD flags){
+	_pLangBarItemSink->OnUpdate(flags);
+}
+
 /* Mode Switch Button */
 
 ModeSwitchButton::ModeSwitchButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_MODE_ZHENG", L"Ä£Ê½ÇÐ»»"){
@@ -319,7 +321,7 @@ STDAPI ModeSwitchButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea
 			break;
 	}
 
-	//InvalidateRect(NULL, prcArea, true);
+	repaint(TF_LBI_ICON);
 
     return S_OK;
 }
