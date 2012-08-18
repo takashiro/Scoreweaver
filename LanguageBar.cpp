@@ -34,20 +34,7 @@ BOOL CTextService::_InitLanguageBar()
 
     fRet = FALSE;
 
-    /*if ((_pLangBarButton[0] = new ModeSwitchButton(this)) == NULL)
-        goto Exit;*/
-
-	if ((_pToolButton = new ToolButton(this)) == NULL)
-        goto Exit;
-	
-	if (pLangBarItemMgr->AddItem(_pToolButton) != S_OK)
-	{
-		_pToolButton->Release();
-		_pToolButton = NULL;
-		goto Exit;
-	}
-
-	/*if ((_pModeSwitchButton = new ModeSwitchButton(this)) == NULL)
+	if ((_pModeSwitchButton = new ModeSwitchButton(this)) == NULL)
         goto Exit;
 	
 	if (pLangBarItemMgr->AddItem(_pModeSwitchButton) != S_OK)
@@ -55,7 +42,17 @@ BOOL CTextService::_InitLanguageBar()
 		_pModeSwitchButton->Release();
 		_pModeSwitchButton = NULL;
 		goto Exit;
-	}*/
+	}
+
+	if ((_pToolButton = new ToolButton(this)) == NULL)
+        goto Exit;
+	
+	if (pLangBarItemMgr->AddItem(_pToolButton) != S_OK)
+	{	
+		_pToolButton->Release();
+		_pToolButton = NULL;
+		goto Exit;
+	}
 
     fRet = TRUE;
 
@@ -85,7 +82,7 @@ void CTextService::_UninitLanguageBar()
 	_pToolButton->Release();
 	_pToolButton = NULL;
 
-	/*if (_pModeSwitchButton == NULL)
+	if (_pModeSwitchButton == NULL)
 		return;
 
 	if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
@@ -94,7 +91,7 @@ void CTextService::_UninitLanguageBar()
 	}
 
 	_pModeSwitchButton->Release();
-	_pModeSwitchButton = NULL;*/
+	_pModeSwitchButton = NULL;
 
 	pLangBarItemMgr->Release();
 }

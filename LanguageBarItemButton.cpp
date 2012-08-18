@@ -24,8 +24,6 @@ CLangBarItemButton::CLangBarItemButton(CTextService *pTextService, const char *i
     // initialize TF_LANGBARITEMINFO structure.
     //
     _tfLangBarItemInfo.clsidService = c_clsidTextService;    // This LangBarItem belongs to this TextService.
-    _tfLangBarItemInfo.guidItem = c_guidLangBarItemButton;   // GUID of this LangBarItem.
-    _tfLangBarItemInfo.dwStyle = TF_LBI_STYLE_BTN_MENU;      // This LangBar is a button type with a menu.
     _tfLangBarItemInfo.ulSort = 0;                           // The position of this LangBar Item is not specified.
     SafeStringCopy(_tfLangBarItemInfo.szDescription, ARRAYSIZE(_tfLangBarItemInfo.szDescription), LANGBAR_ITEM_DESC, ARRAYSIZE(_tfLangBarItemInfo.szDescription));                        // Set the description of this LangBar Item.
 
@@ -34,8 +32,6 @@ CLangBarItemButton::CLangBarItemButton(CTextService *pTextService, const char *i
 
     _pTextService = pTextService;
     _pTextService->AddRef();
-
-    _cRef = 1;
 
 	if(icon_id != NULL){
 		this->icon_id = icon_id;
@@ -296,6 +292,9 @@ STDAPI CLangBarItemButton::OnMenuSelect(UINT wID)
 /* Mode Switch Button */
 
 ModeSwitchButton::ModeSwitchButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_MODE_ZHENG", L"Ä£Ê½ÇÐ»»"){
+	_cRef = 1;
+
+	_tfLangBarItemInfo.guidItem = c_guidLangBar_ModeSwitch;
 }
 
 STDAPI ModeSwitchButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea)
@@ -316,6 +315,10 @@ STDAPI ModeSwitchButton::OnMenuSelect(UINT wID)
 
 /* Tool Button */
 ToolButton::ToolButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_TOOL", TEXTSERVICE_DESC){
+	 _cRef = 2;
+
+	_tfLangBarItemInfo.guidItem = c_guidLangBar_Tool;   // GUID of this LangBarItem.
+    _tfLangBarItemInfo.dwStyle = TF_LBI_STYLE_BTN_MENU;// This LangBar is a button type with a menu.
 }
 
 STDAPI ToolButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea)
