@@ -16,30 +16,31 @@ static WCHAR c_szMenuItemDescription0[] = L"配置(&C)";
 static WCHAR c_szMenuItemDescription1[] = L"关于我们(&A)";
 static WCHAR c_szMenuItemDescriptionOpenClose[] = L"开启/关闭(&O)";
 
-CLangBarItemButton::CLangBarItemButton(CTextService *pTextService, const char *icon_id, const OLECHAR *description)
-{
+CLangBarItemButton::CLangBarItemButton(CTextService *pTextService, const char *icon_id, const OLECHAR *text){
+	if(icon_id != NULL){
+		this->SetIcon(icon_id);
+	}
+
+	if(text != NULL){
+		this->SetText(text);
+	}
+
     DllAddRef();
+
+	_cRef = 1;
 
     //
     // initialize TF_LANGBARITEMINFO structure.
     //
     _tfLangBarItemInfo.clsidService = c_clsidTextService;    // This LangBarItem belongs to this TextService.
     _tfLangBarItemInfo.ulSort = 0;                           // The position of this LangBar Item is not specified.
-    SafeStringCopy(_tfLangBarItemInfo.szDescription, ARRAYSIZE(_tfLangBarItemInfo.szDescription), LANGBAR_ITEM_DESC, ARRAYSIZE(_tfLangBarItemInfo.szDescription));                        // Set the description of this LangBar Item.
+	this->setToolTip(text);
 
     // Initialize the sink pointer to NULL.
     _pLangBarItemSink = NULL;
 
     _pTextService = pTextService;
     _pTextService->AddRef();
-
-	if(icon_id != NULL){
-		this->icon_id = icon_id;
-	}
-
-	if(description != NULL){
-		this->description = description;
-	}
 }
 
 //+---------------------------------------------------------------------------
@@ -162,7 +163,7 @@ STDAPI CLangBarItemButton::Show(BOOL fShow)
 
 STDAPI CLangBarItemButton::GetTooltipString(BSTR *pbstrToolTip)
 {
-    *pbstrToolTip = SysAllocString(LANGBAR_ITEM_DESC);
+	*pbstrToolTip = SysAllocString(text);
 
     return (*pbstrToolTip == NULL) ? E_OUTOFMEMORY : S_OK;
 }
@@ -202,13 +203,17 @@ void CLangBarItemButton::SetIcon(const char *icon){
 
 STDAPI CLangBarItemButton::GetText(BSTR *pbstrText)
 {
-    *pbstrText = SysAllocString(description);
+    *pbstrText = SysAllocString(text);
 
     return (*pbstrText == NULL) ? E_OUTOFMEMORY : S_OK;
 }
 
-void CLangBarItemButton::SetText(const OLECHAR *description){
-	this->description = description;
+void CLangBarItemButton::SetText(const OLECHAR *text){
+	this->text = text;
+}
+
+void CLangBarItemButton::setToolTip(const OLECHAR *description){
+	SafeStringCopy(_tfLangBarItemInfo.szDescription, ARRAYSIZE(_tfLangBarItemInfo.szDescription), description, ARRAYSIZE(_tfLangBarItemInfo.szDescription));
 }
 
 //+---------------------------------------------------------------------------
@@ -292,13 +297,30 @@ STDAPI CLangBarItemButton::OnMenuSelect(UINT wID)
 /* Mode Switch Button */
 
 ModeSwitchButton::ModeSwitchButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_MODE_ZHENG", L"模式切换"){
-	_cRef = 1;
-
 	_tfLangBarItemInfo.guidItem = c_guidLangBar_ModeSwitch;
+
+	this->mode = Zheng;
 }
 
 STDAPI ModeSwitchButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea)
 {
+	switch(this->mode){
+		case Pang:
+			this->mode = Zhu;
+			this->icon_id = "IDI_MODE_ZHU";
+			break;
+		case Zhu:
+			this->mode = Zheng;
+			this->icon_id = "IDI_MODE_ZHENG";
+			break;
+		case Zheng:default:
+			this->mode = Pang;
+			this->icon_id = "IDI_MODE_PANG";
+			break;
+	}
+
+	//InvalidateRect(NULL, prcArea, true);
+
     return S_OK;
 }
 
@@ -314,9 +336,7 @@ STDAPI ModeSwitchButton::OnMenuSelect(UINT wID)
 
 
 /* Tool Button */
-ToolButton::ToolButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_TOOL", TEXTSERVICE_DESC){
-	 _cRef = 2;
-
+ToolButton::ToolButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_TOOL", L"工具"){
 	_tfLangBarItemInfo.guidItem = c_guidLangBar_Tool;   // GUID of this LangBarItem.
     _tfLangBarItemInfo.dwStyle = TF_LBI_STYLE_BTN_MENU;// This LangBar is a button type with a menu.
 }

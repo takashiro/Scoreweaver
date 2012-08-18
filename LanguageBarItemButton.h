@@ -13,7 +13,7 @@ class CLangBarItemButton : public ITfLangBarItemButton,
                            public ITfSource
 {
 public:
-    CLangBarItemButton(CTextService *pTextService, const char *icon_id = NULL, const OLECHAR *description = NULL);
+    CLangBarItemButton(CTextService *pTextService, const char *icon_id = NULL, const OLECHAR *text = NULL);
     ~CLangBarItemButton();
 
     // IUnknown
@@ -40,7 +40,11 @@ public:
 
 	// Button Text
 	STDMETHODIMP GetText(BSTR *pbstrText);
-	void SetText(const OLECHAR *description);
+	void SetText(const OLECHAR *text);
+
+
+	// SetToolTip
+	void setToolTip(const OLECHAR *tip);
 
     // ITfSource
     STDMETHODIMP AdviseSink(REFIID riid, IUnknown *punk, DWORD *pdwCookie);
@@ -54,7 +58,7 @@ protected:
     LONG _cRef;
 
 	const char *icon_id;
-	const OLECHAR *description;
+	const OLECHAR *text;
 };
 
 class ModeSwitchButton: public CLangBarItemButton{
@@ -65,6 +69,10 @@ public:
 
 	virtual STDMETHODIMP InitMenu(ITfMenu *pMenu);
     virtual STDMETHODIMP OnMenuSelect(UINT wID);
+
+private:
+	enum Mode{Zheng, Pang, Zhu};
+	Mode mode;
 };
 
 class ToolButton: public CLangBarItemButton{
