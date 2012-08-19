@@ -17,29 +17,15 @@
 #include "TextService.h"
 #include "CandidateWindow.h"
 
-#define CAND_WIDTH     200
-#define CAND_HEIGHT    50
+#define CAND_WIDTH     300
+#define CAND_HEIGHT    24
 
 ATOM CCandidateWindow::_atomWndClass = 0;
-
-const TCHAR c_szCandidateDescription[] = TEXT("Dummy Candidate Window");
-
-//+---------------------------------------------------------------------------
-//
-// ctor
-//
-//----------------------------------------------------------------------------
 
 CCandidateWindow::CCandidateWindow()
 {
     _hwnd = NULL;
 }
-
-//+---------------------------------------------------------------------------
-//
-// _InitWindowClass
-//
-//----------------------------------------------------------------------------
 
 /* static */
 BOOL CCandidateWindow::_InitWindowClass()
@@ -53,7 +39,7 @@ BOOL CCandidateWindow::_InitWindowClass()
     wc.hInstance = g_hInst;
     wc.hIcon = NULL;
     wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.hbrBackground = (HBRUSH)GetStockObject(LTGRAY_BRUSH);
+    wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
     wc.lpszMenuName = NULL;
     wc.lpszClassName = TEXT("TextServiceCandidateWindow");
 
@@ -61,13 +47,6 @@ BOOL CCandidateWindow::_InitWindowClass()
 
     return (_atomWndClass != 0);
 }
-
-
-//+---------------------------------------------------------------------------
-//
-// _UninitClass
-//
-//----------------------------------------------------------------------------
 
 /* static */
 void CCandidateWindow::_UninitWindowClass()
@@ -77,13 +56,6 @@ void CCandidateWindow::_UninitWindowClass()
         UnregisterClass((LPCTSTR)_atomWndClass, g_hInst);
     }
 }
-
-
-//+---------------------------------------------------------------------------
-//
-// _Create
-//
-//----------------------------------------------------------------------------
 
 BOOL CCandidateWindow::_Create()
 {
@@ -101,12 +73,6 @@ BOOL CCandidateWindow::_Create()
     return (_hwnd != NULL);
 }
 
-//+---------------------------------------------------------------------------
-//
-// _Destroy
-//
-//----------------------------------------------------------------------------
-
 void CCandidateWindow::_Destroy()
 {
     if (_hwnd != NULL)
@@ -115,12 +81,6 @@ void CCandidateWindow::_Destroy()
         _hwnd = NULL;
     }
 }
-
-//+---------------------------------------------------------------------------
-//
-// _Move
-//
-//----------------------------------------------------------------------------
 
 void CCandidateWindow::_Move(int x, int y)
 {
@@ -132,56 +92,25 @@ void CCandidateWindow::_Move(int x, int y)
     }
 }
 
-//+---------------------------------------------------------------------------
-//
-// _Show
-//
-//----------------------------------------------------------------------------
-
 void CCandidateWindow::_Show()
 {
     ShowWindow(_hwnd, SW_SHOWNA);
 }
-
-//+---------------------------------------------------------------------------
-//
-// _Hide
-//
-//----------------------------------------------------------------------------
 
 void CCandidateWindow::_Hide()
 {
     ShowWindow(_hwnd, SW_HIDE);
 }
 
-//+---------------------------------------------------------------------------
-//
-// _OnKeyDown
-//
-//----------------------------------------------------------------------------
-
 HRESULT CCandidateWindow::_OnKeyDown(UINT uVKey)
 {
     return S_OK;
 }
 
-//+---------------------------------------------------------------------------
-//
-// _OnKeyUp
-//
-//----------------------------------------------------------------------------
-
 HRESULT CCandidateWindow::_OnKeyUp(UINT uVKey)
 {
     return S_OK;
 }
-
-//+---------------------------------------------------------------------------
-//
-// _WindowProc
-//
-// Cand window proc.
-//----------------------------------------------------------------------------
 
 /* static */
 LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -198,8 +127,16 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
         case WM_PAINT:
             hdc = BeginPaint(hwnd, &ps);
             SetBkMode(hdc, TRANSPARENT);
-            TextOut(hdc, 0, 0, c_szCandidateDescription, lstrlen(c_szCandidateDescription));
-            EndPaint(hwnd, &ps);
+            
+			//TextOut(hdc, 0, 0, c_szCandidateDescription, lstrlen(c_szCandidateDescription));
+			char text[] = "1.Ä¾ 2.¶ú 3.¾ú 4.±» 5.Êä 6.Èë 7.£¡";
+			
+			HFONT font = CreateFont(20, 10, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, DEFAULT_QUALITY, FF_MODERN, "ËÎÌå");
+			SelectObject(hdc, font);
+			TextOut(hdc, 0, 0, text, strlen(text));
+			DeleteObject(font);
+
+			EndPaint(hwnd, &ps);
             return 0;
     }
 
