@@ -40,6 +40,12 @@ void DllRelease();
 
 #define LANGBAR_ITEMNUM 2
 
+enum InputMode{	//输入模式
+	Zheng,		//正字
+	Pang,		//旁字
+	Zhu			//旁注
+};
+
 //+---------------------------------------------------------------------------
 //
 // SafeStringCopy
