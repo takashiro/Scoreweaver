@@ -29,7 +29,7 @@ void DllRelease();
 #define ARRAYSIZE(a) (sizeof(a)/sizeof(a[0]))
 #endif
 
-#define TEXTSERVICE_LANGID    MAKELANGID(LANG_CHINESE, SUBLANG_DEFAULT)
+#define TEXTSERVICE_LANGID    MAKELANGID(LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED)
 
 #define TEXTSERVICE_DESC    L"古琴谱输入法"
 #define TEXTSERVICE_DESC_A   "古琴谱输入法"
