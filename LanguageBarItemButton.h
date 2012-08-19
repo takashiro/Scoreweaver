@@ -72,9 +72,7 @@ public:
 	virtual STDMETHODIMP InitMenu(ITfMenu *pMenu);
     virtual STDMETHODIMP OnMenuSelect(UINT wID);
 
-private:
-	enum Mode{Zheng, Pang, Zhu};
-	Mode mode;
+	void updateIcon();
 };
 
 class ToolButton: public CLangBarItemButton{

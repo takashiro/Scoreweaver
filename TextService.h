@@ -16,7 +16,8 @@
 #ifndef TEXTSERVICE_H
 #define TEXTSERVICE_H
 
-class CLangBarItemButton;
+class ModeSwitchButton;
+class ToolButton;
 class CCandidateList;
 
 class CTextService : public ITfTextInputProcessor,
@@ -93,6 +94,10 @@ public:
     BOOL _SetCompositionDisplayAttributes(TfEditCookie ec, ITfContext *pContext, TfGuidAtom gaDisplayAttribute);
     BOOL _InitDisplayAttributeGuidAtom();
 
+	void switchMode();
+	void setMode(InputMode mode);
+	InputMode getMode();
+
 private:
     // initialize and uninitialize ThreadMgrEventSink.
     BOOL _InitThreadMgrEventSink();
@@ -133,8 +138,8 @@ private:
 
 	// Buttons on Language Bar
 	//CLangBarItemButton *_pLangBarButton[LANGBAR_ITEMNUM];
-	CLangBarItemButton *_pModeSwitchButton;
-	CLangBarItemButton *_pToolButton;
+	ModeSwitchButton *_pModeSwitchButton;
+	ToolButton *_pToolButton;
 
     // the current composition object.
     ITfComposition *_pComposition;
@@ -147,6 +152,9 @@ private:
     CCandidateList *_pCandidateList;
 
     LONG _cRef;     // COM ref count
+
+	//Input Mode
+	InputMode mode;
 };
 
 

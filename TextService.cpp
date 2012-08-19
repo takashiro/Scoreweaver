@@ -16,6 +16,7 @@
 #include "globals.h"
 #include "TextService.h"
 #include "CandidateList.h"
+#include "LanguageBarItemButton.h"
 
 //+---------------------------------------------------------------------------
 //
@@ -84,6 +85,8 @@ CTextService::CTextService()
     _pCandidateList = NULL;
 
     _cRef = 1;
+
+	mode = Zheng;
 }
 
 //+---------------------------------------------------------------------------
@@ -288,4 +291,28 @@ STDAPI CTextService::Deactivate()
     _tfClientId = TF_CLIENTID_NULL;
 
     return S_OK;
+}
+
+InputMode CTextService::getMode(){
+	return mode;
+}
+
+void CTextService::setMode(InputMode mode){
+	this->mode = mode;
+}
+
+void CTextService::switchMode(){
+	switch(this->mode){
+	case Pang:
+		this->mode = Zhu;
+		break;
+	case Zhu:
+		this->mode = Zheng;
+		break;
+	case Zheng:default:
+		this->mode = Pang;
+		break;
+	}
+
+	_pModeSwitchButton->updateIcon();
 }

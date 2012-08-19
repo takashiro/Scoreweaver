@@ -300,42 +300,37 @@ void CLangBarItemButton::repaint(DWORD flags){
 
 ModeSwitchButton::ModeSwitchButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_MODE_ZHENG", L"模式切换"){
 	_tfLangBarItemInfo.guidItem = c_guidLangBar_ModeSwitch;
-
-	this->mode = Zheng;
 }
 
-STDAPI ModeSwitchButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea)
-{
-	switch(this->mode){
-		case Pang:
-			this->mode = Zhu;
-			this->icon_id = "IDI_MODE_ZHU";
-			break;
-		case Zhu:
-			this->mode = Zheng;
-			this->icon_id = "IDI_MODE_ZHENG";
-			break;
-		case Zheng:default:
-			this->mode = Pang;
-			this->icon_id = "IDI_MODE_PANG";
-			break;
+STDAPI ModeSwitchButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
+	_pTextService->switchMode();
+    return S_OK;
+}
+
+STDAPI ModeSwitchButton::InitMenu(ITfMenu *pMenu){
+    return S_OK;
+}
+
+STDAPI ModeSwitchButton::OnMenuSelect(UINT wID){
+    return S_OK;
+}
+
+
+void ModeSwitchButton::updateIcon(){
+	switch(_pTextService->getMode()){
+	case Pang:
+		this->icon_id = "IDI_MODE_PANG";
+		break;
+	case Zhu:
+		this->icon_id = "IDI_MODE_ZHU";
+		break;
+	case Zheng:default:
+		this->icon_id = "IDI_MODE_ZHENG";
+		break;
 	}
 
 	repaint(TF_LBI_ICON);
-
-    return S_OK;
 }
-
-STDAPI ModeSwitchButton::InitMenu(ITfMenu *pMenu)
-{
-    return S_OK;
-}
-
-STDAPI ModeSwitchButton::OnMenuSelect(UINT wID)
-{
-    return S_OK;
-}
-
 
 /* Tool Button */
 ToolButton::ToolButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_TOOL", L"工具"){
