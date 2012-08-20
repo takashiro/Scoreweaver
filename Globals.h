@@ -38,8 +38,6 @@ void DllRelease();
 #define TEXTSERVICE_ICON_INDEX  0
 #define LANGBAR_ITEM_DESC   L"古琴谱输入法"
 
-#define LANGBAR_ITEMNUM 2
-
 enum InputMode{	//输入模式
 	Zheng,		//正字
 	Pang,		//旁字
