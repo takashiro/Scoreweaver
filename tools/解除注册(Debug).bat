@@ -1,1 +1,1 @@
-regsvr32 /u ..\Debug\Scoreweaver.dll
+regsvr32 /s /u ..\Debug\Scoreweaver.dll

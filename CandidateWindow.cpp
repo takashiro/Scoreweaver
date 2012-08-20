@@ -128,9 +128,7 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
             hdc = BeginPaint(hwnd, &ps);
             SetBkMode(hdc, TRANSPARENT);
             
-			//TextOut(hdc, 0, 0, c_szCandidateDescription, lstrlen(c_szCandidateDescription));
-			char text[] = "1.木 2.耳 3.菌 4.被 5.输 6.入 7.！";
-			
+			char text[] = "1.木 2.耳 3.菌 4.被 5.输 6.入";
 			HFONT font = CreateFont(20, 10, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, DEFAULT_QUALITY, FF_MODERN, "宋体");
 			SelectObject(hdc, font);
 			TextOut(hdc, 0, 0, text, strlen(text));

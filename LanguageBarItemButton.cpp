@@ -1,20 +1,14 @@
 
 #include "LanguageBarItemButton.h"
 
-
-//
 // The ids of the menu item of the language bar button.
-//
-#define MENUITEM_INDEX_0 0
-#define MENUITEM_INDEX_1 1
-#define MENUITEM_INDEX_OPENCLOSE 2
+#define MENUITEM_INDEX_CONFIG 0
+#define MENUITEM_INDEX_OPENCLOSE 1
+#define MENUITEM_INDEX_ABOUTUS 2
 
-//
 // The descriptions of the menu item of the language bar button.
-//
-static WCHAR c_szMenuItemDescription0[] = L"配置(&C)";
-static WCHAR c_szMenuItemDescription1[] = L"关于我们(&A)";
-static WCHAR c_szMenuItemDescriptionOpenClose[] = L"开启/关闭(&O)";
+static WCHAR *c_szMenuItemDescription[3] = {L"配置(&C)", L"开启/关闭(&O)", L"关于我们(&A)"};
+
 
 CLangBarItemButton::CLangBarItemButton(CTextService *pTextService, const char *icon_id, const OLECHAR *text){
 	if(icon_id != NULL){
@@ -346,10 +340,7 @@ STDAPI ToolButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea)
 STDAPI ToolButton::InitMenu(ITfMenu *pMenu)
 {
     // Add the fisrt menu item.
-    pMenu->AddMenuItem(MENUITEM_INDEX_0, 0, NULL, NULL, c_szMenuItemDescription0, (ULONG)wcslen(c_szMenuItemDescription0), NULL);
-
-    // Add the second menu item.
-    pMenu->AddMenuItem(MENUITEM_INDEX_1, 0, NULL, NULL, c_szMenuItemDescription1, (ULONG)wcslen(c_szMenuItemDescription1), NULL);
+    pMenu->AddMenuItem(MENUITEM_INDEX_CONFIG, 0, NULL, NULL, c_szMenuItemDescription[MENUITEM_INDEX_CONFIG], (ULONG)wcslen(c_szMenuItemDescription[MENUITEM_INDEX_CONFIG]), NULL);
 
     // Add the keyboard open close item.
     DWORD dwFlags = 0;
@@ -358,7 +349,10 @@ STDAPI ToolButton::InitMenu(ITfMenu *pMenu)
     else if (_pTextService->_IsKeyboardOpen())
         dwFlags |= TF_LBMENUF_CHECKED;
 
-    pMenu->AddMenuItem(MENUITEM_INDEX_OPENCLOSE, dwFlags, (HBITMAP) LoadImage(g_hInst, TEXT("IDI_TSFLOGO"), IMAGE_BITMAP, 16, 16, 0), NULL, c_szMenuItemDescriptionOpenClose, (ULONG)wcslen(c_szMenuItemDescriptionOpenClose), NULL);
+    pMenu->AddMenuItem(MENUITEM_INDEX_OPENCLOSE, dwFlags, NULL, NULL, c_szMenuItemDescription[MENUITEM_INDEX_OPENCLOSE], (ULONG)wcslen(c_szMenuItemDescription[MENUITEM_INDEX_OPENCLOSE]), NULL);
+
+    // Add the second menu item.
+    pMenu->AddMenuItem(MENUITEM_INDEX_ABOUTUS, 0, NULL, NULL, c_szMenuItemDescription[MENUITEM_INDEX_ABOUTUS], (ULONG)wcslen(c_szMenuItemDescription[MENUITEM_INDEX_ABOUTUS]), NULL);
 
     return S_OK;
 }
@@ -378,10 +372,10 @@ STDAPI ToolButton::OnMenuSelect(UINT wID)
     //
     switch (wID)
     {
-        case MENUITEM_INDEX_0:
+        case MENUITEM_INDEX_CONFIG:
             break;
 
-        case MENUITEM_INDEX_1:
+        case MENUITEM_INDEX_ABOUTUS:
             break;
 
         case MENUITEM_INDEX_OPENCLOSE:
