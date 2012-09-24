@@ -293,15 +293,15 @@ STDAPI CTextService::Deactivate()
     return S_OK;
 }
 
-InputMode CTextService::getMode(){
+InputMode CTextService::GetMode(){
 	return mode;
 }
 
-void CTextService::setMode(InputMode mode){
+void CTextService::SetMode(InputMode mode){
 	this->mode = mode;
 }
 
-void CTextService::switchMode(){
+void CTextService::SwitchMode(){
 	switch(this->mode){
 	case Pang:
 		this->mode = Zhu;

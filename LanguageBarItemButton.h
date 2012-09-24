@@ -81,8 +81,8 @@ public:
 
 	virtual STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea);
 
-	STDMETHODIMP InitMenu(ITfMenu *pMenu);
-    STDMETHODIMP OnMenuSelect(UINT wID);
+	virtual STDMETHODIMP InitMenu(ITfMenu *pMenu);
+    virtual STDMETHODIMP OnMenuSelect(UINT wID);
 };
 
 #endif

@@ -192,7 +192,7 @@ ModeSwitchButton::ModeSwitchButton(CTextService *pTextService):CLangBarItemButto
 }
 
 STDAPI ModeSwitchButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
-	_pTextService->switchMode();
+	_pTextService->SwitchMode();
     return S_OK;
 }
 
@@ -205,7 +205,7 @@ STDAPI ModeSwitchButton::OnMenuSelect(UINT wID){
 }
 
 void ModeSwitchButton::updateIcon(){
-	switch(_pTextService->getMode()){
+	switch(_pTextService->GetMode()){
 	case Pang:
 		this->icon_id = "IDI_MODE_PANG";
 		break;

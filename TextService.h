@@ -94,9 +94,9 @@ public:
     BOOL _SetCompositionDisplayAttributes(TfEditCookie ec, ITfContext *pContext, TfGuidAtom gaDisplayAttribute);
     BOOL _InitDisplayAttributeGuidAtom();
 
-	void switchMode();
-	void setMode(InputMode mode);
-	InputMode getMode();
+	void SwitchMode();
+	void SetMode(InputMode mode);
+	InputMode GetMode();
 
 private:
     // initialize and uninitialize ThreadMgrEventSink.
