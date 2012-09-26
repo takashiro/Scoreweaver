@@ -128,7 +128,7 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
             hdc = BeginPaint(hwnd, &ps);
             SetBkMode(hdc, TRANSPARENT);
             
-			char text[] = "1.Ä¾ 2.¶ú 3.¾ú 4.±» 5.Êä 6.Èë";
+			char text[3] = {0xb0, 0xa1};
 			HFONT font = CreateFont(20, 10, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, DEFAULT_QUALITY, FF_MODERN, "ËÎÌå");
 			SelectObject(hdc, font);
 			TextOut(hdc, 0, 0, text, strlen(text));

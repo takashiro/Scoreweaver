@@ -73,10 +73,7 @@ extern CRITICAL_SECTION g_cs;
 
 extern const CLSID c_clsidTextService;
 
-extern const GUID c_guidProfile;
-
-extern const GUID c_guidLangBar_ModeSwitch;
-extern const GUID c_guidLangBar_Tool;
+extern const GUID c_guidProfile, c_guidLangBar_Power, c_guidLangBar_ModeSwitch, c_guidLangBar_Tool;
 
 extern const GUID c_guidDisplayAttributeInput;
 extern const GUID c_guidDisplayAttributeConverted;

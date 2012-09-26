@@ -28,7 +28,7 @@ public:
     STDMETHODIMP GetTooltipString(BSTR *pbstrToolTip);
 
     // ITfLangBarItemButton
-    virtual STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea) = 0;
+    virtual STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea);
 
 	// Submenu
 	virtual STDMETHODIMP InitMenu(ITfMenu *pMenu);
@@ -50,7 +50,7 @@ public:
     STDMETHODIMP AdviseSink(REFIID riid, IUnknown *punk, DWORD *pdwCookie);
     STDMETHODIMP UnadviseSink(DWORD dwCookie);
 
-	virtual void updateIcon();
+	virtual void UpdateIcon();
 
 	void repaint(DWORD flags = TF_LBI_BTNALL);
 
@@ -65,16 +65,20 @@ protected:
 	const OLECHAR *text;
 };
 
+class PowerButton: public CLangBarItemButton{
+public:
+	PowerButton(CTextService *pTextService);
+
+	virtual STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea);
+	virtual void UpdateIcon();
+};
+
 class ModeSwitchButton: public CLangBarItemButton{
 public:
 	ModeSwitchButton(CTextService *pTextService);
 
 	virtual STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea);
-
-	virtual STDMETHODIMP InitMenu(ITfMenu *pMenu);
-    virtual STDMETHODIMP OnMenuSelect(UINT wID);
-
-	virtual void updateIcon();
+	virtual void UpdateIcon();
 };
 
 class ToolButton: public CLangBarItemButton{

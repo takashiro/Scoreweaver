@@ -34,6 +34,16 @@ BOOL CTextService::_InitLanguageBar()
 
     fRet = FALSE;
 
+	if ((_pPowerButton = new PowerButton(this)) == NULL)
+        goto Exit;
+	
+	if (pLangBarItemMgr->AddItem(_pPowerButton) != S_OK)
+	{
+		_pPowerButton->Release();
+		_pPowerButton = NULL;
+		goto Exit;
+	}
+
 	if ((_pModeSwitchButton = new ModeSwitchButton(this)) == NULL)
         goto Exit;
 	
@@ -71,27 +81,38 @@ void CTextService::_UninitLanguageBar()
 {
     ITfLangBarItemMgr *pLangBarItemMgr;
 
-	if (_pToolButton == NULL)
-		return;
+	//销毁工具按钮
+	if (_pToolButton != NULL){
+		if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
+		{
+			pLangBarItemMgr->RemoveItem(_pToolButton);
+		}
 
-	if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
-	{
-		pLangBarItemMgr->RemoveItem(_pToolButton);
+		_pToolButton->Release();
+		_pToolButton = NULL;
 	}
 
-	_pToolButton->Release();
-	_pToolButton = NULL;
+	//销毁模式按钮
+	if (_pModeSwitchButton != NULL){
+		if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
+		{
+			pLangBarItemMgr->RemoveItem(_pModeSwitchButton);
+		}
 
-	if (_pModeSwitchButton == NULL)
-		return;
-
-	if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
-	{
-		pLangBarItemMgr->RemoveItem(_pModeSwitchButton);
+		_pModeSwitchButton->Release();
+		_pModeSwitchButton = NULL;
 	}
 
-	_pModeSwitchButton->Release();
-	_pModeSwitchButton = NULL;
+	// 销毁开关按钮
+	if (_pPowerButton != NULL){
+		if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
+		{
+			pLangBarItemMgr->RemoveItem(_pPowerButton);
+		}
+
+		_pPowerButton->Release();
+		_pPowerButton = NULL;
+	}
 
 	pLangBarItemMgr->Release();
 }

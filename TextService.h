@@ -136,7 +136,7 @@ private:
     DWORD _dwTextEditSinkCookie;
 
 	// Buttons on Language Bar
-	//CLangBarItemButton *_pLangBarButton[LANGBAR_ITEMNUM];
+	CLangBarItemButton *_pPowerButton;
 	CLangBarItemButton *_pModeSwitchButton;
 	CLangBarItemButton *_pToolButton;
 

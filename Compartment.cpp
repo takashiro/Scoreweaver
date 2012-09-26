@@ -17,6 +17,8 @@
 #include "Globals.h"
 #include "TextService.h"
 
+#include "LanguageBarItemButton.h"
+
 //+---------------------------------------------------------------------------
 //
 // _IsKeyboardDisabled
@@ -156,6 +158,8 @@ HRESULT CTextService::_SetKeyboardOpen(BOOL fOpen)
         }
         pCompMgr->Release();
     }
+
+	_pPowerButton->UpdateIcon();
 
     return hr;
 }

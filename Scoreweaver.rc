@@ -21,3 +21,6 @@ IDI_TOOL ICON resources/tool.ico
 IDI_MODE_ZHENG ICON resources/mode_zheng.ico
 IDI_MODE_PANG ICON resources/mode_pang.ico
 IDI_MODE_ZHU ICON resources/mode_zhu.ico
+
+IDI_ON ICON resources/on.ico
+IDI_OFF ICON resources/off.ico

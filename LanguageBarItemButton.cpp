@@ -6,6 +6,7 @@
 #define MENUITEM_INDEX_OPENCLOSE 1
 #define MENUITEM_INDEX_ABOUTUS 2
 
+#define BUTTON_TEXT_POWER L"开启/关闭"
 #define BUTTON_TEXT_MODESWITCH L"模式切换"
 #define BUTTON_TEXT_TOOL L"工具"
 
@@ -107,11 +108,6 @@ STDAPI CLangBarItemButton::GetTooltipString(BSTR *pbstrToolTip)
     return (*pbstrToolTip == NULL) ? E_OUTOFMEMORY : S_OK;
 }
 
-STDAPI CLangBarItemButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea)
-{
-    return S_OK;
-}
-
 STDAPI CLangBarItemButton::GetIcon(HICON *phIcon){
     *phIcon = (HICON)LoadImage(g_hInst, TEXT(icon_id), IMAGE_ICON, 16, 16, 0);
     return (*phIcon != NULL) ? S_OK : E_FAIL;
@@ -172,6 +168,10 @@ STDAPI CLangBarItemButton::UnadviseSink(DWORD dwCookie){
     return S_OK;
 }
 
+STDMETHODIMP CLangBarItemButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
+    return S_OK;
+}
+
 STDAPI CLangBarItemButton::InitMenu(ITfMenu *pMenu){
     return S_OK;
 }
@@ -187,6 +187,27 @@ void CLangBarItemButton::repaint(DWORD flags){
 	_pLangBarItemSink->OnUpdate(flags);
 }
 
+/* Power Button */
+PowerButton::PowerButton(CTextService *pTextService): CLangBarItemButton(pTextService, "IDI_OFF", BUTTON_TEXT_POWER){
+	_tfLangBarItemInfo.guidItem = c_guidLangBar_Power;
+}
+
+STDMETHODIMP PowerButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
+	_pTextService->_SetKeyboardOpen(!_pTextService->_IsKeyboardOpen());
+
+	return S_OK;
+}
+
+void PowerButton::updateIcon(){
+	if(_pTextService->_IsKeyboardOpen()){
+		icon_id = "IDI_ON";
+	}else{
+		icon_id = "IDI_OFF";
+	}
+
+	repaint(TF_LBI_ICON);
+}
+
 /* Mode Switch Button */
 
 ModeSwitchButton::ModeSwitchButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_MODE_ZHENG", BUTTON_TEXT_MODESWITCH){
@@ -195,14 +216,6 @@ ModeSwitchButton::ModeSwitchButton(CTextService *pTextService):CLangBarItemButto
 
 STDAPI ModeSwitchButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
 	_pTextService->SwitchMode();
-    return S_OK;
-}
-
-STDAPI ModeSwitchButton::InitMenu(ITfMenu *pMenu){
-    return S_OK;
-}
-
-STDAPI ModeSwitchButton::OnMenuSelect(UINT wID){
     return S_OK;
 }
 
@@ -230,7 +243,7 @@ ToolButton::ToolButton(CTextService *pTextService):CLangBarItemButton(pTextServi
     _tfLangBarItemInfo.dwStyle = TF_LBI_STYLE_BTN_MENU;		//This LangBar is a button type with a menu.
 }
 
-STDAPI ToolButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
+STDMETHODIMP ToolButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
     return S_OK;
 }
 
