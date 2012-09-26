@@ -16,8 +16,7 @@
 #ifndef TEXTSERVICE_H
 #define TEXTSERVICE_H
 
-class ModeSwitchButton;
-class ToolButton;
+class CLangBarItemButton;
 class CCandidateList;
 
 class CTextService : public ITfTextInputProcessor,
@@ -138,8 +137,8 @@ private:
 
 	// Buttons on Language Bar
 	//CLangBarItemButton *_pLangBarButton[LANGBAR_ITEMNUM];
-	ModeSwitchButton *_pModeSwitchButton;
-	ToolButton *_pToolButton;
+	CLangBarItemButton *_pModeSwitchButton;
+	CLangBarItemButton *_pToolButton;
 
     // the current composition object.
     ITfComposition *_pComposition;

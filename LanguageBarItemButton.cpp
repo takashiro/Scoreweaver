@@ -180,10 +180,12 @@ STDAPI CLangBarItemButton::OnMenuSelect(UINT wID){
     return S_OK;
 }
 
+void CLangBarItemButton::updateIcon(){
+}
+
 void CLangBarItemButton::repaint(DWORD flags){
 	_pLangBarItemSink->OnUpdate(flags);
 }
-
 
 /* Mode Switch Button */
 

@@ -50,6 +50,8 @@ public:
     STDMETHODIMP AdviseSink(REFIID riid, IUnknown *punk, DWORD *pdwCookie);
     STDMETHODIMP UnadviseSink(DWORD dwCookie);
 
+	virtual void updateIcon();
+
 	void repaint(DWORD flags = TF_LBI_BTNALL);
 
 protected:
@@ -72,7 +74,7 @@ public:
 	virtual STDMETHODIMP InitMenu(ITfMenu *pMenu);
     virtual STDMETHODIMP OnMenuSelect(UINT wID);
 
-	void updateIcon();
+	virtual void updateIcon();
 };
 
 class ToolButton: public CLangBarItemButton{
