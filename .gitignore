@@ -7,6 +7,7 @@ Release/
 *.tmp
 *.db
 Scoreweaver.vcproj.*
+*.user
 *.ncb
 *.suo
 *.sdf
