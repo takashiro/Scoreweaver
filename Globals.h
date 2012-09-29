@@ -38,20 +38,6 @@ void DllRelease();
 #define TEXTSERVICE_ICON_INDEX  0
 #define LANGBAR_ITEM_DESC   L"¹ÅÇÙÆ×ÊäÈë·¨"
 
-enum InputMode{	//ÊäÈëÄ£Ê½
-	Zheng,		//Õý×Ö
-	Pang,		//ÅÔ×Ö
-	Zhu			//ÅÔ×¢
-};
-
-//+---------------------------------------------------------------------------
-//
-// SafeStringCopy
-//
-// Copies a string from one buffer to another.  wcsncpy does not always
-// null-terminate the destination buffer; this function does.
-//----------------------------------------------------------------------------
-
 inline void SafeStringCopy(WCHAR *pchDst, ULONG cchMax, const WCHAR *pchSrc, ULONG dstLen = 0)
 {
     if (cchMax > 0)
@@ -73,7 +59,7 @@ extern CRITICAL_SECTION g_cs;
 
 extern const CLSID c_clsidTextService;
 
-extern const GUID c_guidProfile, c_guidLangBar_Power, c_guidLangBar_ModeSwitch, c_guidLangBar_Tool;
+extern const GUID c_guidProfile, c_guidLangBar_Power, c_guidLangBar_Mode, c_guidLangBar_Punct, c_guidLangBar_Tool;
 
 extern const GUID c_guidDisplayAttributeInput;
 extern const GUID c_guidDisplayAttributeConverted;

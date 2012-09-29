@@ -58,8 +58,7 @@ BOOL CTextService::_IsKeyboardDisabled()
         ITfCompartment *pCompartmentEmptyContext;
 
         // Check GUID_COMPARTMENT_KEYBOARD_DISABLED.
-        if (pCompMgr->GetCompartment(GUID_COMPARTMENT_KEYBOARD_DISABLED, &pCompartmentDisabled) == S_OK)
-        {
+        if (pCompMgr->GetCompartment(GUID_COMPARTMENT_KEYBOARD_DISABLED, &pCompartmentDisabled) == S_OK){
             VARIANT var;
             if (S_OK == pCompartmentDisabled->GetValue(&var))
             {

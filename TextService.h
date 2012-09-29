@@ -1,17 +1,3 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  TextService.h
-//
-//          CTextService declaration.
-//
-//////////////////////////////////////////////////////////////////////
 
 #ifndef TEXTSERVICE_H
 #define TEXTSERVICE_H
@@ -93,9 +79,11 @@ public:
     BOOL _SetCompositionDisplayAttributes(TfEditCookie ec, ITfContext *pContext, TfGuidAtom gaDisplayAttribute);
     BOOL _InitDisplayAttributeGuidAtom();
 
-	void SwitchMode();
-	void SetMode(InputMode mode);
-	InputMode GetMode();
+	void SetMode(bool mode);
+	bool GetMode() const;
+
+	void SetEnPunct(bool mode);
+	bool IsEnPunct() const;
 
 private:
     // initialize and uninitialize ThreadMgrEventSink.
@@ -136,9 +124,7 @@ private:
     DWORD _dwTextEditSinkCookie;
 
 	// Buttons on Language Bar
-	CLangBarItemButton *_pPowerButton;
-	CLangBarItemButton *_pModeSwitchButton;
-	CLangBarItemButton *_pToolButton;
+	CLangBarItemButton *_pPowerButton, *_pModeButton, *_pPunctButton, *_pToolButton;
 
     // the current composition object.
     ITfComposition *_pComposition;
@@ -153,7 +139,10 @@ private:
     LONG _cRef;     // COM ref count
 
 	//Input Mode
-	InputMode mode;
+	bool _isFullWidthMode;
+
+	// Punct Type
+	bool _isEnPunct;
 };
 
 

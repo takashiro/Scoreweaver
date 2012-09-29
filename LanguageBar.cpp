@@ -1,28 +1,8 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  LanguageBar.cpp
-//
-//          Language Bar UI code.
-//
-//////////////////////////////////////////////////////////////////////
 
 #include "Globals.h"
 #include "TextService.h"
 #include "Resource.h"
 #include "LanguageBarItemButton.h"
-
-//+---------------------------------------------------------------------------
-//
-// _InitLanguageBar
-//
-//----------------------------------------------------------------------------
 
 BOOL CTextService::_InitLanguageBar()
 {
@@ -34,6 +14,7 @@ BOOL CTextService::_InitLanguageBar()
 
     fRet = FALSE;
 
+	//添加开关按钮
 	if ((_pPowerButton = new PowerButton(this)) == NULL)
         goto Exit;
 	
@@ -44,16 +25,29 @@ BOOL CTextService::_InitLanguageBar()
 		goto Exit;
 	}
 
-	if ((_pModeSwitchButton = new ModeSwitchButton(this)) == NULL)
+	//添加全半角按钮
+	if ((_pModeButton = new ModeButton(this)) == NULL)
         goto Exit;
 	
-	if (pLangBarItemMgr->AddItem(_pModeSwitchButton) != S_OK)
+	if (pLangBarItemMgr->AddItem(_pModeButton) != S_OK)
 	{
-		_pModeSwitchButton->Release();
-		_pModeSwitchButton = NULL;
+		_pModeButton->Release();
+		_pModeButton = NULL;
 		goto Exit;
 	}
 
+	//添加中英标点按钮
+	if ((_pPunctButton = new PunctButton(this)) == NULL)
+        goto Exit;
+	
+	if (pLangBarItemMgr->AddItem(_pPunctButton) != S_OK)
+	{
+		_pPunctButton->Release();
+		_pPunctButton = NULL;
+		goto Exit;
+	}
+
+	//添加工具
 	if ((_pToolButton = new ToolButton(this)) == NULL)
         goto Exit;
 	
@@ -81,37 +75,20 @@ void CTextService::_UninitLanguageBar()
 {
     ITfLangBarItemMgr *pLangBarItemMgr;
 
-	//销毁工具按钮
-	if (_pToolButton != NULL){
-		if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
-		{
-			pLangBarItemMgr->RemoveItem(_pToolButton);
-		}
-
-		_pToolButton->Release();
-		_pToolButton = NULL;
+	if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) != S_OK){
+		return;
 	}
 
-	//销毁模式按钮
-	if (_pModeSwitchButton != NULL){
-		if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
-		{
-			pLangBarItemMgr->RemoveItem(_pModeSwitchButton);
+	//销毁按钮
+	CLangBarItemButton *buttons[] = {_pToolButton, _pPunctButton, _pModeButton, _pPowerButton};
+
+	for(int i = 0; i < 4; i++){
+		if (buttons[i] != NULL){
+			pLangBarItemMgr->RemoveItem(buttons[i]);
+
+			buttons[i]->Release();
+			buttons[i] = NULL;
 		}
-
-		_pModeSwitchButton->Release();
-		_pModeSwitchButton = NULL;
-	}
-
-	// 销毁开关按钮
-	if (_pPowerButton != NULL){
-		if (_pThreadMgr->QueryInterface(IID_ITfLangBarItemMgr, (void **)&pLangBarItemMgr) == S_OK)
-		{
-			pLangBarItemMgr->RemoveItem(_pPowerButton);
-		}
-
-		_pPowerButton->Release();
-		_pPowerButton = NULL;
 	}
 
 	pLangBarItemMgr->Release();

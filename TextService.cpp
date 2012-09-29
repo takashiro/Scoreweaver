@@ -1,28 +1,8 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  TextService.cpp
-//
-//          IUnknown, ITfTextInputProcessor implementation.
-//
-//////////////////////////////////////////////////////////////////////
 
 #include "globals.h"
 #include "TextService.h"
 #include "CandidateList.h"
 #include "LanguageBarItemButton.h"
-
-//+---------------------------------------------------------------------------
-//
-// CreateInstance
-//
-//----------------------------------------------------------------------------
 
 /* static */
 HRESULT CTextService::CreateInstance(IUnknown *pUnkOuter, REFIID riid, void **ppvObj)
@@ -86,7 +66,8 @@ CTextService::CTextService()
 
     _cRef = 1;
 
-	mode = Zheng;
+	//SetMode(true);
+	//SetEnPunct(true);
 }
 
 //+---------------------------------------------------------------------------
@@ -293,26 +274,20 @@ STDAPI CTextService::Deactivate()
     return S_OK;
 }
 
-InputMode CTextService::GetMode(){
-	return mode;
+bool CTextService::GetMode() const{
+	return _isFullWidthMode;
 }
 
-void CTextService::SetMode(InputMode mode){
-	this->mode = mode;
+void CTextService::SetMode(bool mode){
+	_isFullWidthMode = mode;
+	_pModeButton->UpdateIcon();
 }
 
-void CTextService::SwitchMode(){
-	switch(this->mode){
-	case Pang:
-		this->mode = Zhu;
-		break;
-	case Zhu:
-		this->mode = Zheng;
-		break;
-	case Zheng:default:
-		this->mode = Pang;
-		break;
-	}
+bool CTextService::IsEnPunct() const{
+	return _isEnPunct;
+}
 
-	_pModeSwitchButton->updateIcon();
+void CTextService::SetEnPunct(bool mode){
+	_isEnPunct = mode;
+	_pPunctButton->UpdateIcon();
 }

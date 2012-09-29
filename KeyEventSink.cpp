@@ -156,7 +156,7 @@ STDAPI CTextService::OnTestKeyUp(ITfContext *pContext, WPARAM wParam, LPARAM lPa
 
 	switch(wParam){
 	case VK_CAPITAL:
-		this->SwitchMode();
+		_SetKeyboardOpen(!_IsKeyboardOpen());
 		break;
 	}
 

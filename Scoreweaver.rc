@@ -1,26 +1,13 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  TextService.rc
-//
-//          Resources.
-//
-//////////////////////////////////////////////////////////////////////
-
-
 IDI_LOGO ICON resources/logo.ico
 IDI_TSFLOGO ICON resources/TextService.ico
+
+IDI_POWER_ON ICON resources/on.ico
+IDI_POWER_OFF ICON resources/off.ico
+
+IDI_MODE_FULL ICON resources/mode_full.ico
+IDI_MODE_HALF ICON resources/mode_half.ico
+
+IDI_PUNCT_FULL ICON resources/punct_full.ico
+IDI_PUNCT_HALF ICON resources/punct_half.ico
+
 IDI_TOOL ICON resources/tool.ico
-
-IDI_MODE_ZHENG ICON resources/mode_zheng.ico
-IDI_MODE_PANG ICON resources/mode_pang.ico
-IDI_MODE_ZHU ICON resources/mode_zhu.ico
-
-IDI_ON ICON resources/on.ico
-IDI_OFF ICON resources/off.ico

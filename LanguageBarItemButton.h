@@ -65,20 +65,39 @@ protected:
 	const OLECHAR *text;
 };
 
-class PowerButton: public CLangBarItemButton{
+class SwitchButton: public CLangBarItemButton{
+public:
+	SwitchButton(CTextService *pTextService, const char *icon_id = NULL, const OLECHAR *text = NULL);
+
+	virtual void UpdateIcon();
+
+protected:
+	const char *icon_id_on, *icon_id_off;
+	virtual BOOL IsSwitchOn() const = 0;
+};
+
+class PowerButton: public SwitchButton{
 public:
 	PowerButton(CTextService *pTextService);
 
 	virtual STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea);
-	virtual void UpdateIcon();
+	virtual BOOL IsSwitchOn() const;
 };
 
-class ModeSwitchButton: public CLangBarItemButton{
+class ModeButton: public SwitchButton{
 public:
-	ModeSwitchButton(CTextService *pTextService);
+	ModeButton(CTextService *pTextService);
 
 	virtual STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea);
-	virtual void UpdateIcon();
+	virtual BOOL IsSwitchOn() const;
+};
+
+class PunctButton: public SwitchButton{
+public:
+	PunctButton(CTextService *pTextService);
+
+	virtual STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea);
+	virtual BOOL IsSwitchOn() const;
 };
 
 class ToolButton: public CLangBarItemButton{

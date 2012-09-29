@@ -7,7 +7,8 @@
 #define MENUITEM_INDEX_ABOUTUS 2
 
 #define BUTTON_TEXT_POWER L"开启/关闭"
-#define BUTTON_TEXT_MODESWITCH L"模式切换"
+#define BUTTON_TEXT_MODE L"全角/半角"
+#define BUTTON_TEXT_PUNCT L"中英标点"
 #define BUTTON_TEXT_TOOL L"工具"
 
 // The descriptions of the menu item of the language bar button.
@@ -180,61 +181,81 @@ STDAPI CLangBarItemButton::OnMenuSelect(UINT wID){
     return S_OK;
 }
 
-void CLangBarItemButton::updateIcon(){
+void CLangBarItemButton::UpdateIcon(){
 }
 
 void CLangBarItemButton::repaint(DWORD flags){
 	_pLangBarItemSink->OnUpdate(flags);
 }
 
+/* Switch Button */
+
+SwitchButton::SwitchButton(CTextService *pTextService, const char *icon_id, const OLECHAR *text): CLangBarItemButton(pTextService, icon_id, text){
+}
+
+void SwitchButton::UpdateIcon(){
+	if(IsSwitchOn()){
+		icon_id = icon_id_on;
+	}else{
+		icon_id = icon_id_off;
+	}
+
+	repaint(TF_LBI_ICON);
+}
+
 /* Power Button */
-PowerButton::PowerButton(CTextService *pTextService): CLangBarItemButton(pTextService, "IDI_OFF", BUTTON_TEXT_POWER){
+
+PowerButton::PowerButton(CTextService *pTextService): SwitchButton(pTextService, "IDI_POWER_OFF", BUTTON_TEXT_POWER){
 	_tfLangBarItemInfo.guidItem = c_guidLangBar_Power;
+
+	icon_id_on = "IDI_POWER_ON";
+	icon_id_off = "IDI_POWER_OFF";
 }
 
 STDMETHODIMP PowerButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
 	_pTextService->_SetKeyboardOpen(!_pTextService->_IsKeyboardOpen());
-
 	return S_OK;
 }
 
-void PowerButton::updateIcon(){
-	if(_pTextService->_IsKeyboardOpen()){
-		icon_id = "IDI_ON";
-	}else{
-		icon_id = "IDI_OFF";
-	}
-
-	repaint(TF_LBI_ICON);
+BOOL PowerButton::IsSwitchOn() const{
+	return _pTextService->_IsKeyboardOpen();
 }
 
-/* Mode Switch Button */
+/* Mode Button */
 
-ModeSwitchButton::ModeSwitchButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_MODE_ZHENG", BUTTON_TEXT_MODESWITCH){
-	_tfLangBarItemInfo.guidItem = c_guidLangBar_ModeSwitch;
+ModeButton::ModeButton(CTextService *pTextService):SwitchButton(pTextService, "IDI_MODE_OFF", BUTTON_TEXT_MODE){
+	_tfLangBarItemInfo.guidItem = c_guidLangBar_Mode;
+
+	icon_id_on = "IDI_MODE_FULL";
+	icon_id_off = "IDI_MODE_HALF";
 }
 
-STDAPI ModeSwitchButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
-	_pTextService->SwitchMode();
+STDMETHODIMP ModeButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
+	_pTextService->SetMode(!_pTextService->GetMode());
     return S_OK;
 }
 
-void ModeSwitchButton::updateIcon(){
-	switch(_pTextService->GetMode()){
-	case Pang:
-		this->icon_id = "IDI_MODE_PANG";
-		break;
-	case Zhu:
-		this->icon_id = "IDI_MODE_ZHU";
-		break;
-	case Zheng:default:
-		this->icon_id = "IDI_MODE_ZHENG";
-		break;
-	}
-
-	repaint(TF_LBI_ICON);
+BOOL ModeButton::IsSwitchOn() const{
+	return _pTextService->GetMode();
 }
 
+/* Punctation Button */
+
+PunctButton::PunctButton(CTextService *pTextService):SwitchButton(pTextService, "IDI_PUNCT_FULL", BUTTON_TEXT_PUNCT){
+	_tfLangBarItemInfo.guidItem = c_guidLangBar_Punct;
+
+	icon_id_on = "IDI_PUNCT_HALF";
+	icon_id_off = "IDI_PUNCT_FULL";
+}
+
+STDMETHODIMP PunctButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
+	_pTextService->SetEnPunct(!_pTextService->IsEnPunct());
+	return S_OK;
+}
+
+BOOL PunctButton::IsSwitchOn() const{
+	return _pTextService->IsEnPunct();
+}
 
 /* Tool Button */
 
@@ -269,11 +290,8 @@ STDAPI ToolButton::InitMenu(ITfMenu *pMenu){
 STDAPI ToolButton::OnMenuSelect(UINT wID){
     BOOL fOpen;
 
-    //
     // This is callback when the menu item is selected.
-    //
-    switch (wID)
-    {
+    switch(wID){
         case MENUITEM_INDEX_CONFIG:
             break;
 
