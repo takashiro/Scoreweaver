@@ -52,11 +52,9 @@ mt -manifest $(IntDir)$(ProjectName).dll.manifest -outputresource:$(IntDir)$(Pro
     <NMakeForcedUsingAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(NMakeForcedUsingAssemblies)</NMakeForcedUsingAssemblies>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
-    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nmake nodebug=1
-mt -manifest $(IntDir)$(ProjectName).dll.manifest -outputresource:$(IntDir)$(ProjectName).dll%3b2</NMakeBuildCommandLine>
+    <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nmake nodebug=1</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">rmdir /S /Q $(IntDir)
-nmake nodebug=1
-mt -manifest $(IntDir)$(ProjectName).dll.manifest -outputresource:$(IntDir)$(ProjectName).dll%3b2</NMakeReBuildCommandLine>
+nmake nodebug=1</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">rmdir /S /Q $(IntDir)</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
