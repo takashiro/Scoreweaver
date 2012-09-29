@@ -180,7 +180,7 @@ STDAPI CLangBarItemButton::OnMenuSelect(UINT wID){
     return S_OK;
 }
 
-void CLangBarItemButton::updateIcon(){
+void CLangBarItemButton::UpdateIcon(){
 }
 
 void CLangBarItemButton::repaint(DWORD flags){
@@ -198,7 +198,7 @@ STDMETHODIMP PowerButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcAre
 	return S_OK;
 }
 
-void PowerButton::updateIcon(){
+void PowerButton::UpdateIcon(){
 	if(_pTextService->_IsKeyboardOpen()){
 		icon_id = "IDI_ON";
 	}else{
@@ -219,7 +219,7 @@ STDAPI ModeSwitchButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea
     return S_OK;
 }
 
-void ModeSwitchButton::updateIcon(){
+void ModeSwitchButton::UpdateIcon(){
 	switch(_pTextService->GetMode()){
 	case Pang:
 		this->icon_id = "IDI_MODE_PANG";

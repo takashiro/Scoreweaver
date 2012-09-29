@@ -314,5 +314,5 @@ void CTextService::SwitchMode(){
 		break;
 	}
 
-	_pModeSwitchButton->updateIcon();
+	_pModeSwitchButton->UpdateIcon();
 }
