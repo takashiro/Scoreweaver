@@ -14,49 +14,24 @@ BOOL CTextService::_InitLanguageBar()
 
     fRet = FALSE;
 
-	//添加开关按钮
-	if ((_pPowerButton = new PowerButton(this)) == NULL)
-        goto Exit;
-	
-	if (pLangBarItemMgr->AddItem(_pPowerButton) != S_OK)
-	{
-		_pPowerButton->Release();
-		_pPowerButton = NULL;
-		goto Exit;
+	CLangBarItemButton *buttons[] = {new PowerButton(this), new ModeButton(this), new PunctButton(this), new ToolButton(this)};
+	for(int i = 0; i < 4; i++){
+		if (buttons[i] != NULL){
+			if (buttons[i] == NULL){
+				goto Exit;
+			}
+			
+			if (pLangBarItemMgr->AddItem(buttons[i]) != S_OK){
+				buttons[i]->Release();
+				goto Exit;
+			}
+		}
 	}
 
-	//添加全半角按钮
-	if ((_pModeButton = new ModeButton(this)) == NULL)
-        goto Exit;
-	
-	if (pLangBarItemMgr->AddItem(_pModeButton) != S_OK)
-	{
-		_pModeButton->Release();
-		_pModeButton = NULL;
-		goto Exit;
-	}
-
-	//添加中英标点按钮
-	if ((_pPunctButton = new PunctButton(this)) == NULL)
-        goto Exit;
-	
-	if (pLangBarItemMgr->AddItem(_pPunctButton) != S_OK)
-	{
-		_pPunctButton->Release();
-		_pPunctButton = NULL;
-		goto Exit;
-	}
-
-	//添加工具
-	if ((_pToolButton = new ToolButton(this)) == NULL)
-        goto Exit;
-	
-	if (pLangBarItemMgr->AddItem(_pToolButton) != S_OK)
-	{	
-		_pToolButton->Release();
-		_pToolButton = NULL;
-		goto Exit;
-	}
+	_pPowerButton = buttons[0];
+	_pModeButton = buttons[1];
+	_pPunctButton = buttons[2];
+	_pToolButton = buttons[3];
 
     fRet = TRUE;
 
@@ -64,12 +39,6 @@ Exit:
     pLangBarItemMgr->Release();
     return fRet;
 }
-
-//+---------------------------------------------------------------------------
-//
-// _UninitLanguageBar
-//
-//----------------------------------------------------------------------------
 
 void CTextService::_UninitLanguageBar()
 {
@@ -81,7 +50,6 @@ void CTextService::_UninitLanguageBar()
 
 	//销毁按钮
 	CLangBarItemButton *buttons[] = {_pToolButton, _pPunctButton, _pModeButton, _pPowerButton};
-
 	for(int i = 0; i < 4; i++){
 		if (buttons[i] != NULL){
 			pLangBarItemMgr->RemoveItem(buttons[i]);
@@ -90,6 +58,7 @@ void CTextService::_UninitLanguageBar()
 			buttons[i] = NULL;
 		}
 	}
+	_pToolButton = _pPunctButton = _pModeButton = _pPowerButton = NULL;
 
 	pLangBarItemMgr->Release();
 }

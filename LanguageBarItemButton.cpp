@@ -191,7 +191,7 @@ void CLangBarItemButton::repaint(DWORD flags){
 /* Switch Button */
 
 SwitchButton::SwitchButton(CTextService *pTextService, const char *icon_id, const OLECHAR *text): CLangBarItemButton(pTextService, icon_id, text){
-
+	_tfLangBarItemInfo.dwStyle = TF_LBI_STYLE_BTN_TOGGLE;
 }
 
 void SwitchButton::UpdateIcon(){
