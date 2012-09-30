@@ -38,31 +38,24 @@ CTextService::CTextService()
 {
     DllAddRef();
 
-    //
     // Initialize the thread manager pointer.
-    //
     _pThreadMgr = NULL;
 
-    //
     // Initialize the numbers for ThreadMgrEventSink.
-    //
     _dwThreadMgrEventSinkCookie = TF_INVALID_COOKIE;
 
-    //
     // Initialize the numbers for TextEditSink.
-    //
     _pTextEditSinkContext = NULL;
     _dwTextEditSinkCookie = TF_INVALID_COOKIE;
 
-    //
     // Initialize the composition object pointer.
-    //
     _pComposition = NULL;
 
-    //
     // Initialize the candidate list object pointer.
-    //
-    _pCandidateList = NULL;
+	_pCandidateList = NULL;
+
+	// Initialize the Language Bar buttons' pointers
+	_pPowerButton = _pModeButton = _pPunctButton = _pToolButton = NULL;
 
     _cRef = 1;
 
@@ -161,28 +154,18 @@ STDAPI_(ULONG) CTextService::Release()
     return cr;
 }
 
-//+---------------------------------------------------------------------------
-//
-// Activate
-//
-//----------------------------------------------------------------------------
-
 STDAPI CTextService::Activate(ITfThreadMgr *pThreadMgr, TfClientId tfClientId)
 {
     _pThreadMgr = pThreadMgr;
     _pThreadMgr->AddRef();
     _tfClientId = tfClientId;
 
-    //
     // Initialize ThreadMgrEventSink.
-    //
     if (!_InitThreadMgrEventSink())
         goto ExitError;
 
-    // 
     //  If there is the focus document manager already,
     //  advise the TextEditSink.
-    // 
     ITfDocumentMgr *pDocMgrFocus;
     if ((_pThreadMgr->GetFocus(&pDocMgrFocus) == S_OK) &&
         (pDocMgrFocus != NULL))
@@ -191,27 +174,19 @@ STDAPI CTextService::Activate(ITfThreadMgr *pThreadMgr, TfClientId tfClientId)
         pDocMgrFocus->Release();
     }
 
-    //
     // Initialize Language Bar.
-    //
     if (!_InitLanguageBar())
         goto ExitError;
 
-    //
     // Initialize KeyEventSink
-    //
     if (!_InitKeyEventSink())
         goto ExitError;
 
-    //
     // Initialize PreservedKeys
-    //
     if (!_InitPreservedKey())
         goto ExitError;
 
-    //
     // Initialize display guid atom
-    //
     if (!_InitDisplayAttributeGuidAtom())
         goto ExitError;
 

@@ -191,6 +191,7 @@ void CLangBarItemButton::repaint(DWORD flags){
 /* Switch Button */
 
 SwitchButton::SwitchButton(CTextService *pTextService, const char *icon_id, const OLECHAR *text): CLangBarItemButton(pTextService, icon_id, text){
+
 }
 
 void SwitchButton::UpdateIcon(){
@@ -223,7 +224,7 @@ BOOL PowerButton::IsSwitchOn() const{
 
 /* Mode Button */
 
-ModeButton::ModeButton(CTextService *pTextService):SwitchButton(pTextService, "IDI_MODE_OFF", BUTTON_TEXT_MODE){
+ModeButton::ModeButton(CTextService *pTextService):SwitchButton(pTextService, "IDI_MODE_HALF", BUTTON_TEXT_MODE){
 	_tfLangBarItemInfo.guidItem = c_guidLangBar_Mode;
 
 	icon_id_on = "IDI_MODE_FULL";
