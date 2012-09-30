@@ -28,12 +28,6 @@ HRESULT CTextService::CreateInstance(IUnknown *pUnkOuter, REFIID riid, void **pp
     return hr;
 }
 
-//+---------------------------------------------------------------------------
-//
-// ctor
-//
-//----------------------------------------------------------------------------
-
 CTextService::CTextService()
 {
     DllAddRef();
@@ -58,27 +52,12 @@ CTextService::CTextService()
 	_pPowerButton = _pModeButton = _pPunctButton = _pToolButton = NULL;
 
     _cRef = 1;
-
-	//SetMode(true);
-	//SetEnPunct(true);
 }
-
-//+---------------------------------------------------------------------------
-//
-// dtor
-//
-//----------------------------------------------------------------------------
 
 CTextService::~CTextService()
 {
     DllRelease();
 }
-
-//+---------------------------------------------------------------------------
-//
-// QueryInterface
-//
-//----------------------------------------------------------------------------
 
 STDAPI CTextService::QueryInterface(REFIID riid, void **ppvObj)
 {
@@ -189,6 +168,8 @@ STDAPI CTextService::Activate(ITfThreadMgr *pThreadMgr, TfClientId tfClientId)
     // Initialize display guid atom
     if (!_InitDisplayAttributeGuidAtom())
         goto ExitError;
+
+	_SetKeyboardOpen(TRUE);
 
     return S_OK;
 
