@@ -297,6 +297,7 @@ STDAPI ToolButton::OnMenuSelect(UINT wID){
             break;
 
         case MENUITEM_INDEX_ABOUTUS:
+			::MessageBoxA(NULL,"古琴编辑器团队！","关于我们",NULL);
             break;
 
         case MENUITEM_INDEX_OPENCLOSE:
