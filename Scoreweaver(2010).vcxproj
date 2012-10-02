@@ -37,12 +37,9 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
     <NMakeBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">del $(IntDir)$(ProjectName).dll
-del $(IntDir)$(ProjectName).dll.manifest
-nmake
-mt -manifest $(IntDir)$(ProjectName).dll.manifest -outputresource:$(IntDir)$(ProjectName).dll%3b2</NMakeBuildCommandLine>
+nmake</NMakeBuildCommandLine>
     <NMakeReBuildCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">rmdir /S /Q $(IntDir)
-nmake
-mt -manifest $(IntDir)$(ProjectName).dll.manifest -outputresource:$(IntDir)$(ProjectName).dll%3b2</NMakeReBuildCommandLine>
+nmake</NMakeReBuildCommandLine>
     <NMakeCleanCommandLine Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">rmdir /S /Q $(IntDir)</NMakeCleanCommandLine>
     <NMakeOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
     <NMakePreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">WIN32;DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
