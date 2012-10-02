@@ -1,27 +1,7 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  StartComposition.cpp
-//
-//          the rountins to start a new composition object.
-//
-//////////////////////////////////////////////////////////////////////
 
 #include "Globals.h"
 #include "EditSession.h"
 #include "TextService.h"
-
-//+---------------------------------------------------------------------------
-//
-// CStartCompositinoEditSession
-//
-//----------------------------------------------------------------------------
 
 class CStartCompositionEditSession : public CEditSessionBase
 {
@@ -33,12 +13,6 @@ public:
     // ITfEditSession
     STDMETHODIMP DoEditSession(TfEditCookie ec);
 };
-
-//+---------------------------------------------------------------------------
-//
-// DoEditSession
-//
-//----------------------------------------------------------------------------
 
 STDAPI CStartCompositionEditSession::DoEditSession(TfEditCookie ec)
 {
@@ -74,9 +48,7 @@ STDAPI CStartCompositionEditSession::DoEditSession(TfEditCookie ec)
         // class can know now it is in the composition stage.
         _pTextService->_SetComposition(pComposition);
 
-        // 
         //  set selection to the adjusted range
-        // 
         TF_SELECTION tfSelection;
         tfSelection.range = pRangeInsert;
         tfSelection.style.ase = TF_AE_NONE;

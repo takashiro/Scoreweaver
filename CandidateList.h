@@ -47,6 +47,9 @@ private:
     HWND _hwndParent;
     CCandidateWindow *_pCandidateWindow;
 
+	string _candidates;
+	int _currentPage;
+
     LONG _cRef; // COM ref count
 };
 

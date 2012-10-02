@@ -108,18 +108,14 @@ private:
     // utility function for KeyEventSink
     BOOL _IsKeyEaten(ITfContext *pContext, WPARAM wParam);
 
-    //
     // state
-    //
     ITfThreadMgr *_pThreadMgr;
     TfClientId _tfClientId;
 
     // The cookie of ThreadMgrEventSink
     DWORD _dwThreadMgrEventSinkCookie;
 
-    //
     // private variables for TextEditSink
-    //
     ITfContext   *_pTextEditSinkContext;
     DWORD _dwTextEditSinkCookie;
 

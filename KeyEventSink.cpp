@@ -136,10 +136,10 @@ STDAPI CTextService::OnKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lPara
 {
     *pfEaten = _IsKeyEaten(pContext, wParam);
 
-    if (*pfEaten)
-    {
+    if (*pfEaten){
         _InvokeKeyHandler(pContext, wParam, lParam);
     }
+
     return S_OK;
 }
 
@@ -153,12 +153,6 @@ STDAPI CTextService::OnKeyDown(ITfContext *pContext, WPARAM wParam, LPARAM lPara
 STDAPI CTextService::OnTestKeyUp(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pfEaten)
 {
     *pfEaten = _IsKeyEaten(pContext, wParam);
-
-	switch(wParam){
-	case VK_CAPITAL:
-		_SetKeyboardOpen(!_IsKeyboardOpen());
-		break;
-	}
 
     return S_OK;
 }
@@ -174,6 +168,13 @@ STDAPI CTextService::OnTestKeyUp(ITfContext *pContext, WPARAM wParam, LPARAM lPa
 STDAPI CTextService::OnKeyUp(ITfContext *pContext, WPARAM wParam, LPARAM lParam, BOOL *pfEaten)
 {
     *pfEaten = _IsKeyEaten(pContext, wParam);
+
+	switch(wParam){
+	case VK_CAPITAL:
+		_SetKeyboardOpen(!_IsKeyboardOpen());
+		break;
+	}
+
     return S_OK;
 }
 
@@ -208,8 +209,7 @@ STDAPI CTextService::OnPreservedKey(ITfContext *pContext, REFGUID rguid, BOOL *p
 // Advise a keystroke sink.
 //----------------------------------------------------------------------------
 
-BOOL CTextService::_InitKeyEventSink()
-{
+BOOL CTextService::_InitKeyEventSink(){
     ITfKeystrokeMgr *pKeystrokeMgr;
     HRESULT hr;
 

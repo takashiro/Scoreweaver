@@ -8,6 +8,9 @@
 #include <assert.h>
 #include "msctf.h"
 
+#include <string>
+using namespace std;
+
 void DllAddRef();
 void DllRelease();
 

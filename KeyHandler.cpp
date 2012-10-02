@@ -1,28 +1,8 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  KeyHandler.cpp
-//
-//          the handler routines for key events
-//
-//////////////////////////////////////////////////////////////////////
 
 #include "Globals.h"
 #include "EditSession.h"
 #include "TextService.h"
 #include "CandidateList.h"
-
-//+---------------------------------------------------------------------------
-//
-// CKeyHandlerEditSession
-//
-//----------------------------------------------------------------------------
 
 class CKeyHandlerEditSession : public CEditSessionBase
 {
@@ -38,12 +18,6 @@ public:
 private:
     WPARAM _wParam;
 };
-
-//+---------------------------------------------------------------------------
-//
-// DoEditSession
-//
-//----------------------------------------------------------------------------
 
 STDAPI CKeyHandlerEditSession::DoEditSession(TfEditCookie ec)
 {
@@ -61,7 +35,7 @@ STDAPI CKeyHandlerEditSession::DoEditSession(TfEditCookie ec)
             return _pTextService->_HandleSpaceKey(ec, _pContext);
 
         default:
-            if (_wParam >= 'A' && _wParam <= 'Z')
+            if ((_wParam >= 'A' && _wParam <= 'Z') || (_wParam >= '0' || _wParam <= '9'))
                 return _pTextService->_HandleCharacterKey(ec, _pContext, _wParam);
             break;
     }
@@ -246,25 +220,27 @@ HRESULT CTextService::_HandleArrowKey(TfEditCookie ec, ITfContext *pContext, WPA
         goto Exit;
 
     // adjust the selection
-    if (wParam == VK_LEFT)
-    {
+	switch(wParam){
+	case VK_LEFT:
         if (tfSelection.range->IsEqualStart(ec, pRangeComposition, TF_ANCHOR_START, &fEqual) == S_OK &&
             !fEqual)
         {
             tfSelection.range->ShiftStart(ec, -1, &cch, NULL);
         }
         tfSelection.range->Collapse(ec, TF_ANCHOR_START);
-    }
-    else
-    {
-        // VK_RIGHT
+    
+		break;
+
+	case VK_RIGHT:
         if (tfSelection.range->IsEqualEnd(ec, pRangeComposition, TF_ANCHOR_END, &fEqual) == S_OK &&
             !fEqual)
         {
             tfSelection.range->ShiftEnd(ec, +1, &cch, NULL);
         }
         tfSelection.range->Collapse(ec, TF_ANCHOR_END);
-    }
+    
+		break;
+	}
 
     pContext->SetSelection(ec, 1, &tfSelection);
 

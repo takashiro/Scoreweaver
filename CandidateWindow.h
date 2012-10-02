@@ -1,29 +1,8 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  CandidateWindow.h
-//
-//          CCandidateWindow declaration.
-//
-//////////////////////////////////////////////////////////////////////
 
 #ifndef CANDIDATEWINDOW_H
 #define CANDIDATEWINDOW_H
 
-//+---------------------------------------------------------------------------
-//
-// CCandidateWindow
-//
-//----------------------------------------------------------------------------
-
-class CCandidateWindow 
-{
+class CCandidateWindow{
 public:
     CCandidateWindow();
 
@@ -40,23 +19,40 @@ public:
     HRESULT _OnKeyDown(UINT uVKey);
     HRESULT _OnKeyUp(UINT uVKey);
 
+	void SetCurPage(int page);
+	int CurPage() const;
+	void NextPage();
+	void PrevPage();
+
+	void SetPageLimit(int limit);
+	int PageLimit() const;
+
+	void SetCandidateList(const string &list);
+	int CandidateNum() const;
+	string CandidateList() const;
+
 private:
     static LRESULT CALLBACK _WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-    static void _SetThis(HWND hwnd, LPARAM lParam)
-    {
-        SetWindowLongPtr(hwnd, GWLP_USERDATA, 
-                         (LONG_PTR)((CREATESTRUCT *)lParam)->lpCreateParams);
+    static void _SetThis(HWND hwnd, LPARAM lParam){
+        SetWindowLongPtr(hwnd, GWLP_USERDATA, (LONG_PTR)((CREATESTRUCT *)lParam)->lpCreateParams);
     }
 
-    static CCandidateWindow *_GetThis(HWND hwnd)
-    {
+    static CCandidateWindow *_GetThis(HWND hwnd){
         return (CCandidateWindow *)GetWindowLongPtr(hwnd, GWLP_USERDATA);
     }
 
     static ATOM _atomWndClass;
 
     HWND _hwnd;
+
+	int _pageLimit, _curPage;
+
+	string _candidateList;
+
+	int _windowWidth, _windowHeight;
 };
+
+extern CCandidateWindow *CandidateWindow;
 
 #endif // CANDIDATEWINDOW_H

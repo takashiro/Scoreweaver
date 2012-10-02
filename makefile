@@ -61,6 +61,8 @@ $(OUTDIR)\$(Proj).dll: $(OUTDIR) $(LINK32_OBJS) $(OUTDIR)\$(Proj).res
 
 FILE=TextService
 
+cflags = $(cflags) /EHsc
+
 $(OUTDIR)\$(FILE).obj : .\$(FILE).cpp $(OUTDIR)
     $(cc) $(cdebug) $(cflags) $(cvarsdll) /Fo"$(OUTDIR)\\" /Fd"$(OUTDIR)\\" .\$(FILE).cpp
 

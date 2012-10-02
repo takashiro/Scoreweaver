@@ -1,30 +1,68 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  CandidateWindow.cpp
-//
-//          CCandidateWindow class
-//
-//////////////////////////////////////////////////////////////////////
 
 #include "Globals.h"
 #include "TextService.h"
 #include "CandidateWindow.h"
 
-#define CAND_WIDTH     300
-#define CAND_HEIGHT    24
-
 ATOM CCandidateWindow::_atomWndClass = 0;
 
-CCandidateWindow::CCandidateWindow()
-{
+CCandidateWindow *CandidateWindow = NULL;
+
+CCandidateWindow::CCandidateWindow(){
     _hwnd = NULL;
+
+	CandidateWindow = this;
+
+	SetCurPage(0);
+	SetPageLimit(6);
+}
+
+void CCandidateWindow::SetCurPage(int page){
+	_curPage = page;
+}
+
+int CCandidateWindow::CurPage() const{
+	return _curPage;
+}
+
+void CCandidateWindow::NextPage(){
+	_curPage++;
+
+	if(unsigned(_curPage * _pageLimit) >= _candidateList.size() / 2){
+		_curPage--;
+	}
+
+	InvalidateRect(_hwnd, NULL, true);
+}
+
+void CCandidateWindow::PrevPage(){
+	_curPage--;
+
+	if(_curPage < 0){
+		_curPage = 0;
+	}
+
+	InvalidateRect(_hwnd, NULL, true);
+}
+
+void CCandidateWindow::SetPageLimit(int limit){
+	_pageLimit = limit;
+
+	if(limit > 0){
+		_windowWidth = 50 * limit;
+		_windowHeight = 24;
+	}
+}
+
+int CCandidateWindow::PageLimit() const{
+	return _pageLimit;
+}
+
+void CCandidateWindow::SetCandidateList(const string &list){
+	_candidateList = list;
+}
+
+string CCandidateWindow::CandidateList() const{
+	return _candidateList;
 }
 
 /* static */
@@ -64,7 +102,7 @@ BOOL CCandidateWindow::_Create()
                            TEXT("TextService Candidate Window"),
                            WS_BORDER | WS_DISABLED | WS_POPUP,
                            0, 0,
-                           CAND_WIDTH, CAND_HEIGHT,
+                           _windowWidth, _windowHeight,
                            NULL,
                            NULL,
                            g_hInst,
@@ -102,13 +140,17 @@ void CCandidateWindow::_Hide()
     ShowWindow(_hwnd, SW_HIDE);
 }
 
-HRESULT CCandidateWindow::_OnKeyDown(UINT uVKey)
-{
+HRESULT CCandidateWindow::_OnKeyDown(UINT uVKey){
     return S_OK;
 }
 
-HRESULT CCandidateWindow::_OnKeyUp(UINT uVKey)
-{
+HRESULT CCandidateWindow::_OnKeyUp(UINT uVKey){
+	if(uVKey == VK_UP){
+		PrevPage();
+	}else if(uVKey == VK_DOWN){
+		NextPage();
+	}
+
     return S_OK;
 }
 
@@ -128,16 +170,29 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
             hdc = BeginPaint(hwnd, &ps);
             SetBkMode(hdc, TRANSPARENT);
             
-			char text[3] = {0xb0, 0xa1};
+			int limit = CandidateWindow->PageLimit() * 2;
+			string candidates = CandidateWindow->CandidateList().substr(CandidateWindow->CurPage() * limit, limit);
+			string text;
+			for(int i = 0; i < CandidateWindow->PageLimit(); i++){
+				if(unsigned(i * 2) >= candidates.size()){
+					break;
+				}
+
+				text += '1' + i;
+				text += '.';
+				text.append(candidates, i * 2, 2);
+				text += ' ';
+			}
+
 			HFONT font = CreateFont(20, 10, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, DEFAULT_QUALITY, FF_MODERN, "ËÎÌו");
 			SelectObject(hdc, font);
-			TextOut(hdc, 0, 0, text, strlen(text));
+			TextOut(hdc, 0, 0, text.c_str(), text.size());
 			DeleteObject(font);
 
 			EndPaint(hwnd, &ps);
-            return 0;
+			
+			return 0;
     }
 
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
-

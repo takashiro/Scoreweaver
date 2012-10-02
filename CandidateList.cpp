@@ -1,17 +1,3 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  CandidateList.cpp
-//
-//          CCandidateList class
-//
-//////////////////////////////////////////////////////////////////////
 
 #include "Globals.h"
 #include "TextService.h"
@@ -19,14 +5,7 @@
 #include "CandidateWindow.h"
 #include "CandidateList.h"
 
-//+---------------------------------------------------------------------------
-//
-// CGetTextExtentEditSession
-//
-//----------------------------------------------------------------------------
-
-class CGetTextExtentEditSession : public CEditSessionBase
-{
+class CGetTextExtentEditSession : public CEditSessionBase{
 public:
     CGetTextExtentEditSession(CTextService *pTextService, ITfContext *pContext, ITfContextView *pContextView, ITfRange *pRangeComposition, CCandidateWindow *pCandidateWindow) : CEditSessionBase(pTextService, pContext)
     {
@@ -44,14 +23,7 @@ private:
     CCandidateWindow *_pCandidateWindow;
 };
 
-//+---------------------------------------------------------------------------
-//
-// DoEditSession
-//
-//----------------------------------------------------------------------------
-
-STDAPI CGetTextExtentEditSession::DoEditSession(TfEditCookie ec)
-{
+STDAPI CGetTextExtentEditSession::DoEditSession(TfEditCookie ec){
     RECT rc;
     BOOL fClipped;
 
@@ -60,15 +32,7 @@ STDAPI CGetTextExtentEditSession::DoEditSession(TfEditCookie ec)
     return S_OK;
 }
 
-
-//+---------------------------------------------------------------------------
-//
-// ctor
-//
-//----------------------------------------------------------------------------
-
-CCandidateList::CCandidateList(CTextService *pTextService)
-{
+CCandidateList::CCandidateList(CTextService *pTextService){
     _pTextService = pTextService;
 
     _hwndParent = NULL;
@@ -84,25 +48,16 @@ CCandidateList::CCandidateList(CTextService *pTextService)
     _cRef = 1;
 
     DllAddRef();
-}
 
-//+---------------------------------------------------------------------------
-//
-// dtor
-//
-//----------------------------------------------------------------------------
+	_currentPage = 0;
+	_candidates = "木耳菌在哪里听说他失踪了只是撑死了吧";
+}
 
 CCandidateList::~CCandidateList()
 {
     _EndCandidateList();
     DllRelease();
 }
-
-//+---------------------------------------------------------------------------
-//
-// QueryInterface
-//
-//----------------------------------------------------------------------------
 
 STDAPI CCandidateList::QueryInterface(REFIID riid, void **ppvObj)
 {
@@ -111,18 +66,13 @@ STDAPI CCandidateList::QueryInterface(REFIID riid, void **ppvObj)
 
     *ppvObj = NULL;
 
-    if (IsEqualIID(riid, IID_IUnknown) ||
-        IsEqualIID(riid, IID_ITfContextKeyEventSink))
-    {
+    if(IsEqualIID(riid, IID_IUnknown) || IsEqualIID(riid, IID_ITfContextKeyEventSink)){
         *ppvObj = (ITfContextKeyEventSink *)this;
-    }
-    else if (IsEqualIID(riid, IID_ITfTextLayoutSink))
-    {
+    }else if(IsEqualIID(riid, IID_ITfTextLayoutSink)){
         *ppvObj = (ITfTextLayoutSink *)this;
     }
 
-    if (*ppvObj)
-    {
+    if(*ppvObj){
         AddRef();
         return S_OK;
     }
@@ -130,46 +80,23 @@ STDAPI CCandidateList::QueryInterface(REFIID riid, void **ppvObj)
     return E_NOINTERFACE;
 }
 
-
-//+---------------------------------------------------------------------------
-//
-// AddRef
-//
-//----------------------------------------------------------------------------
-
-STDAPI_(ULONG) CCandidateList::AddRef()
-{
+STDAPI_(ULONG) CCandidateList::AddRef(){
     return ++_cRef;
 }
 
-//+---------------------------------------------------------------------------
-//
-// Release
-//
-//----------------------------------------------------------------------------
-
-STDAPI_(ULONG) CCandidateList::Release()
-{
+STDAPI_(ULONG) CCandidateList::Release(){
     LONG cr = --_cRef;
 
     assert(_cRef >= 0);
 
-    if (_cRef == 0)
-    {
+    if (_cRef == 0){
         delete this;
     }
 
     return cr;
 }
 
-//+---------------------------------------------------------------------------
-//
-// KeyDown
-//
-//----------------------------------------------------------------------------
-
-STDAPI CCandidateList::OnKeyDown(WPARAM wParam, LPARAM lParam, BOOL *pfEaten)
-{
+STDAPI CCandidateList::OnKeyDown(WPARAM wParam, LPARAM lParam, BOOL *pfEaten){
     if (pfEaten == NULL)
         return E_INVALIDARG;
 
@@ -179,38 +106,23 @@ STDAPI CCandidateList::OnKeyDown(WPARAM wParam, LPARAM lParam, BOOL *pfEaten)
     return S_OK;
 }
 
-//+---------------------------------------------------------------------------
-//
-// OnKeyUp
-//
-//----------------------------------------------------------------------------
-
-STDAPI CCandidateList::OnKeyUp(WPARAM wParam, LPARAM lParam, BOOL *pfEaten)
-{
+STDAPI CCandidateList::OnKeyUp(WPARAM wParam, LPARAM lParam, BOOL *pfEaten){
     if (pfEaten == NULL)
         return E_INVALIDARG;
 
     *pfEaten = TRUE;
 
-    // 
     // consume VK_RETURN here to finish candidate list.
-    // 
-    if (wParam == VK_RETURN)
+	if (wParam == VK_RETURN){
         _EndCandidateList();
-    else
+	}else{
         _pCandidateWindow->_OnKeyUp((UINT)wParam);
+	}
 
     return S_OK;
 }
 
-//+---------------------------------------------------------------------------
-//
-// KeyTestDown
-//
-//----------------------------------------------------------------------------
-
-STDAPI CCandidateList::OnTestKeyDown(WPARAM wParam, LPARAM lParam, BOOL *pfEaten)
-{
+STDAPI CCandidateList::OnTestKeyDown(WPARAM wParam, LPARAM lParam, BOOL *pfEaten){
     if (pfEaten == NULL)
         return E_INVALIDARG;
 
@@ -219,15 +131,7 @@ STDAPI CCandidateList::OnTestKeyDown(WPARAM wParam, LPARAM lParam, BOOL *pfEaten
     return S_OK;
 }
 
-
-//+---------------------------------------------------------------------------
-//
-// OnTestKeyUp
-//
-//----------------------------------------------------------------------------
-
-STDAPI CCandidateList::OnTestKeyUp(WPARAM wParam, LPARAM lParam, BOOL *pfEaten)
-{
+STDAPI CCandidateList::OnTestKeyUp(WPARAM wParam, LPARAM lParam, BOOL *pfEaten){
     if (pfEaten == NULL)
         return E_INVALIDARG;
 
@@ -236,74 +140,52 @@ STDAPI CCandidateList::OnTestKeyUp(WPARAM wParam, LPARAM lParam, BOOL *pfEaten)
     return S_OK;
 }
 
-//+---------------------------------------------------------------------------
-//
-// OnLayoutChange
-//
-//----------------------------------------------------------------------------
-
-STDAPI CCandidateList::OnLayoutChange(ITfContext *pContext, TfLayoutCode lcode, ITfContextView *pContextView)
-{
+STDAPI CCandidateList::OnLayoutChange(ITfContext *pContext, TfLayoutCode lcode, ITfContextView *pContextView){
     if (pContext != _pContextDocument)
         return S_OK;
 
-    switch (lcode)
-    {
-        case TF_LC_CHANGE:
-            if (_pCandidateWindow != NULL)
+    switch (lcode){
+    case TF_LC_CHANGE:
+        if (_pCandidateWindow != NULL)
+        {
+            CGetTextExtentEditSession *pEditSession;
+
+            if ((pEditSession = new CGetTextExtentEditSession(_pTextService, pContext, pContextView, _pRangeComposition, _pCandidateWindow)) != NULL)
             {
-                CGetTextExtentEditSession *pEditSession;
+                HRESULT hr;
+                // a lock is required
+                // nb: this method is one of the few places where it is legal to use
+                // the TF_ES_SYNC flag
+                pContext->RequestEditSession(_pTextService->_GetClientId(), pEditSession, TF_ES_SYNC | TF_ES_READ, &hr);
 
-                if ((pEditSession = new CGetTextExtentEditSession(_pTextService, pContext, pContextView, _pRangeComposition, _pCandidateWindow)) != NULL)
-                {
-                    HRESULT hr;
-                    // a lock is required
-                    // nb: this method is one of the few places where it is legal to use
-                    // the TF_ES_SYNC flag
-                    pContext->RequestEditSession(_pTextService->_GetClientId(), pEditSession, TF_ES_SYNC | TF_ES_READ, &hr);
+                pEditSession->Release();
+             }
+        }
+        break;
 
-                    pEditSession->Release();
-                 }
-            }
-            break;
-
-        case TF_LC_DESTROY:
-            _EndCandidateList();
-            break;
-
+    case TF_LC_DESTROY:
+        _EndCandidateList();
+        break;
     }
+
     return S_OK;
 }
 
-
-//+---------------------------------------------------------------------------
-//
-// _ShowCandidateList
-//
-//----------------------------------------------------------------------------
-
-HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMgr *pDocumentMgr, ITfContext *pContextDocument, TfEditCookie ec, ITfRange *pRangeComposition)
-{
+HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMgr *pDocumentMgr, ITfContext *pContextDocument, TfEditCookie ec, ITfRange *pRangeComposition){
     TfEditCookie ecTmp;
     HRESULT hr = E_FAIL;
     BOOL fClipped;
 
-    //
     // clear the previous candidate list.
     // only one candidate window is supported.
-    //
     _EndCandidateList();
 
-    //
     // create a new context on the document manager object for
     // the candidate ui.
-    //
     if (FAILED(pDocumentMgr->CreateContext(tfClientId, 0, NULL, &_pContextCandidateWindow, &ecTmp)))
         return E_FAIL;
 
-    //
     // push the new context. 
-    //
     if (FAILED(pDocumentMgr->Push(_pContextCandidateWindow)))
         goto Exit;
 
@@ -316,44 +198,33 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
     _pRangeComposition = pRangeComposition;
     _pRangeComposition->AddRef();
 
-    // 
     // advise ITfContextKeyEventSink to the new context.
-    // 
     if (FAILED(_AdviseContextKeyEventSink()))
         goto Exit;
 
-    // 
     // advise ITfTextLayoutSink to the document context.
-    // 
     if (FAILED(_AdviseTextLayoutSink()))
         goto Exit;
 
-    // 
     // create an instance of CCandidateWindow class.
-    //
-    if (_pCandidateWindow = new CCandidateWindow())
-    {
+    if (_pCandidateWindow = new CCandidateWindow()){
+		_pCandidateWindow->SetCandidateList(_candidates);
+
         RECT rc;
         ITfContextView *pContextView;
 
-        //
         // get an active view of the document context.
-        //
         if (FAILED(pContextDocument->GetActiveView(&pContextView)))
             goto Exit;
 
-        //
         // get text extent for the range of the composition.
-        //
         if (FAILED(pContextView->GetTextExt(ec, pRangeComposition, &rc, &fClipped)))
             goto Exit;
 
         pContextView->Release();
 
         
-        //
         // create the dummy candidate window
-        //
         if (!_pCandidateWindow->_Create())
             goto Exit;
 
@@ -371,68 +242,42 @@ Exit:
     return hr;
 }
 
-//+---------------------------------------------------------------------------
-//
-// _EndCandidateList
-//
-//----------------------------------------------------------------------------
-
-void CCandidateList::_EndCandidateList()
-{
-    if (_pCandidateWindow)
-    {
+void CCandidateList::_EndCandidateList(){
+    if (_pCandidateWindow){
         _pCandidateWindow->_Destroy();
         delete _pCandidateWindow;
         _pCandidateWindow = NULL;
     }
 
-    if (_pRangeComposition)
-    {
+    if (_pRangeComposition){
        _pRangeComposition->Release();
        _pRangeComposition = NULL;
     }
 
-    if (_pContextCandidateWindow)
-    {
+    if (_pContextCandidateWindow){
        _UnadviseContextKeyEventSink();
        _pContextCandidateWindow->Release();
        _pContextCandidateWindow = NULL;
     }
 
-    if (_pContextDocument)
-    {
+    if (_pContextDocument){
        _UnadviseTextLayoutSink();
        _pContextDocument->Release();
        _pContextDocument = NULL;
     }
 
-    if (_pDocumentMgr)
-    {
+    if (_pDocumentMgr){
        _pDocumentMgr->Pop(0);
        _pDocumentMgr->Release();
        _pDocumentMgr = NULL;
     }
 }
 
-//+---------------------------------------------------------------------------
-//
-// _IsCandidateWindowShown
-//
-//----------------------------------------------------------------------------
-
-BOOL CCandidateList::_IsContextCandidateWindow(ITfContext *pContext)
-{
+BOOL CCandidateList::_IsContextCandidateWindow(ITfContext *pContext){
     return (_pContextCandidateWindow == pContext) ? TRUE : FALSE;
 }
 
-//+---------------------------------------------------------------------------
-//
-// AdviseContextKeyEventSink
-//
-//----------------------------------------------------------------------------
-
-HRESULT CCandidateList::_AdviseContextKeyEventSink()
-{
+HRESULT CCandidateList::_AdviseContextKeyEventSink(){
     HRESULT hr;
     ITfSource *pSource = NULL;
 
@@ -451,12 +296,6 @@ Exit:
         pSource->Release();
     return hr;
 }
-
-//+---------------------------------------------------------------------------
-//
-// UnadviseContextKeyEventSink
-//
-//----------------------------------------------------------------------------
 
 HRESULT CCandidateList::_UnadviseContextKeyEventSink()
 {
@@ -482,12 +321,6 @@ Exit:
     return hr;
 }
 
-//+---------------------------------------------------------------------------
-//
-// AdviseTextLayoutSink
-//
-//----------------------------------------------------------------------------
-
 HRESULT CCandidateList::_AdviseTextLayoutSink()
 {
     HRESULT hr;
@@ -508,12 +341,6 @@ Exit:
         pSource->Release();
     return hr;
 }
-
-//+---------------------------------------------------------------------------
-//
-// UnadviseTextLayoutSink
-//
-//----------------------------------------------------------------------------
 
 HRESULT CCandidateList::_UnadviseTextLayoutSink()
 {
