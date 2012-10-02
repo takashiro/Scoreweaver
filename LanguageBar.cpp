@@ -14,8 +14,8 @@ BOOL CTextService::_InitLanguageBar()
 
     fRet = FALSE;
 
-	CLangBarItemButton *buttons[] = {new PowerButton(this), new ModeButton(this), new PunctButton(this), new ToolButton(this)};
-	for(int i = 0; i < 4; i++){
+	CLangBarItemButton *buttons[] = {new PowerButton(this), new ModeButton(this), new PunctButton(this), new VKeyboardButton(this), new ToolButton(this)};
+	for(int i = 0; i < 5; i++){
 		if (buttons[i] != NULL){
 			if (buttons[i] == NULL){
 				goto Exit;
@@ -31,7 +31,8 @@ BOOL CTextService::_InitLanguageBar()
 	_pPowerButton = buttons[0];
 	_pModeButton = buttons[1];
 	_pPunctButton = buttons[2];
-	_pToolButton = buttons[3];
+	_pVKeyboardButton = buttons[3];
+	_pToolButton = buttons[4];
 
     fRet = TRUE;
 
@@ -49,8 +50,8 @@ void CTextService::_UninitLanguageBar()
 	}
 
 	//Ïú»Ù°´Å¥
-	CLangBarItemButton *buttons[] = {_pToolButton, _pPunctButton, _pModeButton, _pPowerButton};
-	for(int i = 0; i < 4; i++){
+	CLangBarItemButton *buttons[] = {_pToolButton, _pPunctButton, _pModeButton, _pVKeyboardButton, _pPowerButton};
+	for(int i = 0; i < 5; i++){
 		if (buttons[i] != NULL){
 			pLangBarItemMgr->RemoveItem(buttons[i]);
 
@@ -58,7 +59,7 @@ void CTextService::_UninitLanguageBar()
 			buttons[i] = NULL;
 		}
 	}
-	_pToolButton = _pPunctButton = _pModeButton = _pPowerButton = NULL;
+	_pToolButton = _pPunctButton = _pModeButton = _pVKeyboardButton = _pPowerButton = NULL;
 
 	pLangBarItemMgr->Release();
 }

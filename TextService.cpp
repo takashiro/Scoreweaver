@@ -49,7 +49,7 @@ CTextService::CTextService()
 	_pCandidateList = NULL;
 
 	// Initialize the Language Bar buttons' pointers
-	_pPowerButton = _pModeButton = _pPunctButton = _pToolButton = NULL;
+	_pPowerButton = _pModeButton = _pPunctButton = _pVKeyboardButton = _pToolButton = NULL;
 
     _cRef = 1;
 }

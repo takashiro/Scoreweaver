@@ -100,6 +100,13 @@ public:
 	virtual BOOL IsSwitchOn() const;
 };
 
+class VKeyboardButton: public CLangBarItemButton{
+public:
+	VKeyboardButton(CTextService *pTextService);
+
+	virtual STDMETHODIMP OnClick(TfLBIClick click, POINT pt, const RECT *prcArea);
+};
+
 class ToolButton: public CLangBarItemButton{
 public:
 	ToolButton(CTextService *pTextService);

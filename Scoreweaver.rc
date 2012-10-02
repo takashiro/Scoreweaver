@@ -10,4 +10,8 @@ IDI_MODE_HALF ICON resources/mode_half.ico
 IDI_PUNCT_FULL ICON resources/punct_full.ico
 IDI_PUNCT_HALF ICON resources/punct_half.ico
 
+IDI_TIP ICON resources/tip.ico
+
+IDI_VKEYBOARD ICON resources/vkeyboard.ico
+
 IDI_TOOL ICON resources/tool.ico

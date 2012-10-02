@@ -120,7 +120,7 @@ private:
     DWORD _dwTextEditSinkCookie;
 
 	// Buttons on Language Bar
-	CLangBarItemButton *_pPowerButton, *_pModeButton, *_pPunctButton, *_pToolButton;
+	CLangBarItemButton *_pPowerButton, *_pModeButton, *_pPunctButton, *_pVKeyboardButton, *_pToolButton;
 
     // the current composition object.
     ITfComposition *_pComposition;

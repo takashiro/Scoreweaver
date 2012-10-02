@@ -9,6 +9,7 @@
 #define BUTTON_TEXT_POWER L"开启/关闭"
 #define BUTTON_TEXT_MODE L"全角/半角"
 #define BUTTON_TEXT_PUNCT L"中英标点"
+#define BUTTON_TEXT_VKEYBOARD L"软键盘"
 #define BUTTON_TEXT_TOOL L"工具"
 
 // The descriptions of the menu item of the language bar button.
@@ -256,6 +257,16 @@ STDMETHODIMP PunctButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcAre
 
 BOOL PunctButton::IsSwitchOn() const{
 	return _pTextService->IsEnPunct();
+}
+
+/* Virtual Keyboard Button */
+
+VKeyboardButton::VKeyboardButton(CTextService *pTextService):CLangBarItemButton(pTextService, "IDI_VKEYBOARD", BUTTON_TEXT_VKEYBOARD){
+	_tfLangBarItemInfo.guidItem = c_guidLangBar_VKeyboard;
+}
+
+STDMETHODIMP VKeyboardButton::OnClick(TfLBIClick click, POINT pt, const RECT *prcArea){
+	return S_OK;
 }
 
 /* Tool Button */
