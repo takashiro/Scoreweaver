@@ -81,8 +81,7 @@ void CTextService::_StartComposition(ITfContext *pContext)
 {
     CStartCompositionEditSession *pStartCompositionEditSession;
 
-    if (pStartCompositionEditSession = new CStartCompositionEditSession(this, pContext))
-    {
+    if (pStartCompositionEditSession = new CStartCompositionEditSession(this, pContext)){
         HRESULT hr;
         // A synchronus document write lock is requred.
         // the CStartCompositionEditSession will do all the work when the

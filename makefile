@@ -34,7 +34,8 @@ LINK32_OBJS= \
 	$(OUTDIR)\Globals.obj \
 	$(OUTDIR)\PreComp.obj \
 	$(OUTDIR)\Register.obj \
-	$(OUTDIR)\Server.obj
+	$(OUTDIR)\Server.obj \
+	$(OUTDIR)\CandidateTree.obj
         
 #----- If OUTDIR does not exist, then create directory
 $(OUTDIR) :
@@ -171,6 +172,10 @@ FILE=Server
 $(OUTDIR)\$(FILE).obj : .\$(FILE).cpp $(OUTDIR)
     $(cc) $(cdebug) $(cflags) $(cvarsdll) /Fo"$(OUTDIR)\\" /Fd"$(OUTDIR)\\" .\$(FILE).cpp
 
+FILE=CandidateTree
+
+$(OUTDIR)\$(FILE).obj : .\$(FILE).cpp $(OUTDIR)
+    $(cc) $(cdebug) $(cflags) $(cvarsdll) /Fo"$(OUTDIR)\\" /Fd"$(OUTDIR)\\" .\$(FILE).cpp
 
 #--------------------- Compiling Resource Files ------------------------------------------
 #PLEASE REFER TO WIN32.MAK for the different Resource Compiler options WIN32.MAK provides

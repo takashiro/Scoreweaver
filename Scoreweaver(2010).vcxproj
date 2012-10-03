@@ -64,6 +64,7 @@ nmake nodebug=1</NMakeReBuildCommandLine>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CandidateList.h" />
+    <ClInclude Include="CandidateTree.h" />
     <ClInclude Include="CandidateWindow.h" />
     <ClInclude Include="DisplayAttributeInfo.h" />
     <ClInclude Include="EditSession.h" />
@@ -78,6 +79,7 @@ nmake nodebug=1</NMakeReBuildCommandLine>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CandidateList.cpp" />
+    <ClCompile Include="CandidateTree.cpp" />
     <ClCompile Include="CandidateWindow.cpp" />
     <ClCompile Include="Compartment.cpp" />
     <ClCompile Include="Composition.cpp" />

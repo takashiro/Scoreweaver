@@ -27,9 +27,8 @@ public:
 	void SetPageLimit(int limit);
 	int PageLimit() const;
 
-	void SetCandidateList(const string &list);
-	int CandidateNum() const;
-	string CandidateList() const;
+	void SetCandidates(const wstring &list);
+	wstring Candidates() const;
 
 private:
     static LRESULT CALLBACK _WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
@@ -48,7 +47,7 @@ private:
 
 	int _pageLimit, _curPage;
 
-	string _candidateList;
+	wstring _candidates;
 
 	int _windowWidth, _windowHeight;
 };

@@ -4,6 +4,7 @@
 #include "EditSession.h"
 #include "CandidateWindow.h"
 #include "CandidateList.h"
+#include "CandidateTree.h"
 
 class CGetTextExtentEditSession : public CEditSessionBase{
 public:
@@ -29,6 +30,7 @@ STDAPI CGetTextExtentEditSession::DoEditSession(TfEditCookie ec){
 
     if (SUCCEEDED(_pContextView->GetTextExt(ec, _pRangeComposition, &rc, &fClipped)))
         _pCandidateWindow->_Move(rc.left, rc.bottom);
+
     return S_OK;
 }
 
@@ -48,9 +50,6 @@ CCandidateList::CCandidateList(CTextService *pTextService){
     _cRef = 1;
 
     DllAddRef();
-
-	_currentPage = 0;
-	_candidates = "木耳菌在哪里听说他失踪了只是撑死了吧";
 }
 
 CCandidateList::~CCandidateList()
@@ -111,6 +110,18 @@ STDAPI CCandidateList::OnKeyUp(WPARAM wParam, LPARAM lParam, BOOL *pfEaten){
         return E_INVALIDARG;
 
     *pfEaten = TRUE;
+
+	
+	if(wParam >= '1' && wParam <= '9'){
+		int serial = wParam - '1';
+		if(serial < _pCandidateWindow->PageLimit()){
+			unsigned key = (_pCandidateWindow->CurPage() * _pCandidateWindow->PageLimit() + serial);
+
+			if(key < _candidates.length()){
+				wstring word(_candidates, key, 1);
+			}
+		}
+	}
 
     // consume VK_RETURN here to finish candidate list.
 	if (wParam == VK_RETURN){
@@ -208,7 +219,21 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
 
     // create an instance of CCandidateWindow class.
     if (_pCandidateWindow = new CCandidateWindow()){
-		_pCandidateWindow->SetCandidateList(_candidates);
+		WCHAR *pchText = new WCHAR[2];
+		ULONG pcch = 0;
+		if(_pRangeComposition->GetText(ec, TF_TF_MOVESTART, pchText, 2, &pcch) == S_OK){
+			pchText[pcch] = 0;
+		}
+		CandidateTree->ForwardTo(pchText[0]);
+		delete[] pchText;
+
+		CCandidateTree::Node *node = CandidateTree->GetCurrent();
+		if(node != NULL){
+			_candidates = node->GetChildren();
+		}else{
+			_candidates = L"尼玛这树都没有根";
+		}
+		_pCandidateWindow->SetCandidates(_candidates);
 
         RECT rc;
         ITfContextView *pContextView;

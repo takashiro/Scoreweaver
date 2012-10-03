@@ -27,7 +27,7 @@ int CCandidateWindow::CurPage() const{
 void CCandidateWindow::NextPage(){
 	_curPage++;
 
-	if(unsigned(_curPage * _pageLimit) >= _candidateList.size() / 2){
+	if(unsigned(_curPage * _pageLimit) >= _candidates.size()){
 		_curPage--;
 	}
 
@@ -57,12 +57,12 @@ int CCandidateWindow::PageLimit() const{
 	return _pageLimit;
 }
 
-void CCandidateWindow::SetCandidateList(const string &list){
-	_candidateList = list;
+void CCandidateWindow::SetCandidates(const wstring &list){
+	_candidates = list;
 }
 
-string CCandidateWindow::CandidateList() const{
-	return _candidateList;
+wstring CCandidateWindow::Candidates() const{
+	return _candidates;
 }
 
 /* static */
@@ -170,23 +170,23 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
             hdc = BeginPaint(hwnd, &ps);
             SetBkMode(hdc, TRANSPARENT);
             
-			int limit = CandidateWindow->PageLimit() * 2;
-			string candidates = CandidateWindow->CandidateList().substr(CandidateWindow->CurPage() * limit, limit);
-			string text;
+			int limit = CandidateWindow->PageLimit();
+			wstring candidates = CandidateWindow->Candidates().substr(CandidateWindow->CurPage() * limit, limit);
+			wstring text;
 			for(int i = 0; i < CandidateWindow->PageLimit(); i++){
-				if(unsigned(i * 2) >= candidates.size()){
+				if(unsigned(i) >= candidates.size()){
 					break;
 				}
 
 				text += '1' + i;
 				text += '.';
-				text.append(candidates, i * 2, 2);
+				text.append(candidates, i, 1);
 				text += ' ';
 			}
 
 			HFONT font = CreateFont(20, 10, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, DEFAULT_QUALITY, FF_MODERN, "ËÎÌו");
 			SelectObject(hdc, font);
-			TextOut(hdc, 0, 0, text.c_str(), text.size());
+			TextOutW(hdc, 0, 0, text.c_str(), text.size());
 			DeleteObject(font);
 
 			EndPaint(hwnd, &ps);

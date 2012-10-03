@@ -17,12 +17,6 @@
 #include "EditSession.h"
 #include "TextService.h"
 
-//+---------------------------------------------------------------------------
-//
-// CEndCompositionEditSession
-//
-//----------------------------------------------------------------------------
-
 class CEndCompositionEditSession : public CEditSessionBase
 {
 public:
@@ -39,19 +33,10 @@ public:
 
 };
 
-//+---------------------------------------------------------------------------
-//
-// _TerminateComposition
-//
-//----------------------------------------------------------------------------
-
 void CTextService::_TerminateComposition(TfEditCookie ec, ITfContext *pContext)
 {
-    if (_pComposition != NULL)
-    {
-        //
+    if (_pComposition != NULL){
         // remove the display attribute from the composition range.
-        //
         _ClearCompositionDisplayAttributes(ec, pContext);
 
         _pComposition->EndComposition(ec);
@@ -60,19 +45,12 @@ void CTextService::_TerminateComposition(TfEditCookie ec, ITfContext *pContext)
     }
 }
 
-//+---------------------------------------------------------------------------
-//
-// _EndComposition
-//
-//----------------------------------------------------------------------------
-
 void CTextService::_EndComposition(ITfContext *pContext)
 {
     CEndCompositionEditSession *pEditSession;
     HRESULT hr;
 
-    if (pEditSession = new CEndCompositionEditSession(this, pContext))
-    {
+    if (pEditSession = new CEndCompositionEditSession(this, pContext)){
         pContext->RequestEditSession(_tfClientId, pEditSession, TF_ES_ASYNCDONTCARE | TF_ES_READWRITE, &hr);
         pEditSession->Release();
     }

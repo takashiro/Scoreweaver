@@ -35,7 +35,7 @@ STDAPI CKeyHandlerEditSession::DoEditSession(TfEditCookie ec)
             return _pTextService->_HandleSpaceKey(ec, _pContext);
 
         default:
-            if ((_wParam >= 'A' && _wParam <= 'Z') || (_wParam >= '0' || _wParam <= '9'))
+            if ((_wParam >= 'A' && _wParam <= 'Z') || (_wParam >= '0' && _wParam <= '9'))
                 return _pTextService->_HandleCharacterKey(ec, _pContext, _wParam);
             break;
     }

@@ -92,7 +92,7 @@ BOOL CTextService::_IsKeyEaten(ITfContext *pContext, WPARAM wParam)
             return FALSE;
     }
 
-    if (wParam >= 'A' && wParam <= 'Z')
+    if ((wParam >= 'A' && wParam <= 'Z') || (wParam >= '0' && wParam <= '9'))
         return TRUE;
 
     return FALSE;

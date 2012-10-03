@@ -9,6 +9,7 @@
 #include "msctf.h"
 
 #include <string>
+#include <vector>
 using namespace std;
 
 void DllAddRef();

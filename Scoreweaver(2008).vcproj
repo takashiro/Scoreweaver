@@ -70,6 +70,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CandidateTree.h"
+				>
+			</File>
+			<File
 				RelativePath=".\CandidateWindow.h"
 				>
 			</File>
@@ -119,6 +123,10 @@
 			>
 			<File
 				RelativePath=".\CandidateList.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\CandidateTree.cpp"
 				>
 			</File>
 			<File
