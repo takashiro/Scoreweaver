@@ -125,10 +125,9 @@ HRESULT CTextService::_HandleCharacterKey(TfEditCookie ec, ITfContext *pContext,
     tfSelection.range->Collapse(ec, TF_ANCHOR_END);
     pContext->SetSelection(ec, 1, &tfSelection);
 
-    //
     // set the display attribute to the composition range.
-    //
-    _SetCompositionDisplayAttributes(ec, pContext, _gaDisplayAttributeInput);
+    //_SetCompositionDisplayAttributes(ec, pContext, _gaDisplayAttributeInput);
+	_HandleSpaceKey(ec, pContext);
 
 Exit:
     tfSelection.range->Release();

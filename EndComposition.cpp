@@ -1,21 +1,8 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF
-//  ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED
-//  TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-//  PARTICULAR PURPOSE.
-//
-//  Copyright (C) 2003  Microsoft Corporation.  All rights reserved.
-//
-//  EndComposition.cpp
-//
-//          terminate the compositon object
-//
-//////////////////////////////////////////////////////////////////////
 
 #include "Globals.h"
 #include "EditSession.h"
 #include "TextService.h"
+#include "CandidateTree.h"
 
 class CEndCompositionEditSession : public CEditSessionBase
 {
@@ -54,5 +41,7 @@ void CTextService::_EndComposition(ITfContext *pContext)
         pContext->RequestEditSession(_tfClientId, pEditSession, TF_ES_ASYNCDONTCARE | TF_ES_READWRITE, &hr);
         pEditSession->Release();
     }
+
+	CandidateTree->ToRoot();
 }
 

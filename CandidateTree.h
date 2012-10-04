@@ -11,19 +11,23 @@ public:
 
 		wchar_t GetValue() const;
 
-		void AddChild(wchar_t word);
-		Node *GetChild(wchar_t word);
-		void RemoveChild(wchar_t word);
+		void AddChild(wchar_t key, wchar_t value);
+		Node *GetChild(int key);
+		Node *GetChild(wchar_t key);
+		void RemoveChild(wchar_t key);
 		
-		void SetChildren(const wstring &children);
+		void SetChildren(const wstring &keys, const wstring &values);
 		wstring GetChildren() const;
 		void ClearChildren();
+
+		bool IsEnd() const;
+		bool HasChildren() const;
 
 	private:
 		Node *_parent;
 		wchar_t _value;
 
-		wstring _children;
+		wstring _childrenKeys, _childrenValues;
 		vector<Node *> _childrenNodes;
 	};
 
@@ -32,7 +36,7 @@ public:
 
 	CCandidateTree::Node *GetCurrent();
 
-	void ForwardTo(wchar_t child);
+	void ForwardTo(wchar_t child_key);
 	void ToRoot();
 
 private:

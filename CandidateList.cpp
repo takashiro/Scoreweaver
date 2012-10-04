@@ -220,20 +220,24 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
     // create an instance of CCandidateWindow class.
     if (_pCandidateWindow = new CCandidateWindow()){
 		WCHAR *pchText = new WCHAR[2];
+
 		ULONG pcch = 0;
 		if(_pRangeComposition->GetText(ec, TF_TF_MOVESTART, pchText, 2, &pcch) == S_OK){
 			pchText[pcch] = 0;
 		}
 		CandidateTree->ForwardTo(pchText[0]);
-		delete[] pchText;
 
 		CCandidateTree::Node *node = CandidateTree->GetCurrent();
 		if(node != NULL){
+			pchText[0] = node->GetValue();
+			_pRangeComposition->SetText(ec, TF_ST_CORRECTION, pchText, 1);
 			_candidates = node->GetChildren();
 		}else{
 			_candidates = L"尼玛这树都没有根";
 		}
 		_pCandidateWindow->SetCandidates(_candidates);
+
+		delete[] pchText;
 
         RECT rc;
         ITfContextView *pContextView;
@@ -296,6 +300,8 @@ void CCandidateList::_EndCandidateList(){
        _pDocumentMgr->Release();
        _pDocumentMgr = NULL;
     }
+
+	CandidateTree->ToRoot();
 }
 
 BOOL CCandidateList::_IsContextCandidateWindow(ITfContext *pContext){
