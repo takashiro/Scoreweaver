@@ -2,6 +2,7 @@
 #include "Globals.h"
 #include "TextService.h"
 #include "CandidateWindow.h"
+#include "CandidateTree.h"
 
 ATOM CCandidateWindow::_atomWndClass = 0;
 
@@ -27,7 +28,7 @@ int CCandidateWindow::CurPage() const{
 void CCandidateWindow::NextPage(){
 	_curPage++;
 
-	if(unsigned(_curPage * _pageLimit) >= _candidates.size()){
+	if(unsigned(_curPage * _pageLimit) >= _candidateValues.size()){
 		_curPage--;
 	}
 
@@ -57,12 +58,9 @@ int CCandidateWindow::PageLimit() const{
 	return _pageLimit;
 }
 
-void CCandidateWindow::SetCandidates(const wstring &list){
-	_candidates = list;
-}
-
-wstring CCandidateWindow::Candidates() const{
-	return _candidates;
+void CCandidateWindow::SetCandidates(const wstring &keys, const wstring &values){
+	_candidateKeys = keys;
+	_candidateValues = values;
 }
 
 /* static */
@@ -171,16 +169,23 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
             SetBkMode(hdc, TRANSPARENT);
             
 			int limit = CandidateWindow->PageLimit();
-			wstring candidates = CandidateWindow->Candidates().substr(CandidateWindow->CurPage() * limit, limit);
+			CCandidateTree::Node *current = CandidateTree->GetCurrent();
+			wstring keys, values;
+			if(current != NULL){
+				current->GetChildren(keys, values);
+			}
+			keys = keys.substr(CandidateWindow->CurPage() * limit, limit);
+			values = values.substr(CandidateWindow->CurPage() * limit, limit);
+			
 			wstring text;
 			for(int i = 0; i < CandidateWindow->PageLimit(); i++){
-				if(unsigned(i) >= candidates.size()){
+				if(unsigned(i) >= keys.size()){
 					break;
 				}
 
-				text += '1' + i;
+				text.append(keys, i, 1);
 				text += '.';
-				text.append(candidates, i, 1);
+				text.append(values, i, 1);
 				text += ' ';
 			}
 

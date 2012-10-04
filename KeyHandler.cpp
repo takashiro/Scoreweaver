@@ -22,17 +22,16 @@ private:
 STDAPI CKeyHandlerEditSession::DoEditSession(TfEditCookie ec)
 {
 
-    switch (_wParam)
-    {
+    switch (_wParam){
         case VK_LEFT:
         case VK_RIGHT:
             return _pTextService->_HandleArrowKey(ec, _pContext, _wParam);
 
-        case VK_RETURN:
+		case VK_RETURN:case VK_SPACE:
             return _pTextService->_HandleReturnKey(ec, _pContext);
 
-        case VK_SPACE:
-            return _pTextService->_HandleSpaceKey(ec, _pContext);
+        /*case VK_SPACE:
+            return _pTextService->_HandleSpaceKey(ec, _pContext);*/
 
         default:
             if ((_wParam >= 'A' && _wParam <= 'Z') || (_wParam >= '0' && _wParam <= '9'))
@@ -126,8 +125,8 @@ HRESULT CTextService::_HandleCharacterKey(TfEditCookie ec, ITfContext *pContext,
     pContext->SetSelection(ec, 1, &tfSelection);
 
     // set the display attribute to the composition range.
-    //_SetCompositionDisplayAttributes(ec, pContext, _gaDisplayAttributeInput);
 	_HandleSpaceKey(ec, pContext);
+	_SetCompositionDisplayAttributes(ec, pContext, _gaDisplayAttributeInput);
 
 Exit:
     tfSelection.range->Release();
@@ -155,24 +154,18 @@ HRESULT CTextService::_HandleReturnKey(TfEditCookie ec, ITfContext *pContext)
 
 HRESULT CTextService::_HandleSpaceKey(TfEditCookie ec, ITfContext *pContext)
 {
-    //
+    // create an instance of the candidate list class.
+    if (_pCandidateList == NULL)
+        _pCandidateList = new CCandidateList(this);
+
     // set the display attribute to the composition range.
     //
     // The real text service may have linguistic logic here and set 
     // the specific range to apply the display attribute rather than 
     // applying the display attribute to the entire composition range.
-    //
     _SetCompositionDisplayAttributes(ec, pContext, _gaDisplayAttributeConverted);
 
-    // 
-    // create an instance of the candidate list class.
-    // 
-    if (_pCandidateList == NULL)
-        _pCandidateList = new CCandidateList(this);
-
-    // 
     // The document manager object is not cached. Get it from pContext.
-    // 
     ITfDocumentMgr *pDocumentMgr;
     if (pContext->GetDocumentMgr(&pDocumentMgr) == S_OK)
     {

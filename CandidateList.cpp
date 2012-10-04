@@ -99,7 +99,7 @@ STDAPI CCandidateList::OnKeyDown(WPARAM wParam, LPARAM lParam, BOOL *pfEaten){
     if (pfEaten == NULL)
         return E_INVALIDARG;
 
-    *pfEaten = TRUE;
+    //*pfEaten = TRUE;
     _pCandidateWindow->_OnKeyDown((UINT)wParam);
 
     return S_OK;
@@ -109,19 +109,7 @@ STDAPI CCandidateList::OnKeyUp(WPARAM wParam, LPARAM lParam, BOOL *pfEaten){
     if (pfEaten == NULL)
         return E_INVALIDARG;
 
-    *pfEaten = TRUE;
-
-	
-	if(wParam >= '1' && wParam <= '9'){
-		int serial = wParam - '1';
-		if(serial < _pCandidateWindow->PageLimit()){
-			unsigned key = (_pCandidateWindow->CurPage() * _pCandidateWindow->PageLimit() + serial);
-
-			if(key < _candidates.length()){
-				wstring word(_candidates, key, 1);
-			}
-		}
-	}
+    //*pfEaten = TRUE;
 
     // consume VK_RETURN here to finish candidate list.
 	if (wParam == VK_RETURN){
@@ -217,51 +205,72 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
     if (FAILED(_AdviseTextLayoutSink()))
         goto Exit;
 
-    // create an instance of CCandidateWindow class.
-    if (_pCandidateWindow = new CCandidateWindow()){
-		WCHAR *pchText = new WCHAR[2];
+	//申请缓冲区
+	int cchMax = 10;
+	wchar_t *pchText = new wchar_t[cchMax];
 
-		ULONG pcch = 0;
-		if(_pRangeComposition->GetText(ec, TF_TF_MOVESTART, pchText, 2, &pcch) == S_OK){
-			pchText[pcch] = 0;
-		}
-		CandidateTree->ForwardTo(pchText[0]);
+	//获得输入字符
+	ULONG pcch = 0;
+	if(_pRangeComposition->GetText(ec, NULL, pchText, cchMax, &pcch) == S_OK){
+		pchText[pcch] = 0;
+	}
+
+	//查询候选字
+	if(!CandidateTree->ForwardTo(pchText[pcch - 1])){
+		_pRangeComposition->Collapse(ec, TF_ANCHOR_END);
+		_pTextService->_TerminateComposition(ec, _pContextCandidateWindow);
+	
+	}else{
 
 		CCandidateTree::Node *node = CandidateTree->GetCurrent();
 		if(node != NULL){
-			pchText[0] = node->GetValue();
-			_pRangeComposition->SetText(ec, TF_ST_CORRECTION, pchText, 1);
 			_candidates = node->GetChildren();
+
+			//显示/输入候选字
+			if(_candidates.empty()){
+				pchText[0] = node->GetValue();
+				_pRangeComposition->SetText(ec, NULL, pchText, 1);
+				_pRangeComposition->Collapse(ec, TF_ANCHOR_END);
+				_pTextService->_TerminateComposition(ec, _pContextCandidateWindow);
+			
+			// create an instance of CCandidateWindow class.
+			}else if(_pCandidateWindow = new CCandidateWindow()){
+				wstring keys, values;
+				node->GetChildren(keys, values);
+				_pCandidateWindow->SetCandidates(keys, values);
+
+				RECT rc;
+				ITfContextView *pContextView;
+
+				// get an active view of the document context.
+				if (FAILED(pContextDocument->GetActiveView(&pContextView)))
+					goto Exit;
+
+				// get text extent for the range of the composition.
+				if (FAILED(pContextView->GetTextExt(ec, pRangeComposition, &rc, &fClipped)))
+					goto Exit;
+
+				pContextView->Release();
+
+		        
+				// create the dummy candidate window
+				if (!_pCandidateWindow->_Create())
+					goto Exit;
+
+				_pCandidateWindow->_Move(rc.left, rc.bottom);
+				_pCandidateWindow->_Show();
+
+				hr = S_OK;
+			}
+
 		}else{
-			_candidates = L"尼玛这树都没有根";
+			_candidates.empty();
 		}
-		_pCandidateWindow->SetCandidates(_candidates);
 
+		//释放缓冲区
 		delete[] pchText;
+	}
 
-        RECT rc;
-        ITfContextView *pContextView;
-
-        // get an active view of the document context.
-        if (FAILED(pContextDocument->GetActiveView(&pContextView)))
-            goto Exit;
-
-        // get text extent for the range of the composition.
-        if (FAILED(pContextView->GetTextExt(ec, pRangeComposition, &rc, &fClipped)))
-            goto Exit;
-
-        pContextView->Release();
-
-        
-        // create the dummy candidate window
-        if (!_pCandidateWindow->_Create())
-            goto Exit;
-
-        _pCandidateWindow->_Move(rc.left, rc.bottom);
-        _pCandidateWindow->_Show();
-
-        hr = S_OK;
-    }
 
 Exit:
     if (FAILED(hr))
@@ -300,8 +309,6 @@ void CCandidateList::_EndCandidateList(){
        _pDocumentMgr->Release();
        _pDocumentMgr = NULL;
     }
-
-	CandidateTree->ToRoot();
 }
 
 BOOL CCandidateList::_IsContextCandidateWindow(ITfContext *pContext){

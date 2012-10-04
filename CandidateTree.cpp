@@ -6,7 +6,7 @@ CCandidateTree::CCandidateTree(){
 	_root = _current = new Node(NULL, 0);
 
 	_root->SetChildren(L"QWERTYUIO", L"古琴谱文字编辑软件");
-	_root->GetChild(0)->SetChildren(L"123456", L"这是一个测试");
+	_root->GetChild(0)->SetChildren(L"QWERTY", L"这是一个测试");
 }
 
 CCandidateTree::~CCandidateTree(){
@@ -21,11 +21,14 @@ void CCandidateTree::ToRoot(){
 	_current = _root;
 }
 
-void CCandidateTree::ForwardTo(wchar_t child_key){
+bool CCandidateTree::ForwardTo(wchar_t child_key){
 	Node *n = _current->GetChild(child_key);
 	if(n != NULL){
 		_current = n;
+		return true;
 	}
+	
+	return false;
 }
 
 CCandidateTree::Node::Node(CCandidateTree::Node *parent, wchar_t value){
@@ -82,6 +85,11 @@ void CCandidateTree::Node::SetChildren(const wstring &keys, const wstring &value
 
 wstring CCandidateTree::Node::GetChildren() const{
 	return _childrenValues;
+}
+
+void CCandidateTree::Node::GetChildren(wstring &keys, wstring &values) const{
+	keys = _childrenKeys;
+	values = _childrenValues;
 }
 
 void CCandidateTree::Node::ClearChildren(){

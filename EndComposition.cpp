@@ -29,6 +29,8 @@ void CTextService::_TerminateComposition(TfEditCookie ec, ITfContext *pContext)
         _pComposition->EndComposition(ec);
         _pComposition->Release();
         _pComposition = NULL;
+
+		CandidateTree->ToRoot();
     }
 }
 
@@ -41,7 +43,5 @@ void CTextService::_EndComposition(ITfContext *pContext)
         pContext->RequestEditSession(_tfClientId, pEditSession, TF_ES_ASYNCDONTCARE | TF_ES_READWRITE, &hr);
         pEditSession->Release();
     }
-
-	CandidateTree->ToRoot();
 }
 
