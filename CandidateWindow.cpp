@@ -28,7 +28,7 @@ int CCandidateWindow::CurPage() const{
 void CCandidateWindow::NextPage(){
 	_curPage++;
 
-	if(unsigned(_curPage * _pageLimit) >= _candidateValues.size()){
+	if(_curPage * _pageLimit >= _candidateNum){
 		_curPage--;
 	}
 
@@ -45,22 +45,21 @@ void CCandidateWindow::PrevPage(){
 	InvalidateRect(_hwnd, NULL, true);
 }
 
+void CCandidateWindow::SetCandidateNum(int num){
+	_candidateNum = num;
+}
+
 void CCandidateWindow::SetPageLimit(int limit){
 	_pageLimit = limit;
 
 	if(limit > 0){
-		_windowWidth = 50 * limit;
+		_windowWidth = 50 * limit + 50;
 		_windowHeight = 24;
 	}
 }
 
 int CCandidateWindow::PageLimit() const{
 	return _pageLimit;
-}
-
-void CCandidateWindow::SetCandidates(const wstring &keys, const wstring &values){
-	_candidateKeys = keys;
-	_candidateValues = values;
 }
 
 /* static */
@@ -165,19 +164,19 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
             return 0;
 
         case WM_PAINT:
-            hdc = BeginPaint(hwnd, &ps);
-            SetBkMode(hdc, TRANSPARENT);
-            
 			int limit = CandidateWindow->PageLimit();
 			CCandidateTree::Node *current = CandidateTree->GetCurrent();
 			wstring keys, values;
-			if(current != NULL){
-				current->GetChildren(keys, values);
-			}
+			current->GetChildren(keys, values);
+			
+			CandidateWindow->SetCandidateNum(keys.size());
 			keys = keys.substr(CandidateWindow->CurPage() * limit, limit);
 			values = values.substr(CandidateWindow->CurPage() * limit, limit);
-			
+
 			wstring text;
+			text += L"_.";
+			text += current->GetValue();
+			text += ' ';
 			for(int i = 0; i < CandidateWindow->PageLimit(); i++){
 				if(unsigned(i) >= keys.size()){
 					break;
@@ -189,9 +188,14 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
 				text += ' ';
 			}
 
+			//开始绘制
+			hdc = BeginPaint(hwnd, &ps);
+            
+			SetBkMode(hdc, TRANSPARENT);//背景
+			
 			HFONT font = CreateFont(20, 10, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, DEFAULT_QUALITY, FF_MODERN, "宋体");
 			SelectObject(hdc, font);
-			TextOutW(hdc, 0, 0, text.c_str(), text.size());
+			TextOutW(hdc, 0, 0, text.c_str(), text.size());//候选字
 			DeleteObject(font);
 
 			EndPaint(hwnd, &ps);

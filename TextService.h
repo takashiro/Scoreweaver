@@ -70,6 +70,7 @@ public:
 
     // key event handlers.
     HRESULT _HandleCharacterKey(TfEditCookie ec, ITfContext *pContext, WPARAM wParam);
+	HRESULT _InitCandidateList(TfEditCookie ec, ITfContext *pContext);
     HRESULT _HandleArrowKey(TfEditCookie ec, ITfContext *pContext, WPARAM wParam);
     HRESULT _HandleReturnKey(TfEditCookie ec, ITfContext *pContext);
     HRESULT _HandleSpaceKey(TfEditCookie ec, ITfContext *pContext);

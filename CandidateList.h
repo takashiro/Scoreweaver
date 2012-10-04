@@ -26,6 +26,7 @@ public:
 
     HRESULT _StartCandidateList(TfClientId tid, ITfDocumentMgr *pDocumentMgr, ITfContext *pContextDocument, TfEditCookie ec, ITfRange *pRangeComposition);
     void _EndCandidateList();
+	void _InputDefaultCandidate(TfEditCookie ec);
 
     BOOL _IsContextCandidateWindow(ITfContext *pContext);
 
@@ -46,10 +47,6 @@ private:
 
     HWND _hwndParent;
     CCandidateWindow *_pCandidateWindow;
-
-	TfEditCookie _editCookie;
-
-	wstring _candidates;
 
     LONG _cRef; // COM ref count
 };

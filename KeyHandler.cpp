@@ -27,16 +27,16 @@ STDAPI CKeyHandlerEditSession::DoEditSession(TfEditCookie ec)
         case VK_RIGHT:
             return _pTextService->_HandleArrowKey(ec, _pContext, _wParam);
 
-		case VK_RETURN:case VK_SPACE:
+		case VK_SPACE:
+			_pTextService->_HandleSpaceKey(ec, _pContext);
+
+		case VK_RETURN:
             return _pTextService->_HandleReturnKey(ec, _pContext);
 
-        /*case VK_SPACE:
-            return _pTextService->_HandleSpaceKey(ec, _pContext);*/
-
         default:
-            if ((_wParam >= 'A' && _wParam <= 'Z') || (_wParam >= '0' && _wParam <= '9'))
+			if ((_wParam >= 'A' && _wParam <= 'Z') || (_wParam >= '0' && _wParam <= '9')){
                 return _pTextService->_HandleCharacterKey(ec, _pContext, _wParam);
-            break;
+			}
     }
 
     return S_OK;
@@ -125,7 +125,7 @@ HRESULT CTextService::_HandleCharacterKey(TfEditCookie ec, ITfContext *pContext,
     pContext->SetSelection(ec, 1, &tfSelection);
 
     // set the display attribute to the composition range.
-	_HandleSpaceKey(ec, pContext);
+	_InitCandidateList(ec, pContext);
 	_SetCompositionDisplayAttributes(ec, pContext, _gaDisplayAttributeInput);
 
 Exit:
@@ -148,11 +148,11 @@ HRESULT CTextService::_HandleReturnKey(TfEditCookie ec, ITfContext *pContext)
 
 //+---------------------------------------------------------------------------
 //
-// _HandleSpaceKey
+// _InitCandidateList
 //
 //----------------------------------------------------------------------------
 
-HRESULT CTextService::_HandleSpaceKey(TfEditCookie ec, ITfContext *pContext)
+HRESULT CTextService::_InitCandidateList(TfEditCookie ec, ITfContext *pContext)
 {
     // create an instance of the candidate list class.
     if (_pCandidateList == NULL)
@@ -181,6 +181,20 @@ HRESULT CTextService::_HandleSpaceKey(TfEditCookie ec, ITfContext *pContext)
         pDocumentMgr->Release();
     }
     return S_OK;
+}
+
+
+//+---------------------------------------------------------------------------
+//
+// _HandleSpaceKey
+//
+//----------------------------------------------------------------------------
+HRESULT CTextService::_HandleSpaceKey(TfEditCookie ec, ITfContext *pContext){
+	if(_pCandidateList != NULL){
+		_pCandidateList->_InputDefaultCandidate(ec);
+	}
+
+	return S_OK;
 }
 
 //+---------------------------------------------------------------------------

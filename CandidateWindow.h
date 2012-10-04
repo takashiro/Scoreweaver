@@ -24,6 +24,8 @@ public:
 	void NextPage();
 	void PrevPage();
 
+	void SetCandidateNum(int num);
+
 	void SetPageLimit(int limit);
 	int PageLimit() const;
 
@@ -44,10 +46,7 @@ private:
 
     HWND _hwnd;
 
-	int _pageLimit, _curPage;
-
-	wstring _candidateKeys, _candidateValues;
-
+	int _pageLimit, _curPage, _candidateNum;
 	int _windowWidth, _windowHeight;
 };
 

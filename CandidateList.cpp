@@ -112,9 +112,13 @@ STDAPI CCandidateList::OnKeyUp(WPARAM wParam, LPARAM lParam, BOOL *pfEaten){
     //*pfEaten = TRUE;
 
     // consume VK_RETURN here to finish candidate list.
-	if (wParam == VK_RETURN){
+	switch(wParam){
+	case VK_SPACE:
+	case VK_RETURN:
         _EndCandidateList();
-	}else{
+		break;
+
+	default:
         _pCandidateWindow->_OnKeyUp((UINT)wParam);
 	}
 
@@ -224,10 +228,8 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
 
 		CCandidateTree::Node *node = CandidateTree->GetCurrent();
 		if(node != NULL){
-			_candidates = node->GetChildren();
-
 			//显示/输入候选字
-			if(_candidates.empty()){
+			if(node->IsEnd()){
 				pchText[0] = node->GetValue();
 				_pRangeComposition->SetText(ec, NULL, pchText, 1);
 				_pRangeComposition->Collapse(ec, TF_ANCHOR_END);
@@ -235,10 +237,6 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
 			
 			// create an instance of CCandidateWindow class.
 			}else if(_pCandidateWindow = new CCandidateWindow()){
-				wstring keys, values;
-				node->GetChildren(keys, values);
-				_pCandidateWindow->SetCandidates(keys, values);
-
 				RECT rc;
 				ITfContextView *pContextView;
 
@@ -262,9 +260,6 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
 
 				hr = S_OK;
 			}
-
-		}else{
-			_candidates.empty();
 		}
 
 		//释放缓冲区
@@ -309,6 +304,17 @@ void CCandidateList::_EndCandidateList(){
        _pDocumentMgr->Release();
        _pDocumentMgr = NULL;
     }
+}
+
+void CCandidateList::_InputDefaultCandidate(TfEditCookie ec){
+	CCandidateTree::Node *current = CandidateTree->GetCurrent();
+	if(current != NULL && _pRangeComposition != NULL){
+		wchar_t *pchText = new wchar_t[2];
+		pchText[0] = CandidateTree->GetCurrent()->GetValue();
+		pchText[1] = 0;
+		_pRangeComposition->SetText(ec, NULL, pchText, 1);
+		delete[] pchText;
+	}
 }
 
 BOOL CCandidateList::_IsContextCandidateWindow(ITfContext *pContext){
