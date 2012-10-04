@@ -4,6 +4,7 @@ WIN2000_DEBUG/
 WIN2000_RETAIL/
 Debug/
 Release/
+ipch/
 *.tmp
 *.db
 Scoreweaver.vcproj.*
@@ -11,3 +12,4 @@ Scoreweaver.vcproj.*
 *.ncb
 *.suo
 *.sdf
+*.aps
