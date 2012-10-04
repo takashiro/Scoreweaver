@@ -222,7 +222,7 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
 	//查询候选字
 	if(!CandidateTree->ForwardTo(pchText[pcch - 1])){
 		_pRangeComposition->Collapse(ec, TF_ANCHOR_END);
-		_pTextService->_TerminateComposition(ec, _pContextCandidateWindow);
+		_pTextService->_TerminateComposition(ec, _pContextDocument);
 	
 	}else{
 
@@ -230,10 +230,7 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
 		if(node != NULL){
 			//显示/输入候选字
 			if(node->IsEnd()){
-				pchText[0] = node->GetValue();
-				_pRangeComposition->SetText(ec, NULL, pchText, 1);
-				_pRangeComposition->Collapse(ec, TF_ANCHOR_END);
-				_pTextService->_TerminateComposition(ec, _pContextCandidateWindow);
+				_InputDefaultCandidate(ec);
 			
 			// create an instance of CCandidateWindow class.
 			}else if(_pCandidateWindow = new CCandidateWindow()){
@@ -261,10 +258,10 @@ HRESULT CCandidateList::_StartCandidateList(TfClientId tfClientId, ITfDocumentMg
 				hr = S_OK;
 			}
 		}
-
-		//释放缓冲区
-		delete[] pchText;
 	}
+
+	//释放缓冲区
+	delete[] pchText;
 
 
 Exit:
@@ -309,11 +306,13 @@ void CCandidateList::_EndCandidateList(){
 void CCandidateList::_InputDefaultCandidate(TfEditCookie ec){
 	CCandidateTree::Node *current = CandidateTree->GetCurrent();
 	if(current != NULL && _pRangeComposition != NULL){
-		wchar_t *pchText = new wchar_t[2];
-		pchText[0] = CandidateTree->GetCurrent()->GetValue();
-		pchText[1] = 0;
-		_pRangeComposition->SetText(ec, NULL, pchText, 1);
-		delete[] pchText;
+		wchar_t pchText = CandidateTree->GetCurrent()->GetValue();
+		_pRangeComposition->SetText(ec, NULL, &pchText, 1);
+
+		_pTextService->_HandleArrowKey(ec, _pContextDocument, VK_RIGHT);
+
+		_pRangeComposition->Collapse(ec, TF_ANCHOR_END);
+		_pTextService->_TerminateComposition(ec, _pContextDocument);
 	}
 }
 
