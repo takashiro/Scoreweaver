@@ -1,7 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scoreweaver", "TextService/Scoreweaver(2008).vcproj", "{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scoreweaver", "TextService\Scoreweaver(2008).vcproj", "{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OnscreenKeyboard", "OnscreenKeyboard\OnscreenKeyboard(2008).vcproj", "{72E2C139-2AC5-4D6B-A06D-6972DA05487D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +15,10 @@ Global
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Debug|Win32.Build.0 = Debug|Win32
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Release|Win32.ActiveCfg = Release|Win32
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Release|Win32.Build.0 = Release|Win32
+		{72E2C139-2AC5-4D6B-A06D-6972DA05487D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{72E2C139-2AC5-4D6B-A06D-6972DA05487D}.Debug|Win32.Build.0 = Debug|Win32
+		{72E2C139-2AC5-4D6B-A06D-6972DA05487D}.Release|Win32.ActiveCfg = Release|Win32
+		{72E2C139-2AC5-4D6B-A06D-6972DA05487D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
