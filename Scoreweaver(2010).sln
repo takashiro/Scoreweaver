@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scoreweaver", "TextService\Scoreweaver(2010).vcxproj", "{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scoreweaver(2010)", "TextService\Scoreweaver(2010).vcxproj", "{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OnscreenKeyboard", "OnscreenKeyboard\OnscreenKeyboard(2010).vcxproj", "{72E2C139-2AC5-4D6B-A06D-6972DA05487D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OnscreenKeyboard(2010)", "OnscreenKeyboard\OnscreenKeyboard(2010).vcxproj", "{F4D2531C-DEA8-1CB0-6E81-A23AF15F4096}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConfigDialog(2010)", "ConfigDialog\ConfigDialog(2010).vcxproj", "{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +17,14 @@ Global
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Debug|Win32.Build.0 = Debug|Win32
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Release|Win32.ActiveCfg = Release|Win32
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Release|Win32.Build.0 = Release|Win32
-		{72E2C139-2AC5-4D6B-A06D-6972DA05487D}.Debug|Win32.ActiveCfg = Debug|Win32
-		{72E2C139-2AC5-4D6B-A06D-6972DA05487D}.Debug|Win32.Build.0 = Debug|Win32
-		{72E2C139-2AC5-4D6B-A06D-6972DA05487D}.Release|Win32.ActiveCfg = Release|Win32
-		{72E2C139-2AC5-4D6B-A06D-6972DA05487D}.Release|Win32.Build.0 = Release|Win32
+		{F4D2531C-DEA8-1CB0-6E81-A23AF15F4096}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F4D2531C-DEA8-1CB0-6E81-A23AF15F4096}.Debug|Win32.Build.0 = Debug|Win32
+		{F4D2531C-DEA8-1CB0-6E81-A23AF15F4096}.Release|Win32.ActiveCfg = Release|Win32
+		{F4D2531C-DEA8-1CB0-6E81-A23AF15F4096}.Release|Win32.Build.0 = Release|Win32
+		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Debug|Win32.Build.0 = Debug|Win32
+		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Release|Win32.ActiveCfg = Release|Win32
+		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
