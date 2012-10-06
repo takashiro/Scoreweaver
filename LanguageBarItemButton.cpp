@@ -1,4 +1,4 @@
-
+#pragma comment(lib, "Shell32.lib")
 #include "LanguageBarItemButton.h"
 
 // The ids of the menu item of the language bar button.
@@ -301,12 +301,50 @@ STDAPI ToolButton::InitMenu(ITfMenu *pMenu){
 
 STDAPI ToolButton::OnMenuSelect(UINT wID){
     BOOL fOpen;
+	PROCESS_INFORMATION     pi; 
+	 STARTUPINFO   si; 
+	  BOOL   fRet;
+	  wchar_t buff[256];
 
+	  wchar_t sFileName[256] = {0};
     // This is callback when the menu item is selected.
     switch(wID){
         case MENUITEM_INDEX_CONFIG:
+			/*
+			::GetCurrentDirectoryW(256,buff);
+			::MessageBoxW(NULL,buff,NULL,NULL);
+			ZeroMemory(&pi,sizeof(PROCESS_INFORMATION)); 
+			ZeroMemory(&si,sizeof(STARTUPINFO)); 
+			si.cb=sizeof(STARTUPINFO); 
+			si.wShowWindow=SW_SHOW; 
+			si.dwFlags=STARTF_USESHOWWINDOW; 
+			fRet=::CreateProcess("E:\\GIT\\score-weaver\\ConfigDialog\\ConfigDialog.exe", 
+				NULL, 
+				NULL, 
+				NULL, 
+				FALSE, 
+				NORMAL_PRIORITY_CLASS|CREATE_NEW_CONSOLE, 
+				NULL, 
+				"E:\\GIT\\score-weaver\\ConfigDialog", 
+				&si, 
+				&pi); 
+			if(fRet) 
+				{
+				::WaitForSingleObject(pi.hProcess,INFINITE);
+				} 
+				*/
+			
+    //CString sPath = _T("");
+     
+    GetModuleFileNameW(g_hInst, sFileName, 255);
+    //sPath.Format(_T("%s"), sFileName);
+  //  int pos = sPath.ReverseFind('\\');
+    //if(pos != -1)
+      //  sPath = sPath.Left(pos);
+  //  else
+       // sPath = _T("");
+	::MessageBoxW(NULL,sFileName,NULL,NULL);
             break;
-
         case MENUITEM_INDEX_ABOUTUS:
 			::MessageBoxA(NULL,"古琴编辑器团队！","关于我们",NULL);
             break;
