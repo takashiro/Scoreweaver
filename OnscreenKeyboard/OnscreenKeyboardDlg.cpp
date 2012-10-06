@@ -349,7 +349,7 @@ void COnscreenKeyboardDlg::DrawKey(CDC * dc, CRect & rc, KEYDEF * key, BOOL cHil
 		if(key->cShifted > 0x6F) //is a function
 		{
 			int fkeynum = key->cShifted - 0x6F;
-			label.Format("F%d",fkeynum);
+			label.Format(_T("F%d"),fkeynum);
 		}
 		else
 		{
