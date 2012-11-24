@@ -1,0 +1,204 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<title>古琴谱文字输入码编辑器</title>
+<style text="text/css">
+table{text-align:center;}
+body, input, label, table{font-size:32pt;}
+#unicode{text-align:center;}
+#character{font-family:古琴谱文字,古琴谱;font-size:102pt;height:1.2em;overflow:hidden;}
+button{font-size:30pt;padding:0.5em 1em 0.5em 1em;}
+h6{margin:0;text-align:left;}
+#code_area, #map_area{width:100%;height:300px;font-size:9pt;}
+</style>
+</head>
+
+<body>
+
+<script type="text/javascript">
+var i_u = new Array();
+var u_i = new Array();
+
+function $(id){
+	return document.getElementById(id);
+}
+
+function forceUpperCase(input){
+	input.value = input.value.toUpperCase();
+}
+
+function showCharacter(){
+	var hex = current_character.toString(16);
+	$('character').innerHTML = unescape('%u' + hex);
+	$('unicode').value = hex.toUpperCase();
+
+	if(typeof u_i[current_character] != 'undefined'){
+		$('input_code').value = u_i[current_character];
+	}else{
+		$('input_code').value = '';
+	}
+}
+
+function setCharacter(){
+	current_character = parseInt('0x' + $('unicode').value);
+	showCharacter();
+}
+
+function inputCharacter(){
+	var input_keys = $('input_code').value;
+	var cur_node = i_u;
+	var input_length = input_keys.length;
+	if(input_length >= 0){
+		for(var i = 0; i < input_length; i++){
+			var ch = input_keys.charAt(i);
+			if(typeof cur_node == 'undefined'){
+				cur_node = new Array();
+			}
+			if(typeof cur_node[ch] == 'undefined'){
+				cur_node[ch] = new Array();
+			}
+			cur_node = cur_node[ch];
+		}
+		if(typeof cur_node == 'undefined'){
+			cur_node = new Array();
+		}
+		cur_node['_'] = current_character.toString(16);
+	}
+
+	u_i[current_character] = input_keys;
+
+	$('input_code').value = '';
+	$('input_code').focus();
+	current_character++;
+	showCharacter();
+
+	$('map_area').value = '';
+	for(var i in u_i){
+		$('map_area').value += parseInt(i, 10).toString(16).toUpperCase() + ' = ' + u_i[i] + '\n';
+	}
+}
+
+function prevCharacter(){
+	current_character--;
+	showCharacter();
+}
+
+function nextCharacter(){
+	current_character++;
+	showCharacter();
+}
+
+function objlen(obj){
+	var length = 0;
+	for(var i in obj){
+		length++;
+	}
+	return length;
+}
+
+function generateCode(node, pre){
+	if(pre == null){
+		pre = '';
+	}
+
+	if(node == null){
+			$('code_area').value = 'Node *node_' + pre + ' = _root;\n';
+			generateCode(i_u);
+
+	}else if(typeof node == 'object'){
+		var cur_node = new Array();
+		for(var i in node){
+			if(i != '_'){
+				cur_node[i] = node[i];
+			}
+		}
+		if(objlen(cur_node) <= 0){
+			return;
+		}
+
+		$('code_area').value += 'node_' + pre + '->setChildren(L"';
+		for(var i in cur_node){
+			$('code_area').value += i;
+		}
+		$('code_area').value += '", {';
+		for(var i in cur_node){
+			$('code_area').value += (typeof cur_node[i]['_'] == 'undefined') ? '0x0000' : '0x' + cur_node[i]['_'].toUpperCase();
+			$('code_area').value += ', ';
+		}
+		$('code_area').value = $('code_area').value.substr(0, $('code_area').value.length - 2);
+		$('code_area').value += '});\n';
+
+		var serial = 0;
+		for(var i in cur_node){
+			$('code_area').value += 'Node *node_' + pre + i + ' = node_' + pre + '->GetChild(' + serial + ');\n';
+			generateCode(cur_node[i], pre + i);
+			serial++;
+		}
+	}
+}
+
+function importFromArea(){
+	var save_current_unicode = $('unicode').value;
+
+	var txt = $('map_area').value.split('\n');
+	u_i = new Array();
+	for(var i in txt){
+		var line = txt[i].split(' = ');
+		if(line[1] == undefined){
+			continue;
+		}
+
+		current_character = parseInt('0x' + line[0]);
+		$('input_code').value = line[1];
+		$('input_button').click();
+	}
+
+	$('unicode').value = save_current_unicode;
+	setCharacter();
+}
+</script>
+
+<table width="100%">
+	<tr>
+		<td><div id="character" name="character">&nbsp;</div></td>
+		<td>当前字符Unicode码<input type="text" id="unicode" name="unicode" onblur="setCharacter()" /></div></td>
+	</tr>
+	<tr>
+		<td>输入码<input type="text" id="input_code" name="input_code" onkeyup="forceUpperCase(this)" /></td>
+		<td><button type="button" id="input_button" onclick="inputCharacter()" title="回车键">输入&下一个</button></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<button type="button" id="prev_button" onclick="prevCharacter()" title="方向键-上">上一个</button>
+			<button type="button" id="next_button" onclick="nextCharacter()" title="方向键-下">下一个</button>
+			<button type="button" id="gen_button" onclick="generateCode(null)">生成代码</button>
+		</td>
+	</tr>
+	<tr>
+		<td><h6>代码：</h6><textarea id="code_area" name="code_area"></textarea></td>
+		<td><h6>字符-输入码：</h6><textarea id="map_area" name="map_area" onblur="importFromArea()"></textarea></td>
+	</tr>
+</table>
+
+<script type="text/javascript">
+document.onkeydown = function(e){
+	var code = e.keyCode ? e.keyCode : e.charCode;
+
+	switch(code){
+		case 13:
+			$('input_button').click();
+		break;
+		case 38:
+			$('prev_button').click();
+			return false;
+		break;
+		case 40:
+			$('next_button').click();
+			return false;
+		break;
+	}
+}
+</script>
+
+</body>
+</html>
