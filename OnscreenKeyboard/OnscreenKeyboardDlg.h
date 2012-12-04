@@ -25,6 +25,7 @@ class COnscreenKeyboardDlg : public CDialog
 {
 // Construction
 public:
+	BYTE  state_value;
 	int pKeyWidth;
 	int pKeyHeight;
 	CTypedPtrList<CPtrList, KEYDEF*> cKeys;
@@ -39,6 +40,7 @@ public:
 	int DescribeKeyState();
 	void DrawKeyboard();
 	int cCurrentKeyState;
+	BYTE DescribeKeyState2();
 	HWND gFocus;
 	COnscreenKeyboardDlg(CWnd* pParent = NULL);	// standard constructor
 

@@ -71,6 +71,7 @@ COnscreenKeyboardDlg::COnscreenKeyboardDlg(CWnd* pParent /*=NULL*/)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
+    state_value=0;
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
@@ -260,7 +261,7 @@ BOOL COnscreenKeyboardDlg::OnInitDialog()
 			m_hIcon,						// Icon to use
 			IDR_TRAY_MENU));				// ID of tray icon
 
-	SetTimer(TIMER_ID,250,NULL);
+	//SetTimer(TIMER_ID,1,NULL);
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -349,7 +350,7 @@ void COnscreenKeyboardDlg::DrawKey(CDC * dc, CRect & rc, KEYDEF * key, BOOL cHil
 		if(key->cShifted > 0x6F) //is a function
 		{
 			int fkeynum = key->cShifted - 0x6F;
-			label.Format(_T("F%d"),fkeynum);
+			label.Format(TEXT("F%d"), fkeynum);
 		}
 		else
 		{
@@ -538,7 +539,7 @@ void COnscreenKeyboardDlg::SendKey(KEYDEF * keydef)
 {
 	if(keydef->cNormal == 0x00)
 	{
-		int vk;
+		BYTE vk;
 		BOOL uptoo = TRUE;
 		if(keydef->cShifted > 0x6F) //is a function key
 		{
@@ -631,11 +632,15 @@ void COnscreenKeyboardDlg::SendKey(KEYDEF * keydef)
 				break;
 			}
 		}
+		//state_value=vk;
 		keybd_event(vk,0,0,0);
 		if(uptoo)
 		{
 			keybd_event(vk,0,KEYEVENTF_KEYUP,0);
+			//state_value=0;
+			//DrawKeyboard();
 		}
+		DrawKeyboard();
 	}
 	else
 	{
@@ -644,8 +649,13 @@ void COnscreenKeyboardDlg::SendKey(KEYDEF * keydef)
 		BYTE key = ks & 0xFF;
 
 		keybd_event(key,0,0,0);
+		state_value=key;
 		keybd_event(key,0,KEYEVENTF_KEYUP,0);
-
+		DrawKeyboard();
+		//CString temp;
+	    // temp.Format(_T("%d"),state_value);
+	    //::MessageBox(NULL,temp,"SENFKY",NULL);
+		
 		//turn off the control and shift if they were down
 		unsigned char vk = VK_SHIFT;
 		if(GetKeyState(vk) & 0xF000)
@@ -752,6 +762,12 @@ BOOL COnscreenKeyboardDlg::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 void COnscreenKeyboardDlg::OnLButtonUp(UINT nFlags, CPoint point) 
 {
 	ReleaseFocus();
+	//keybd_event(state_value,0,KEYEVENTF_KEYUP,0);
+	state_value=0;
+	DrawKeyboard();
+	//CString temp;
+	//temp.Format(_T("%d"),state_value);
+	//::MessageBox(NULL,temp,"UP",NULL);
 }
 
 void COnscreenKeyboardDlg::ReleaseFocus() 
@@ -842,7 +858,21 @@ void COnscreenKeyboardDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 		cSystray.SetMenuDefaultItem(IDM_SHOW_KEYBOARD, FALSE);
 	}
 }
-
+BYTE COnscreenKeyboardDlg::DescribeKeyState2() 
+{
+	BYTE state = 0;
+	short ks = 0;
+	BYTE temp = 0x41;
+	while(temp < 0x5B){
+		ks = GetKeyState(temp);
+		if(ks & 0xF000) {
+			state = temp;
+			return state;
+		}
+		temp++;
+	}
+	return 0x00;
+}
 int COnscreenKeyboardDlg::DescribeKeyState() 
 {
 	int state = 0;
@@ -912,12 +942,37 @@ void COnscreenKeyboardDlg::DrawKeyboard()
 						hilight = TRUE;
 					}
 					break;
+				case DEL:
+					if(state_value==VK_DELETE)
+						{
+						hilight = TRUE;
+						}
+					break;
+				case 112://F1
+	                if(this->state_value==112)
+					  {	  
+						hilight = TRUE;
+					  }
+					break;
 				default:
 					break;
 				}
 			}
+			 else if((BYTE)key->cShifted==this->state_value)//处理字母键
+				{
+				hilight = TRUE;
+				//::MessageBox(NULL,"ww",NULL,NULL);
+				 //CString temp;
+	       //  temp.Format(_T("%d"),state_value);
+	        // ::MessageBox(NULL,temp,"DRAW",NULL);
+				}
+			 else if((BYTE)key->cNormal==this->state_value)//处理数字键
+				 {
+				 hilight = TRUE;
+				 }
+			 else{}
 			DrawKey(&dc, rc, key, hilight);
-		}
+			}
 	}
 }
 
@@ -931,5 +986,9 @@ void COnscreenKeyboardDlg::OnTimer(UINT nIDEvent)
 		{
 			DrawKeyboard();
 		}
+		//else if(state_value!=0)
+		//	{
+		//	DrawKeyboard();
+			//}
 	}
 }
