@@ -1368,7 +1368,13 @@ CCandidateTree::Node::~Node(){
 }
 
 wchar_t CCandidateTree::Node::GetValue() const{
-	return _value;
+	if(_value){
+		return _value;
+	}else if(!_childrenKeys.empty()){
+		return _childrenNodes.at(0)->GetValue();
+	}else{
+		return 0x0000;
+	}
 }
 
 void CCandidateTree::Node::AddChild(wchar_t key, wchar_t value){
@@ -1416,22 +1422,11 @@ void CCandidateTree::Node::SetChildren(wstring keys, ...){
 	va_end(vl);
 }
 
-/*void CCandidateTree::Node::SetChildren(const wstring &keys, const wstring &values){
-	ClearChildren();
- 	_childrenKeys = keys;
-	_childrenValues = values;
- 
-	unsigned max = keys.size() <= values.size() ? keys.size() : values.size();
- 	for(unsigned i = 0; i < max; i++){
-		_childrenNodes.push_back(new Node(this, values.at(i)));
-	}
-}*/
-
-wstring CCandidateTree::Node::GetChildren() const{
+wstring CCandidateTree::Node::GetChildren(){
 	return _childrenValues;
 }
 
-void CCandidateTree::Node::GetChildren(wstring &keys, wstring &values) const{
+void CCandidateTree::Node::GetChildren(wstring &keys, wstring &values){
 	keys = _childrenKeys;
 	values = _childrenValues;
 }

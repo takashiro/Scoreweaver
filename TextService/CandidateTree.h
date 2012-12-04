@@ -20,8 +20,8 @@ public:
 
 		void SetChildren(wstring keys, ...);
 		//void SetChildren(const wstring &keys, const wstring &values);
-		wstring GetChildren() const;
-		void GetChildren(wstring &keys, wstring &values) const;
+		wstring GetChildren();
+		void GetChildren(wstring &keys, wstring &values);
 		void ClearChildren();
 
 		bool IsEnd() const;
