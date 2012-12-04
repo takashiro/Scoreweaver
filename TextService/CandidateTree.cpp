@@ -1360,7 +1360,7 @@ bool CCandidateTree::ForwardTo(wchar_t child_key){
 
 CCandidateTree::Node::Node(CCandidateTree::Node *parent, wchar_t value){
 	_parent = parent;
-	_value = value;
+	SetValue(value);
 }
 
 CCandidateTree::Node::~Node(){
@@ -1375,6 +1375,10 @@ wchar_t CCandidateTree::Node::GetValue() const{
 	}else{
 		return 0x0000;
 	}
+}
+
+void CCandidateTree::Node::SetValue(wchar_t value){
+	_value = value;
 }
 
 void CCandidateTree::Node::AddChild(wchar_t key, wchar_t value){
@@ -1428,7 +1432,12 @@ wstring CCandidateTree::Node::GetChildren(){
 
 void CCandidateTree::Node::GetChildren(wstring &keys, wstring &values){
 	keys = _childrenKeys;
-	values = _childrenValues;
+
+	//values = _childrenValues;
+	values.clear();
+	for(vector<Node *>::iterator iter = _childrenNodes.begin(); iter != _childrenNodes.end(); iter++){
+		values.push_back((*iter)->GetValue());
+	}
 }
 
 void CCandidateTree::Node::ClearChildren(){

@@ -12,6 +12,7 @@ public:
 		~Node();
 
 		wchar_t GetValue() const;
+		void SetValue(wchar_t value);
 
 		void AddChild(wchar_t key, wchar_t value);
 		Node *GetChild(int key);
