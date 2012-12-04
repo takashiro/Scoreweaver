@@ -3,15 +3,17 @@
 #include "CandidateTree.h"
 
 CCandidateTree::CCandidateTree(){
+	static wchar_t title_str[6] = L"¹ÅÇÙÆ×ÎÄ×Ö";
+
 	_root = _current = new Node(NULL, 0);
 
 	Node *node_ = _root;
-	node_->SetChildren(L"QWTREZ", 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0xB0A0);
+	node_->SetChildren(L"QWTREZ", 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, title_str[1]);
 	
 	Node *node_Z = node_->GetChild(5);
-	wchar_t test_str[10] = L"ÕâÊÇÒ»¸ö²âÊÔ";
-	node_Z->SetChildren(L"QWERTY", test_str[0], test_str[1], test_str[2], test_str[3], test_str[4], test_str[5]);
+	node_Z->SetChildren(L"QWERT", title_str[0], title_str[1], title_str[2], title_str[3], title_str[4]);
 
+	//¹ÅÇÙÆ×ÎÄ×ÖÓ³Éä±í
 	Node *node_Q = node_->GetChild(0);
 	node_Q->SetChildren(L"0123456789", 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000);
 	Node *node_Q0 = node_Q->GetChild(0);

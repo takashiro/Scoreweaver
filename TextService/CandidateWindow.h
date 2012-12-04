@@ -48,6 +48,9 @@ private:
 
 	int _pageLimit, _curPage, _candidateNum;
 	int _windowWidth, _windowHeight;
+
+	static const int _wordWidth = 100;
+	static const int _wordHeight = 40;
 };
 
 extern CCandidateWindow *CandidateWindow;

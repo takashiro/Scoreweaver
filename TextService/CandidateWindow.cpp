@@ -53,8 +53,8 @@ void CCandidateWindow::SetPageLimit(int limit){
 	_pageLimit = limit;
 
 	if(limit > 0){
-		_windowWidth = 50 * limit + 50;
-		_windowHeight = 24;
+		_windowWidth = _wordWidth * (limit + 1);
+		_windowHeight = _wordHeight;
 	}
 }
 
@@ -193,7 +193,7 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
             
 			SetBkMode(hdc, TRANSPARENT);//±³¾°
 
-			HFONT font = CreateFont(20, 10, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, PROOF_QUALITY, FF_DONTCARE, TEXT("¹ÅÇÙÆ×ÎÄ×Ö"));
+			HFONT font = CreateFont(40, 20, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, PROOF_QUALITY, FF_DONTCARE, TEXT("¹ÅÇÙÆ×ÎÄ×Ö"));
 			SelectObject(hdc, font);
 			TextOutW(hdc, 0, 0, text.c_str(), text.size());//ºòÑ¡×Ö
 			DeleteObject(font);
