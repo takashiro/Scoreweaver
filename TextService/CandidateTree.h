@@ -2,6 +2,8 @@
 #ifndef CANDIDATETREE_H
 #define CANDIDATETREE_H
 
+#include <stdarg.h>
+
 class CCandidateTree{
 public:
 	class Node{
@@ -15,8 +17,9 @@ public:
 		Node *GetChild(int key);
 		Node *GetChild(wchar_t key);
 		void RemoveChild(wchar_t key);
-		
-		void SetChildren(const wstring &keys, const wstring &values);
+
+		void SetChildren(wstring keys, ...);
+		//void SetChildren(const wstring &keys, const wstring &values);
 		wstring GetChildren() const;
 		void GetChildren(wstring &keys, wstring &values) const;
 		void ClearChildren();

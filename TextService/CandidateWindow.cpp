@@ -192,8 +192,8 @@ LRESULT CALLBACK CCandidateWindow::_WindowProc(HWND hwnd, UINT uMsg, WPARAM wPar
 			hdc = BeginPaint(hwnd, &ps);
             
 			SetBkMode(hdc, TRANSPARENT);//±³¾°
-			
-			HFONT font = CreateFont(20, 10, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, DEFAULT_QUALITY, FF_MODERN, "ËÎÌå");
+
+			HFONT font = CreateFont(20, 10, 0, 0, FW_THIN, false, false, false, DEFAULT_CHARSET, OUT_CHARACTER_PRECIS, CLIP_CHARACTER_PRECIS, PROOF_QUALITY, FF_DONTCARE, TEXT("¹ÅÇÙÆ×ÎÄ×Ö"));
 			SelectObject(hdc, font);
 			TextOutW(hdc, 0, 0, text.c_str(), text.size());//ºòÑ¡×Ö
 			DeleteObject(font);

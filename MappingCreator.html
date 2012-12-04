@@ -116,17 +116,17 @@ function generateCode(node, pre){
 			return;
 		}
 
-		$('code_area').value += 'node_' + pre + '->setChildren(L"';
+		$('code_area').value += 'node_' + pre + '->SetChildren(L"';
 		for(var i in cur_node){
 			$('code_area').value += i;
 		}
-		$('code_area').value += '", {';
+		$('code_area').value += '", ';
 		for(var i in cur_node){
 			$('code_area').value += (typeof cur_node[i]['_'] == 'undefined') ? '0x0000' : '0x' + cur_node[i]['_'].toUpperCase();
 			$('code_area').value += ', ';
 		}
 		$('code_area').value = $('code_area').value.substr(0, $('code_area').value.length - 2);
-		$('code_area').value += '});\n';
+		$('code_area').value += ');\n';
 
 		var serial = 0;
 		for(var i in cur_node){
@@ -137,21 +137,34 @@ function generateCode(node, pre){
 	}
 }
 
+function handleAreaLine(){
+	if(typeof import_area_txt == 'undefined' || typeof current_line_i == 'undefined'){
+		return;
+	}
+
+	var line = import_area_txt[current_line_i].split(' = ');
+	if(line[1] == undefined){
+		return;
+	}
+
+	current_character = parseInt('0x' + line[0]);
+	$('input_code').value = line[1];
+	$('input_button').click();
+
+	current_line_i++;
+	if(current_line_i < import_area_txt.length){
+		setTimeout('handleAreaLine()', 50);
+	}
+}
+
 function importFromArea(){
 	var save_current_unicode = $('unicode').value;
 
-	var txt = $('map_area').value.split('\n');
+	import_area_txt = $('map_area').value.split('\n');
 	u_i = new Array();
-	for(var i in txt){
-		var line = txt[i].split(' = ');
-		if(line[1] == undefined){
-			continue;
-		}
 
-		current_character = parseInt('0x' + line[0]);
-		$('input_code').value = line[1];
-		$('input_button').click();
-	}
+	current_line_i = 0;
+	handleAreaLine();
 
 	$('unicode').value = save_current_unicode;
 	setCharacter();
