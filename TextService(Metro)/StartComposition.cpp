@@ -8,7 +8,7 @@
 #include "Private.h"
 #include "Globals.h"
 #include "EditSession.h"
-#include "SampleIME.h"
+#include "IME.h"
 
 //+---------------------------------------------------------------------------
 //
@@ -19,7 +19,7 @@
 class CStartCompositionEditSession : public CEditSessionBase
 {
 public:
-    CStartCompositionEditSession(_In_ CSampleIME *pTextService, _In_ ITfContext *pContext) : CEditSessionBase(pTextService, pContext)
+    CStartCompositionEditSession(_In_ CIME *pTextService, _In_ ITfContext *pContext) : CEditSessionBase(pTextService, pContext)
     {
     }
 
@@ -90,7 +90,7 @@ Exit:
 
 //////////////////////////////////////////////////////////////////////
 //
-// CSampleIME class
+// CIME class
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -102,7 +102,7 @@ Exit:
 // focus context.
 //----------------------------------------------------------------------------
 
-void CSampleIME::_StartComposition(_In_ ITfContext *pContext)
+void CIME::_StartComposition(_In_ ITfContext *pContext)
 {
     CStartCompositionEditSession* pStartCompositionEditSession = new (std::nothrow) CStartCompositionEditSession(this, pContext);
 
@@ -124,7 +124,7 @@ void CSampleIME::_StartComposition(_In_ ITfContext *pContext)
 // deactivation
 //----------------------------------------------------------------------------
 
-void CSampleIME::_SaveCompositionContext(_In_ ITfContext *pContext)
+void CIME::_SaveCompositionContext(_In_ ITfContext *pContext)
 {
     assert(_pContext == nullptr);
 

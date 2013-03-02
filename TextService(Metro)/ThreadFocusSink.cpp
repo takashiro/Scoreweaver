@@ -6,7 +6,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved
 
 #include "Private.h"
-#include "SampleIME.h"
+#include "IME.h"
 #include "CandidateListUIPresenter.h"
 
 //+---------------------------------------------------------------------------
@@ -15,7 +15,7 @@
 //
 //----------------------------------------------------------------------------
 
-STDAPI CSampleIME::OnSetThreadFocus()
+STDAPI CIME::OnSetThreadFocus()
 {
     if (_pCandidateListUIPresenter)
     {
@@ -42,7 +42,7 @@ STDAPI CSampleIME::OnSetThreadFocus()
 //
 //----------------------------------------------------------------------------
 
-STDAPI CSampleIME::OnKillThreadFocus()
+STDAPI CIME::OnKillThreadFocus()
 {
     if (_pCandidateListUIPresenter)
     {
@@ -67,7 +67,7 @@ STDAPI CSampleIME::OnKillThreadFocus()
     return S_OK;
 }
 
-BOOL CSampleIME::_InitThreadFocusSink()
+BOOL CIME::_InitThreadFocusSink()
 {
     ITfSource* pSource = nullptr;
 
@@ -87,7 +87,7 @@ BOOL CSampleIME::_InitThreadFocusSink()
     return TRUE;
 }
 
-void CSampleIME::_UninitThreadFocusSink()
+void CIME::_UninitThreadFocusSink()
 {
     ITfSource* pSource = nullptr;
 

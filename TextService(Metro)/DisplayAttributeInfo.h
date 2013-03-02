@@ -53,7 +53,7 @@ class CDisplayAttributeInfoInput : public CDisplayAttributeInfo
 public:
     CDisplayAttributeInfoInput()
     {
-        _pguid = &Global::SampleIMEGuidDisplayAttributeInput;
+        _pguid = &Global::IMEGuidDisplayAttributeInput;
         _pDisplayAttribute = &_s_DisplayAttribute;
         _pDescription = _s_szDescription;
         _pValueName = _s_szValueName;
@@ -75,7 +75,7 @@ class CDisplayAttributeInfoConverted : public CDisplayAttributeInfo
 public:
     CDisplayAttributeInfoConverted()
     {
-        _pguid = &Global::SampleIMEGuidDisplayAttributeConverted;
+        _pguid = &Global::IMEGuidDisplayAttributeConverted;
         _pDisplayAttribute = &_s_DisplayAttribute;
         _pDescription = _s_szDescription;
         _pValueName = _s_szValueName;

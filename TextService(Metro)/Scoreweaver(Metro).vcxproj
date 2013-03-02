@@ -19,15 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dictionary\SampleIMESimplifiedQuanPin.txt" />
+    <None Include="Dictionary\IMESimplifiedQuanPin.txt" />
     <None Include="image\DoubleSingleByteOff.ico" />
     <None Include="image\DoubleSingleByteOn.ico" />
     <None Include="image\ImeModeOff.ico" />
     <None Include="image\ImeModeOn.ico" />
     <None Include="image\PunctuationOff.ico" />
     <None Include="image\PunctuationOn.ico" />
-    <None Include="image\SampleIme.ico" />
-    <None Include="SampleIME.def" />
+    <None Include="image\IME.ico" />
+    <None Include="IME.def" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseDictionaryEngine.h" />
@@ -40,7 +40,7 @@
     <ClInclude Include="define.h" />
     <ClInclude Include="EnumTfCandidates.h" />
     <ClInclude Include="KeyStateCategory.h" />
-    <ClInclude Include="SampleIMEBaseStructure.h" />
+    <ClInclude Include="IMEBaseStructure.h" />
     <ClInclude Include="SearchCandidateProvider.h" />
     <ClInclude Include="DictionaryParser.h" />
     <ClInclude Include="DictionarySearch.h" />
@@ -56,7 +56,7 @@
     <ClInclude Include="Private.h" />
     <ClInclude Include="RegKey.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="SampleIME.h" />
+    <ClInclude Include="IME.h" />
     <ClInclude Include="ScrollBarWindow.h" />
     <ClInclude Include="ShadowWindow.h" />
     <ClInclude Include="stdafx.h" />
@@ -78,7 +78,7 @@
     <ClCompile Include="CompositionProcessorEngine.cpp" />
     <ClCompile Include="EnumTfCandidates.cpp" />
     <ClCompile Include="KeyStateCategory.cpp" />
-    <ClCompile Include="SampleIMEBaseStructure.cpp" />
+    <ClCompile Include="IMEBaseStructure.cpp" />
     <ClCompile Include="SearchCandidateProvider.cpp" />
     <ClCompile Include="DictionaryParser.cpp" />
     <ClCompile Include="DictionarySearch.cpp" />
@@ -105,7 +105,7 @@
     <ClCompile Include="ShadowWindow.cpp" />
     <ClCompile Include="StartComposition.cpp" />
     <ClCompile Include="TableDictionaryEngine.cpp" />
-    <ClCompile Include="SampleIME.cpp" />
+    <ClCompile Include="IME.cpp" />
     <ClCompile Include="TextEditSink.cpp" />
     <ClCompile Include="TfInputProcessorProfile.cpp" />
     <ClCompile Include="TfTextLayoutSink.cpp" />
@@ -115,12 +115,12 @@
     <ClCompile Include="TipCandidateString.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="SampleIME.rc" />
+    <ResourceCompile Include="IME.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0C8FE010-5146-44D8-AF99-82702C15FEA5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>SampleIME</RootNamespace>
+    <RootNamespace>IME</RootNamespace>
     <ProjectName>Scoreweaver(Metro)</ProjectName>
     <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and $(VisualStudioVersion) == ''">$(VCTargetsPath11)</VCTargetsPath>
   </PropertyGroup>
@@ -175,6 +175,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -185,7 +186,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SampleIME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;IME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\um;$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -195,7 +196,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Lib\win8\um\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>SampleIME.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>IME.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -204,7 +205,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;SampleIME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;IME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\um;$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
@@ -213,7 +214,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Lib\win8\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>SampleIME.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>IME.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -224,7 +225,7 @@
       <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SampleIME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;IME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\um;$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -236,7 +237,7 @@
       <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Lib\win8\um\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>SampleIME.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>IME.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -247,7 +248,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;SampleIME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;IME_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\um;$(MSBuildProgramFiles32)\Windows Kits\8.0\Include\shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <BrowseInformation>false</BrowseInformation>
     </ClCompile>
@@ -258,7 +259,7 @@
       <OptimizeReferences>false</OptimizeReferences>
       <AdditionalLibraryDirectories>$(MSBuildProgramFiles32)\Windows Kits\8.0\Lib\win8\um\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>shlwapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>SampleIME.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>IME.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

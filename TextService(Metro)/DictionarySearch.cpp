@@ -7,7 +7,7 @@
 
 #include "Private.h"
 #include "DictionarySearch.h"
-#include "SampleIMEBaseStructure.h"
+#include "IMEBaseStructure.h"
 
 //+---------------------------------------------------------------------------
 //

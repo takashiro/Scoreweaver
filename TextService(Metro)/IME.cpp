@@ -7,7 +7,7 @@
 
 #include "Private.h"
 #include "globals.h"
-#include "SampleIME.h"
+#include "IME.h"
 #include "CandidateListUIPresenter.h"
 #include "CompositionProcessorEngine.h"
 #include "Compartment.h"
@@ -19,9 +19,9 @@
 //----------------------------------------------------------------------------
 
 /* static */
-HRESULT CSampleIME::CreateInstance(_In_ IUnknown *pUnkOuter, REFIID riid, _Outptr_ void **ppvObj)
+HRESULT CIME::CreateInstance(_In_ IUnknown *pUnkOuter, REFIID riid, _Outptr_ void **ppvObj)
 {
-    CSampleIME* pSampleIME = nullptr;
+    CIME* pIME = nullptr;
     HRESULT hr = S_OK;
 
     if (ppvObj == nullptr)
@@ -36,15 +36,15 @@ HRESULT CSampleIME::CreateInstance(_In_ IUnknown *pUnkOuter, REFIID riid, _Outpt
         return CLASS_E_NOAGGREGATION;
     }
 
-    pSampleIME = new (std::nothrow) CSampleIME();
-    if (pSampleIME == nullptr)
+    pIME = new (std::nothrow) CIME();
+    if (pIME == nullptr)
     {
         return E_OUTOFMEMORY;
     }
 
-    hr = pSampleIME->QueryInterface(riid, ppvObj);
+    hr = pIME->QueryInterface(riid, ppvObj);
 
-    pSampleIME->Release();
+    pIME->Release();
 
     return hr;
 }
@@ -55,7 +55,7 @@ HRESULT CSampleIME::CreateInstance(_In_ IUnknown *pUnkOuter, REFIID riid, _Outpt
 //
 //----------------------------------------------------------------------------
 
-CSampleIME::CSampleIME()
+CIME::CIME()
 {
     DllAddRef();
 
@@ -95,7 +95,7 @@ CSampleIME::CSampleIME()
 //
 //----------------------------------------------------------------------------
 
-CSampleIME::~CSampleIME()
+CIME::~CIME()
 {
     if (_pCandidateListUIPresenter)
     {
@@ -111,7 +111,7 @@ CSampleIME::~CSampleIME()
 //
 //----------------------------------------------------------------------------
 
-STDAPI CSampleIME::QueryInterface(REFIID riid, _Outptr_ void **ppvObj)
+STDAPI CIME::QueryInterface(REFIID riid, _Outptr_ void **ppvObj)
 {
     if (ppvObj == nullptr)
     {
@@ -186,7 +186,7 @@ STDAPI CSampleIME::QueryInterface(REFIID riid, _Outptr_ void **ppvObj)
 //
 //----------------------------------------------------------------------------
 
-STDAPI_(ULONG) CSampleIME::AddRef()
+STDAPI_(ULONG) CIME::AddRef()
 {
     return ++_refCount;
 }
@@ -197,7 +197,7 @@ STDAPI_(ULONG) CSampleIME::AddRef()
 //
 //----------------------------------------------------------------------------
 
-STDAPI_(ULONG) CSampleIME::Release()
+STDAPI_(ULONG) CIME::Release()
 {
     LONG cr = --_refCount;
 
@@ -217,7 +217,7 @@ STDAPI_(ULONG) CSampleIME::Release()
 //
 //----------------------------------------------------------------------------
 
-STDAPI CSampleIME::ActivateEx(ITfThreadMgr *pThreadMgr, TfClientId tfClientId, DWORD dwFlags)
+STDAPI CIME::ActivateEx(ITfThreadMgr *pThreadMgr, TfClientId tfClientId, DWORD dwFlags)
 {
     _pThreadMgr = pThreadMgr;
     _pThreadMgr->AddRef();
@@ -280,7 +280,7 @@ ExitError:
 //
 //----------------------------------------------------------------------------
 
-STDAPI CSampleIME::Deactivate()
+STDAPI CIME::Deactivate()
 {
     if (_pCompositionProcessorEngine)
     {
@@ -322,10 +322,10 @@ STDAPI CSampleIME::Deactivate()
     CCompartment CompartmentKeyboardOpen(_pThreadMgr, _tfClientId, GUID_COMPARTMENT_KEYBOARD_OPENCLOSE);
     CompartmentKeyboardOpen._ClearCompartment();
 
-    CCompartment CompartmentDoubleSingleByte(_pThreadMgr, _tfClientId, Global::SampleIMEGuidCompartmentDoubleSingleByte);
+    CCompartment CompartmentDoubleSingleByte(_pThreadMgr, _tfClientId, Global::IMEGuidCompartmentDoubleSingleByte);
     CompartmentDoubleSingleByte._ClearCompartment();
 
-    CCompartment CompartmentPunctuation(_pThreadMgr, _tfClientId, Global::SampleIMEGuidCompartmentPunctuation);
+    CCompartment CompartmentPunctuation(_pThreadMgr, _tfClientId, Global::IMEGuidCompartmentPunctuation);
     CompartmentDoubleSingleByte._ClearCompartment();
 
     if (_pThreadMgr != nullptr)
@@ -349,12 +349,12 @@ STDAPI CSampleIME::Deactivate()
 // ITfFunctionProvider::GetType
 //
 //----------------------------------------------------------------------------
-HRESULT CSampleIME::GetType(__RPC__out GUID *pguid)
+HRESULT CIME::GetType(__RPC__out GUID *pguid)
 {
     HRESULT hr = E_INVALIDARG;
     if (pguid)
     {
-        *pguid = Global::SampleIMECLSID;
+        *pguid = Global::IMECLSID;
         hr = S_OK;
     }
     return hr;
@@ -365,7 +365,7 @@ HRESULT CSampleIME::GetType(__RPC__out GUID *pguid)
 // ITfFunctionProvider::::GetDescription
 //
 //----------------------------------------------------------------------------
-HRESULT CSampleIME::GetDescription(__RPC__deref_out_opt BSTR *pbstrDesc)
+HRESULT CIME::GetDescription(__RPC__deref_out_opt BSTR *pbstrDesc)
 {
     HRESULT hr = E_INVALIDARG;
     if (pbstrDesc != nullptr)
@@ -381,7 +381,7 @@ HRESULT CSampleIME::GetDescription(__RPC__deref_out_opt BSTR *pbstrDesc)
 // ITfFunctionProvider::::GetFunction
 //
 //----------------------------------------------------------------------------
-HRESULT CSampleIME::GetFunction(__RPC__in REFGUID rguid, __RPC__in REFIID riid, __RPC__deref_out_opt IUnknown **ppunk)
+HRESULT CIME::GetFunction(__RPC__in REFGUID rguid, __RPC__in REFIID riid, __RPC__deref_out_opt IUnknown **ppunk)
 {
     HRESULT hr = E_NOINTERFACE;
 
@@ -403,7 +403,7 @@ HRESULT CSampleIME::GetFunction(__RPC__in REFGUID rguid, __RPC__in REFIID riid, 
 // ITfFunction::GetDisplayName
 //
 //----------------------------------------------------------------------------
-HRESULT CSampleIME::GetDisplayName(_Out_ BSTR *pbstrDisplayName)
+HRESULT CIME::GetDisplayName(_Out_ BSTR *pbstrDisplayName)
 {
     HRESULT hr = E_INVALIDARG;
     if (pbstrDisplayName != nullptr)
@@ -419,7 +419,7 @@ HRESULT CSampleIME::GetDisplayName(_Out_ BSTR *pbstrDisplayName)
 // ITfFnGetPreferredTouchKeyboardLayout::GetLayout
 // The tkblayout will be Optimized layout.
 //----------------------------------------------------------------------------
-HRESULT CSampleIME::GetLayout(_Out_ TKBLayoutType *ptkblayoutType, _Out_ WORD *pwPreferredLayoutId)
+HRESULT CIME::GetLayout(_Out_ TKBLayoutType *ptkblayoutType, _Out_ WORD *pwPreferredLayoutId)
 {
     HRESULT hr = E_INVALIDARG;
     if ((ptkblayoutType != nullptr) && (pwPreferredLayoutId != nullptr))

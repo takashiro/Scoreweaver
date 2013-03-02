@@ -6,7 +6,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved
 
 #include "Private.h"
-#include "SampleIME.h"
+#include "IME.h"
 #include "SearchCandidateProvider.h"
 
 //+---------------------------------------------------------------------------
@@ -15,7 +15,7 @@
 //
 //----------------------------------------------------------------------------
 
-BOOL CSampleIME::_InitFunctionProviderSink()
+BOOL CIME::_InitFunctionProviderSink()
 {
     ITfSourceSingle* pSourceSingle = nullptr;
     BOOL ret = FALSE;
@@ -44,7 +44,7 @@ BOOL CSampleIME::_InitFunctionProviderSink()
 //
 //----------------------------------------------------------------------------
 
-void CSampleIME::_UninitFunctionProviderSink()
+void CIME::_UninitFunctionProviderSink()
 {
     ITfSourceSingle* pSourceSingle = nullptr;
     if (SUCCEEDED(_pThreadMgr->QueryInterface(IID_ITfSourceSingle, (void **)&pSourceSingle)))

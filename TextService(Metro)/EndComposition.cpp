@@ -8,7 +8,7 @@
 #include "Private.h"
 #include "Globals.h"
 #include "EditSession.h"
-#include "SampleIME.h"
+#include "IME.h"
 
 //////////////////////////////////////////////////////////////////////
 //
@@ -27,7 +27,7 @@
 class CEndCompositionEditSession : public CEditSessionBase
 {
 public:
-    CEndCompositionEditSession(_In_ CSampleIME *pTextService, _In_ ITfContext *pContext) : CEditSessionBase(pTextService, pContext)
+    CEndCompositionEditSession(_In_ CIME *pTextService, _In_ ITfContext *pContext) : CEditSessionBase(pTextService, pContext)
     {
     }
 
@@ -42,7 +42,7 @@ public:
 
 //////////////////////////////////////////////////////////////////////
 //
-// CSampleIME class
+// CIME class
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -52,7 +52,7 @@ public:
 //
 //----------------------------------------------------------------------------
 
-void CSampleIME::_TerminateComposition(TfEditCookie ec, _In_ ITfContext *pContext, BOOL isCalledFromDeactivate)
+void CIME::_TerminateComposition(TfEditCookie ec, _In_ ITfContext *pContext, BOOL isCalledFromDeactivate)
 {
 	isCalledFromDeactivate;
 
@@ -84,7 +84,7 @@ void CSampleIME::_TerminateComposition(TfEditCookie ec, _In_ ITfContext *pContex
 //
 //----------------------------------------------------------------------------
 
-void CSampleIME::_EndComposition(_In_opt_ ITfContext *pContext)
+void CIME::_EndComposition(_In_opt_ ITfContext *pContext)
 {
     CEndCompositionEditSession *pEditSession = new (std::nothrow) CEndCompositionEditSession(this, pContext);
     HRESULT hr = S_OK;

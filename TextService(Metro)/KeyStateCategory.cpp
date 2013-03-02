@@ -24,7 +24,7 @@ CKeyStateCategoryFactory* CKeyStateCategoryFactory::Instance()
     return _instance;
 }
 
-CKeyStateCategory* CKeyStateCategoryFactory::MakeKeyStateCategory(KEYSTROKE_CATEGORY keyCategory, _In_ CSampleIME *pTextService)
+CKeyStateCategory* CKeyStateCategoryFactory::MakeKeyStateCategory(KEYSTROKE_CATEGORY keyCategory, _In_ CIME *pTextService)
 {
     CKeyStateCategory* pKeyState = nullptr;
 
@@ -65,7 +65,7 @@ void CKeyStateCategoryFactory::Release()
 /*
 class CKeyStateCategory
 */
-CKeyStateCategory::CKeyStateCategory(_In_ CSampleIME *pTextService)
+CKeyStateCategory::CKeyStateCategory(_In_ CIME *pTextService)
 {
     _pTextService = pTextService;
 }
@@ -227,7 +227,7 @@ HRESULT CKeyStateCategory::HandleKeySelectByNumber(KeyHandlerEditSessionDTO dto)
 /*
 class CKeyStateComposing
 */
-CKeyStateComposing::CKeyStateComposing(_In_ CSampleIME *pTextService) : CKeyStateCategory(pTextService)
+CKeyStateComposing::CKeyStateComposing(_In_ CIME *pTextService) : CKeyStateCategory(pTextService)
 {
 }
 
@@ -296,7 +296,7 @@ HRESULT CKeyStateComposing::HandleKeyPunctuation(KeyHandlerEditSessionDTO dto)
 /*
 class CKeyStateCandidate
 */
-CKeyStateCandidate::CKeyStateCandidate(_In_ CSampleIME *pTextService) : CKeyStateCategory(pTextService)
+CKeyStateCandidate::CKeyStateCandidate(_In_ CIME *pTextService) : CKeyStateCategory(pTextService)
 {
 }
 
@@ -341,7 +341,7 @@ HRESULT CKeyStateCandidate::HandleKeySelectByNumber(KeyHandlerEditSessionDTO dto
 class CKeyStatePhrase
 */
 
-CKeyStatePhrase::CKeyStatePhrase(_In_ CSampleIME *pTextService) : CKeyStateCategory(pTextService)
+CKeyStatePhrase::CKeyStatePhrase(_In_ CIME *pTextService) : CKeyStateCategory(pTextService)
 {
 }
 

@@ -7,12 +7,12 @@
 
 #include "Private.h"
 #include "Globals.h"
-#include "SampleIME.h"
+#include "IME.h"
 #include "CompositionProcessorEngine.h"
 
-BOOL CSampleIME::VerifySampleIMECLSID(_In_ REFCLSID clsid)
+BOOL CIME::VerifyIMECLSID(_In_ REFCLSID clsid)
 {
-    if (IsEqualCLSID(clsid, Global::SampleIMECLSID))
+    if (IsEqualCLSID(clsid, Global::IMECLSID))
     {
         return TRUE;
     }
@@ -26,11 +26,11 @@ BOOL CSampleIME::VerifySampleIMECLSID(_In_ REFCLSID clsid)
 // Sink called by the framework when changes activate language profile.
 //----------------------------------------------------------------------------
 
-STDAPI CSampleIME::OnActivated(_In_ REFCLSID clsid, _In_ REFGUID guidProfile, _In_ BOOL isActivated)
+STDAPI CIME::OnActivated(_In_ REFCLSID clsid, _In_ REFGUID guidProfile, _In_ BOOL isActivated)
 {
 	guidProfile;
 
-    if (FALSE == VerifySampleIMECLSID(clsid))
+    if (FALSE == VerifyIMECLSID(clsid))
     {
         return S_OK;
     }
@@ -68,7 +68,7 @@ STDAPI CSampleIME::OnActivated(_In_ REFCLSID clsid, _In_ REFGUID guidProfile, _I
 // Advise a active language profile notify sink.
 //----------------------------------------------------------------------------
 
-BOOL CSampleIME::_InitActiveLanguageProfileNotifySink()
+BOOL CIME::_InitActiveLanguageProfileNotifySink()
 {
     ITfSource* pSource = nullptr;
     BOOL ret = FALSE;
@@ -98,7 +98,7 @@ Exit:
 // Unadvise a active language profile notify sink.  Assumes we have advised one already.
 //----------------------------------------------------------------------------
 
-void CSampleIME::_UninitActiveLanguageProfileNotifySink()
+void CIME::_UninitActiveLanguageProfileNotifySink()
 {
     ITfSource* pSource = nullptr;
 

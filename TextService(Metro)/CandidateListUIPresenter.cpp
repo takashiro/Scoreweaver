@@ -6,15 +6,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved
 
 #include "Private.h"
-#include "SampleIME.h"
+#include "IME.h"
 #include "CandidateWindow.h"
 #include "CandidateListUIPresenter.h"
 #include "CompositionProcessorEngine.h"
-#include "SampleIMEBaseStructure.h"
+#include "IMEBaseStructure.h"
 
 //////////////////////////////////////////////////////////////////////
 //
-// CSampleIME candidate key handler methods
+// CIME candidate key handler methods
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -28,7 +28,7 @@ const int MOVETO_BOTTOM = -1;
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandleCandidateFinalize(TfEditCookie ec, _In_ ITfContext *pContext)
+HRESULT CIME::_HandleCandidateFinalize(TfEditCookie ec, _In_ ITfContext *pContext)
 {
     HRESULT hr = S_OK;
     DWORD_PTR candidateLen = 0;
@@ -67,7 +67,7 @@ NoPresenter:
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandleCandidateConvert(TfEditCookie ec, _In_ ITfContext *pContext)
+HRESULT CIME::_HandleCandidateConvert(TfEditCookie ec, _In_ ITfContext *pContext)
 {
     return _HandleCandidateWorker(ec, pContext);
 }
@@ -78,7 +78,7 @@ HRESULT CSampleIME::_HandleCandidateConvert(TfEditCookie ec, _In_ ITfContext *pC
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandleCandidateWorker(TfEditCookie ec, _In_ ITfContext *pContext)
+HRESULT CIME::_HandleCandidateWorker(TfEditCookie ec, _In_ ITfContext *pContext)
 {
     HRESULT hrReturn = E_FAIL;
     DWORD_PTR candidateLen = 0;
@@ -199,7 +199,7 @@ Exit:
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandleCandidateArrowKey(TfEditCookie ec, _In_ ITfContext *pContext, _In_ KEYSTROKE_FUNCTION keyFunction)
+HRESULT CIME::_HandleCandidateArrowKey(TfEditCookie ec, _In_ ITfContext *pContext, _In_ KEYSTROKE_FUNCTION keyFunction)
 {
     ec;
     pContext;
@@ -215,7 +215,7 @@ HRESULT CSampleIME::_HandleCandidateArrowKey(TfEditCookie ec, _In_ ITfContext *p
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandleCandidateSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ UINT uCode)
+HRESULT CIME::_HandleCandidateSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ UINT uCode)
 {
     int iSelectAsNumber = _pCompositionProcessorEngine->GetCandidateListIndexRange()->GetIndex(uCode);
     if (iSelectAsNumber == -1)
@@ -240,7 +240,7 @@ HRESULT CSampleIME::_HandleCandidateSelectByNumber(TfEditCookie ec, _In_ ITfCont
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandlePhraseFinalize(TfEditCookie ec, _In_ ITfContext *pContext)
+HRESULT CIME::_HandlePhraseFinalize(TfEditCookie ec, _In_ ITfContext *pContext)
 {
     HRESULT hr = S_OK;
 
@@ -271,7 +271,7 @@ HRESULT CSampleIME::_HandlePhraseFinalize(TfEditCookie ec, _In_ ITfContext *pCon
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandlePhraseArrowKey(TfEditCookie ec, _In_ ITfContext *pContext, _In_ KEYSTROKE_FUNCTION keyFunction)
+HRESULT CIME::_HandlePhraseArrowKey(TfEditCookie ec, _In_ ITfContext *pContext, _In_ KEYSTROKE_FUNCTION keyFunction)
 {
     ec;
     pContext;
@@ -287,7 +287,7 @@ HRESULT CSampleIME::_HandlePhraseArrowKey(TfEditCookie ec, _In_ ITfContext *pCon
 //
 //----------------------------------------------------------------------------
 
-HRESULT CSampleIME::_HandlePhraseSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ UINT uCode)
+HRESULT CIME::_HandlePhraseSelectByNumber(TfEditCookie ec, _In_ ITfContext *pContext, _In_ UINT uCode)
 {
     int iSelectAsNumber = _pCompositionProcessorEngine->GetCandidateListIndexRange()->GetIndex(uCode);
     if (iSelectAsNumber == -1)
@@ -318,7 +318,7 @@ HRESULT CSampleIME::_HandlePhraseSelectByNumber(TfEditCookie ec, _In_ ITfContext
 //
 //----------------------------------------------------------------------------
 
-CCandidateListUIPresenter::CCandidateListUIPresenter(_In_ CSampleIME *pTextService, ATOM atom, KEYSTROKE_CATEGORY Category, _In_ CCandidateRange *pIndexRange, BOOL hideWindow) : CTfTextLayoutSink(pTextService)
+CCandidateListUIPresenter::CCandidateListUIPresenter(_In_ CIME *pTextService, ATOM atom, KEYSTROKE_CATEGORY Category, _In_ CCandidateRange *pIndexRange, BOOL hideWindow) : CTfTextLayoutSink(pTextService)
 {
     _atom = atom;
 
@@ -454,7 +454,7 @@ STDAPI CCandidateListUIPresenter::GetDescription(BSTR *pbstr)
 
 STDAPI CCandidateListUIPresenter::GetGUID(GUID *pguid)
 {
-    *pguid = Global::SampleIMEGuidCandUIElement;
+    *pguid = Global::IMEGuidCandUIElement;
     return S_OK;
 }
 

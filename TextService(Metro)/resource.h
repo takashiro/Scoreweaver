@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by SampleIME.rc
+// Used by IME.rc
 //
 #define SUBLANG_ENGLISH_US              0x01
 #define LANG_ENGLISH                    0x09

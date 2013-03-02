@@ -7,7 +7,7 @@
 
 #include "Private.h"
 #include "globals.h"
-#include "SampleIME.h"
+#include "IME.h"
 #include "DisplayAttributeInfo.h"
 #include "EnumDisplayAttributeInfo.h"
 

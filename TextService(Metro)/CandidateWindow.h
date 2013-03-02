@@ -12,7 +12,7 @@
 #include "BaseWindow.h"
 #include "ShadowWindow.h"
 #include "ScrollBarWindow.h"
-#include "SampleIMEBaseStructure.h"
+#include "IMEBaseStructure.h"
 
 enum CANDWND_ACTION
 {

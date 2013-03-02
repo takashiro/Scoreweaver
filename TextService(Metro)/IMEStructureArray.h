@@ -2,9 +2,9 @@
 //
 //  Copyright (C) Microsoft Corporation.  All rights reserved.
 //
-//  CSampleIMESampleIMEStructureArray.h
+//  CIMEIMEStructureArray.h
 //
-//          CSampleIMEStructureArray declaration.
+//          CIMEStructureArray declaration.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -13,27 +13,27 @@
 #include <vector>
 
 template<class T>
-class CSampleIMEStructureArray
+class CIMEStructureArray
 {
     typedef typename    std::vector<T>         value_type;
     typedef const       T&                     CONST_REF;
-    typedef typename    value_type             CSampleIMEArray;
-    typedef typename    value_type::iterator   CSampleIMEIter;
+    typedef typename    value_type             CIMEArray;
+    typedef typename    value_type::iterator   CIMEIter;
 
 public:
-    CSampleIMEStructureArray(): _imeVector()
+    CIMEStructureArray(): _imeVector()
     {
     }
 
-    explicit CSampleIMEStructureArray(size_t iCount): _imeVector(iCount)
+    explicit CIMEStructureArray(size_t iCount): _imeVector(iCount)
     {
     }
 
-    CSampleIMEStructureArray(size_t iCount, CONST_REF tVal): _imeVector(iCount, tVal)
+    CIMEStructureArray(size_t iCount, CONST_REF tVal): _imeVector(iCount, tVal)
     {
     }
 
-    virtual ~CSampleIMEStructureArray() {}
+    virtual ~CIMEStructureArray() {}
 
     inline CONST_REF GetAt(size_t iIndex) const
     {
@@ -56,8 +56,8 @@ public:
         assert(iIndex <= _imeVector.size());
         assert(_imeVector.size() > 0);
 
-        CSampleIMEIter beginIter = _imeVector.begin() + iIndex;
-        CSampleIMEIter lastIter = beginIter + iElements - 1;
+        CIMEIter beginIter = _imeVector.begin() + iIndex;
+        CIMEIter lastIter = beginIter + iElements - 1;
 
         _imeVector.erase(beginIter, lastIter);
     }
@@ -75,6 +75,6 @@ public:
     }
 
 private:
-    CSampleIMEArray _imeVector;   // the actual array of data
-    CSampleIMEIter  _imeIter;
+    CIMEArray _imeVector;   // the actual array of data
+    CIMEIter  _imeIter;
 };

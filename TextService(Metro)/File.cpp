@@ -7,7 +7,7 @@
 
 #include "Private.h"
 #include "File.h"
-#include "SampleIMEBaseStructure.h"
+#include "IMEBaseStructure.h"
 
 //---------------------------------------------------------------------
 //

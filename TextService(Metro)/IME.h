@@ -8,16 +8,16 @@
 #pragma once
 
 #include "KeyHandlerEditSession.h"
-#include "SampleIMEBaseStructure.h"
+#include "IMEBaseStructure.h"
 
 class CLangBarItemButton;
 class CCandidateListUIPresenter;
 class CCompositionProcessorEngine;
 
 const DWORD WM_CheckGlobalCompartment = WM_USER;
-LRESULT CALLBACK CSampleIME_WindowProc(HWND wndHandle, UINT uMsg, WPARAM wParam, LPARAM lParam);
+LRESULT CALLBACK CIME_WindowProc(HWND wndHandle, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-class CSampleIME : public ITfTextInputProcessorEx,
+class CIME : public ITfTextInputProcessorEx,
     public ITfThreadMgrEventSink,
     public ITfTextEditSink,
     public ITfKeyEventSink,
@@ -29,8 +29,8 @@ class CSampleIME : public ITfTextInputProcessorEx,
     public ITfFnGetPreferredTouchKeyboardLayout
 {
 public:
-    CSampleIME();
-    ~CSampleIME();
+    CIME();
+    ~CIME();
 
     // IUnknown
     STDMETHODIMP QueryInterface(REFIID riid, _Outptr_ void **ppvObj);
@@ -131,9 +131,9 @@ public:
     CCompositionProcessorEngine* GetCompositionProcessorEngine() { return (_pCompositionProcessorEngine); };
 
     // comless helpers
-    static HRESULT CSampleIME::CreateInstance(REFCLSID rclsid, REFIID riid, _Outptr_result_maybenull_ LPVOID* ppv, _Out_opt_ HINSTANCE* phInst, BOOL isComLessMode);
-    static HRESULT CSampleIME::ComLessCreateInstance(REFGUID rclsid, REFIID riid, _Outptr_result_maybenull_ void **ppv, _Out_opt_ HINSTANCE *phInst);
-    static HRESULT CSampleIME::GetComModuleName(REFGUID rclsid, _Out_writes_(cchPath)WCHAR* wchPath, DWORD cchPath);
+    static HRESULT CIME::CreateInstance(REFCLSID rclsid, REFIID riid, _Outptr_result_maybenull_ LPVOID* ppv, _Out_opt_ HINSTANCE* phInst, BOOL isComLessMode);
+    static HRESULT CIME::ComLessCreateInstance(REFGUID rclsid, REFIID riid, _Outptr_result_maybenull_ void **ppv, _Out_opt_ HINSTANCE *phInst);
+    static HRESULT CIME::GetComModuleName(REFGUID rclsid, _Out_writes_(cchPath)WCHAR* wchPath, DWORD cchPath);
 
 private:
     // functions for the composition object.
@@ -194,9 +194,9 @@ private:
 
     BOOL _AddTextProcessorEngine();
 
-    BOOL VerifySampleIMECLSID(_In_ REFCLSID clsid);
+    BOOL VerifyIMECLSID(_In_ REFCLSID clsid);
 
-    friend LRESULT CALLBACK CSampleIME_WindowProc(HWND wndHandle, UINT uMsg, WPARAM wParam, LPARAM lParam);
+    friend LRESULT CALLBACK CIME_WindowProc(HWND wndHandle, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 private:
     ITfThreadMgr* _pThreadMgr;

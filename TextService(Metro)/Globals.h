@@ -9,7 +9,7 @@
 
 #include "private.h"
 #include "define.h"
-#include "SampleIMEBaseStructure.h"
+#include "IMEBaseStructure.h"
 
 void DllAddRef();
 void DllRelease();
@@ -110,11 +110,11 @@ extern LONG dllRefCount;
 extern CRITICAL_SECTION CS;
 extern HFONT defaultlFontHandle;  // Global font object we use everywhere
 
-extern const CLSID SampleIMECLSID;
-extern const CLSID SampleIMEGuidProfile;
-extern const CLSID SampleIMEGuidImeModePreserveKey;
-extern const CLSID SampleIMEGuidDoubleSingleBytePreserveKey;
-extern const CLSID SampleIMEGuidPunctuationPreserveKey;
+extern const CLSID IMECLSID;
+extern const CLSID IMEGuidProfile;
+extern const CLSID IMEGuidImeModePreserveKey;
+extern const CLSID IMEGuidDoubleSingleBytePreserveKey;
+extern const CLSID IMEGuidPunctuationPreserveKey;
 
 LRESULT CALLBACK ThreadKeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 BOOL CheckModifiers(UINT uModCurrent, UINT uMod);
@@ -125,20 +125,20 @@ extern BOOL IsShiftKeyDownOnly;
 extern BOOL IsControlKeyDownOnly;
 extern BOOL IsAltKeyDownOnly;
 
-extern const GUID SampleIMEGuidCompartmentDoubleSingleByte;
-extern const GUID SampleIMEGuidCompartmentPunctuation;
+extern const GUID IMEGuidCompartmentDoubleSingleByte;
+extern const GUID IMEGuidCompartmentPunctuation;
 
 extern const WCHAR FullWidthCharTable[];
 extern const struct _PUNCTUATION PunctuationTable[14];
 
-extern const GUID SampleIMEGuidLangBarIMEMode;
-extern const GUID SampleIMEGuidLangBarDoubleSingleByte;
-extern const GUID SampleIMEGuidLangBarPunctuation;
+extern const GUID IMEGuidLangBarIMEMode;
+extern const GUID IMEGuidLangBarDoubleSingleByte;
+extern const GUID IMEGuidLangBarPunctuation;
 
-extern const GUID SampleIMEGuidDisplayAttributeInput;
-extern const GUID SampleIMEGuidDisplayAttributeConverted;
+extern const GUID IMEGuidDisplayAttributeInput;
+extern const GUID IMEGuidDisplayAttributeConverted;
 
-extern const GUID SampleIMEGuidCandUIElement;
+extern const GUID IMEGuidCandUIElement;
 
 extern const WCHAR UnicodeByteOrderMark;
 extern const WCHAR KeywordDelimiter;

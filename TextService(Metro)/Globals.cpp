@@ -9,7 +9,7 @@
 #include "resource.h"
 #include "BaseWindow.h"
 #include "define.h"
-#include "SampleIMEBaseStructure.h"
+#include "IMEBaseStructure.h"
 
 namespace Global {
 HINSTANCE dllInstanceHandle;
@@ -20,10 +20,10 @@ CRITICAL_SECTION CS;
 HFONT defaultlFontHandle;				// Global font object we use everywhere
 
 //---------------------------------------------------------------------
-// SampleIME CLSID
+// IME CLSID
 //---------------------------------------------------------------------
 // {D2291A80-84D8-4641-9AB2-BDD1472C846B}
-extern const CLSID SampleIMECLSID = { 
+extern const CLSID IMECLSID = { 
     0xd2291a80,
     0x84d8,
     0x4641,
@@ -34,7 +34,7 @@ extern const CLSID SampleIMECLSID = {
 // Profile GUID
 //---------------------------------------------------------------------
 // {83955C0E-2C09-47a5-BCF3-F2B98E11EE8B}
-extern const GUID SampleIMEGuidProfile = { 
+extern const GUID IMEGuidProfile = { 
     0x83955c0e,
     0x2c09,
     0x47a5,
@@ -45,7 +45,7 @@ extern const GUID SampleIMEGuidProfile = {
 // PreserveKey GUID
 //---------------------------------------------------------------------
 // {4B62B54B-F828-43B5-9095-A96DF9CBDF38}
-extern const GUID SampleIMEGuidImeModePreserveKey = {
+extern const GUID IMEGuidImeModePreserveKey = {
     0x4b62b54b, 
     0xf828, 
     0x43b5, 
@@ -53,7 +53,7 @@ extern const GUID SampleIMEGuidImeModePreserveKey = {
 };
 
 // {5A08D6C4-4563-4E46-8DDB-65E75C4E73A3}
-extern const GUID SampleIMEGuidDoubleSingleBytePreserveKey = {
+extern const GUID IMEGuidDoubleSingleBytePreserveKey = {
     0x5a08d6c4, 
     0x4563, 
     0x4e46, 
@@ -61,7 +61,7 @@ extern const GUID SampleIMEGuidDoubleSingleBytePreserveKey = {
 };
 
 // {175F062E-B961-4AED-A3DF-59F78A02862D}
-extern const GUID SampleIMEGuidPunctuationPreserveKey = {
+extern const GUID IMEGuidPunctuationPreserveKey = {
     0x175f062e, 
     0xb961, 
     0x4aed, 
@@ -72,7 +72,7 @@ extern const GUID SampleIMEGuidPunctuationPreserveKey = {
 // Compartments
 //---------------------------------------------------------------------
 // {101011C5-CF72-4F0C-A515-153019593F10}
-extern const GUID SampleIMEGuidCompartmentDoubleSingleByte = {
+extern const GUID IMEGuidCompartmentDoubleSingleByte = {
     0x101011c5,
     0xcf72,
     0x4f0c,
@@ -80,7 +80,7 @@ extern const GUID SampleIMEGuidCompartmentDoubleSingleByte = {
 };
 
 // {DD321BCC-A7F8-4561-9B61-9B3508C9BA97}
-extern const GUID SampleIMEGuidCompartmentPunctuation = {
+extern const GUID IMEGuidCompartmentPunctuation = {
     0xdd321bcc,
     0xa7f8,
     0x4561,
@@ -93,7 +93,7 @@ extern const GUID SampleIMEGuidCompartmentPunctuation = {
 //---------------------------------------------------------------------
 
 // {89BE500C-9462-4070-9DB0-B467BB051327}
-extern const GUID SampleIMEGuidLangBarIMEMode = {
+extern const GUID IMEGuidLangBarIMEMode = {
     0x89be500c,
     0x9462,
     0x4070,
@@ -101,7 +101,7 @@ extern const GUID SampleIMEGuidLangBarIMEMode = {
 };
 
 // {6A11D9DE-46DB-455B-A257-2EB615746BF4}
-extern const GUID SampleIMEGuidLangBarDoubleSingleByte = {
+extern const GUID IMEGuidLangBarDoubleSingleByte = {
     0x6a11d9de,
     0x46db,
     0x455b,
@@ -109,7 +109,7 @@ extern const GUID SampleIMEGuidLangBarDoubleSingleByte = {
 };
 
 // {F29C731A-A51E-49FB-8A3C-EE51752912E2}
-extern const GUID SampleIMEGuidLangBarPunctuation = {
+extern const GUID IMEGuidLangBarPunctuation = {
     0xf29c731a,
     0xa51e,
     0x49fb,
@@ -117,7 +117,7 @@ extern const GUID SampleIMEGuidLangBarPunctuation = {
 };
 
 // {4C802E2C-8140-4436-A5E5-F7C544EBC9CD}
-extern const GUID SampleIMEGuidDisplayAttributeInput = {
+extern const GUID IMEGuidDisplayAttributeInput = {
     0x4c802e2c,
     0x8140,
     0x4436,
@@ -125,7 +125,7 @@ extern const GUID SampleIMEGuidDisplayAttributeInput = {
 };
 
 // {9A1CC683-F2A7-4701-9C6E-2DA69A5CD474}
-extern const GUID SampleIMEGuidDisplayAttributeConverted = {
+extern const GUID IMEGuidDisplayAttributeConverted = {
     0x9a1cc683,
     0xf2a7,
     0x4701,
@@ -138,7 +138,7 @@ extern const GUID SampleIMEGuidDisplayAttributeConverted = {
 //---------------------------------------------------------------------
 
 // {84B0749F-8DE7-4732-907A-3BCB150A01A8}
-extern const GUID SampleIMEGuidCandUIElement = {
+extern const GUID IMEGuidCandUIElement = {
     0x84b0749f,
     0x8de7,
     0x4732,
@@ -181,13 +181,13 @@ extern const WCHAR LangbarPunctuationDescription[] = L"Punctuation";
 //---------------------------------------------------------------------
 // windows class / titile / atom
 //---------------------------------------------------------------------
-extern const WCHAR CandidateClassName[] = L"SampleIME.CandidateWindow";
+extern const WCHAR CandidateClassName[] = L"IME.CandidateWindow";
 ATOM AtomCandidateWindow;
 
-extern const WCHAR ShadowClassName[] = L"SampleIME.ShadowWindow";
+extern const WCHAR ShadowClassName[] = L"IME.ShadowWindow";
 ATOM AtomShadowWindow;
 
-extern const WCHAR ScrollBarClassName[] = L"SampleIME.ScrollBarWindow";
+extern const WCHAR ScrollBarClassName[] = L"IME.ScrollBarWindow";
 ATOM AtomScrollBarWindow;
 
 BOOL RegisterWindowClass()

@@ -8,7 +8,7 @@
 #include "private.h"
 #include "SearchCandidateProvider.h"
 #include <new>
-#include "SampleIME.h"
+#include "IME.h"
 #include "CompositionProcessorEngine.h"
 #include "TipCandidateList.h"
 #include "TipCandidateString.h"
@@ -162,7 +162,7 @@ STDMETHODIMP CSearchCandidateProvider::GetSearchCandidates(BSTR bstrQuery, BSTR 
         return hr;
     }
 
-    CCompositionProcessorEngine* pCompositionProcessorEngine = ((CSampleIME*)_pTip)->GetCompositionProcessorEngine();
+    CCompositionProcessorEngine* pCompositionProcessorEngine = ((CIME*)_pTip)->GetCompositionProcessorEngine();
     if (nullptr == pCompositionProcessorEngine)
     {
         return hr;

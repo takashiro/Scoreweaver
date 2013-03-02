@@ -11,7 +11,7 @@
 #include "sal.h"
 #include "TableDictionaryEngine.h"
 #include "KeyHandlerEditSession.h"
-#include "SampleIMEBaseStructure.h"
+#include "IMEBaseStructure.h"
 #include "FileMapping.h"
 #include "Compartment.h"
 #include "define.h"
@@ -98,7 +98,7 @@ private:
     void CreateLanguageBarButton(DWORD dwEnable, GUID guidLangBar, _In_z_ LPCWSTR pwszDescriptionValue, _In_z_ LPCWSTR pwszTooltipValue, DWORD dwOnIconIndex, DWORD dwOffIconIndex, _Outptr_result_maybenull_ CLangBarItemButton **ppLangBarItemButton, BOOL isSecureMode);
     void SetInitialCandidateListRange();
     void SetDefaultCandidateTextFont();
-	void InitializeSampleIMECompartment(_In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId);
+	void InitializeIMECompartment(_In_ ITfThreadMgr *pThreadMgr, TfClientId tfClientId);
 
     class XPreservedKey;
     void SetPreservedKey(const CLSID clsid, TF_PRESERVEDKEY & tfPreservedKey, _In_z_ LPCWSTR pwszDescription, _Out_ XPreservedKey *pXPreservedKey);
