@@ -1,30 +1,48 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scoreweaver(2010)", "TextService\Scoreweaver(2010).vcxproj", "{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scoreweaver", "TextService\Scoreweaver(2010).vcxproj", "{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OnscreenKeyboard(2010)", "OnscreenKeyboard\OnscreenKeyboard(2010).vcxproj", "{6F8D1D20-F4EC-95B1-8E4F-36F0A08DE172}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OnscreenKeyboard", "OnscreenKeyboard\OnscreenKeyboard(2010).vcxproj", "{6F8D1D20-F4EC-95B1-8E4F-36F0A08DE172}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConfigDialog(2010)", "ConfigDialog\ConfigDialog(2010).vcxproj", "{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ConfigDialog", "ConfigDialog\ConfigDialog(2010).vcxproj", "{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Scoreweaver(Metro)", "TextService(Metro)\Scoreweaver(Metro).vcxproj", "{0C8FE010-5146-44D8-AF99-82702C15FEA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
 		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Debug|Win32.Build.0 = Debug|Win32
+		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Debug|x64.ActiveCfg = Debug|Win32
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Release|Win32.ActiveCfg = Release|Win32
 		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Release|Win32.Build.0 = Release|Win32
+		{8A1FFCAC-0521-4B7E-90E0-23161DDE8B64}.Release|x64.ActiveCfg = Release|Win32
 		{6F8D1D20-F4EC-95B1-8E4F-36F0A08DE172}.Debug|Win32.ActiveCfg = Debug|Win32
 		{6F8D1D20-F4EC-95B1-8E4F-36F0A08DE172}.Debug|Win32.Build.0 = Debug|Win32
+		{6F8D1D20-F4EC-95B1-8E4F-36F0A08DE172}.Debug|x64.ActiveCfg = Debug|Win32
 		{6F8D1D20-F4EC-95B1-8E4F-36F0A08DE172}.Release|Win32.ActiveCfg = Release|Win32
 		{6F8D1D20-F4EC-95B1-8E4F-36F0A08DE172}.Release|Win32.Build.0 = Release|Win32
+		{6F8D1D20-F4EC-95B1-8E4F-36F0A08DE172}.Release|x64.ActiveCfg = Release|Win32
 		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Debug|Win32.ActiveCfg = Debug|Win32
 		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Debug|Win32.Build.0 = Debug|Win32
+		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Debug|x64.ActiveCfg = Debug|Win32
 		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Release|Win32.ActiveCfg = Release|Win32
 		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Release|Win32.Build.0 = Release|Win32
+		{3E8F8A87-1676-4854-A0C6-FE575EAFF06B}.Release|x64.ActiveCfg = Release|Win32
+		{0C8FE010-5146-44D8-AF99-82702C15FEA5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0C8FE010-5146-44D8-AF99-82702C15FEA5}.Debug|Win32.Build.0 = Debug|Win32
+		{0C8FE010-5146-44D8-AF99-82702C15FEA5}.Debug|x64.ActiveCfg = Debug|x64
+		{0C8FE010-5146-44D8-AF99-82702C15FEA5}.Debug|x64.Build.0 = Debug|x64
+		{0C8FE010-5146-44D8-AF99-82702C15FEA5}.Release|Win32.ActiveCfg = Release|Win32
+		{0C8FE010-5146-44D8-AF99-82702C15FEA5}.Release|Win32.Build.0 = Release|Win32
+		{0C8FE010-5146-44D8-AF99-82702C15FEA5}.Release|x64.ActiveCfg = Release|x64
+		{0C8FE010-5146-44D8-AF99-82702C15FEA5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
