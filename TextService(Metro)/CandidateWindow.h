@@ -93,8 +93,8 @@ private:
 
 private:
     UINT _currentSelection;
-    CSampleImeArray<CCandidateListItem> _candidateList;
-    CSampleImeArray<UINT> _PageIndex;
+    CIMEArray<CCandidateListItem> _candidateList;
+    CIMEArray<UINT> _PageIndex;
 
     COLORREF _crTextColor;
     COLORREF _crBkColor;

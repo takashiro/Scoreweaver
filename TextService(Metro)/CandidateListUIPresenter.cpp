@@ -85,7 +85,7 @@ HRESULT CIME::_HandleCandidateWorker(TfEditCookie ec, _In_ ITfContext *pContext)
     const WCHAR* pCandidateString = nullptr;
     BSTR pbstr = nullptr;
     CStringRange candidateString;
-    CSampleImeArray<CCandidateListItem> candidatePhraseList;
+    CIMEArray<CCandidateListItem> candidatePhraseList;
 
     if (nullptr == _pCandidateListUIPresenter)
     {
@@ -818,7 +818,7 @@ void CCandidateListUIPresenter::_EndCandidateList()
 //
 //----------------------------------------------------------------------------
 
-void CCandidateListUIPresenter::_SetText(_In_ CSampleImeArray<CCandidateListItem> *pCandidateList, BOOL isAddFindKeyCode)
+void CCandidateListUIPresenter::_SetText(_In_ CIMEArray<CCandidateListItem> *pCandidateList, BOOL isAddFindKeyCode)
 {
     AddCandidateToCandidateListUI(pCandidateList, isAddFindKeyCode);
 
@@ -839,7 +839,7 @@ void CCandidateListUIPresenter::_SetText(_In_ CSampleImeArray<CCandidateListItem
     }
 }
 
-void CCandidateListUIPresenter::AddCandidateToCandidateListUI(_In_ CSampleImeArray<CCandidateListItem> *pCandidateList, BOOL isAddFindKeyCode)
+void CCandidateListUIPresenter::AddCandidateToCandidateListUI(_In_ CIMEArray<CCandidateListItem> *pCandidateList, BOOL isAddFindKeyCode)
 {
     for (UINT index = 0; index < pCandidateList->Count(); index++)
     {
@@ -847,7 +847,7 @@ void CCandidateListUIPresenter::AddCandidateToCandidateListUI(_In_ CSampleImeArr
     }
 }
 
-void CCandidateListUIPresenter::SetPageIndexWithScrollInfo(_In_ CSampleImeArray<CCandidateListItem> *pCandidateList)
+void CCandidateListUIPresenter::SetPageIndexWithScrollInfo(_In_ CIMEArray<CCandidateListItem> *pCandidateList)
 {
     UINT candCntInPage = _pIndexRange->Count();
     UINT bufferSize = pCandidateList->Count() / candCntInPage + 1;
@@ -1157,7 +1157,7 @@ HRESULT CCandidateListUIPresenter::OnKillThreadFocus()
     return S_OK;
 }
 
-void CCandidateListUIPresenter::RemoveSpecificCandidateFromList(_In_ LCID Locale, _Inout_ CSampleImeArray<CCandidateListItem> &candidateList, _In_ CStringRange &candidateString)
+void CCandidateListUIPresenter::RemoveSpecificCandidateFromList(_In_ LCID Locale, _Inout_ CIMEArray<CCandidateListItem> &candidateList, _In_ CStringRange &candidateString)
 {
     for (UINT index = 0; index < candidateList.Count();)
     {

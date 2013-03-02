@@ -168,7 +168,7 @@ STDMETHODIMP CSearchCandidateProvider::GetSearchCandidates(BSTR bstrQuery, BSTR 
         return hr;
     }
 
-    CSampleImeArray<CCandidateListItem> candidateList;
+    CIMEArray<CCandidateListItem> candidateList;
     pCompositionProcessorEngine->GetCandidateList(&candidateList, TRUE, FALSE);
 
     int cCand = min(candidateList.Count(), FAKECANDIDATENUMBER);

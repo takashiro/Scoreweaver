@@ -1,4 +1,4 @@
-LIBRARY IME.dll
+LIBRARY Scoreweaver(Metro).dll
 
 EXPORTS
         DllGetClassObject    PRIVATE

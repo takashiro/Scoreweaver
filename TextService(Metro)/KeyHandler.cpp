@@ -170,7 +170,7 @@ Exit:
 HRESULT CIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngine *pCompositionProcessorEngine, TfEditCookie ec, _In_ ITfContext *pContext)
 {
     HRESULT hr = S_OK;
-    CSampleImeArray<CStringRange> readingStrings;
+    CIMEArray<CStringRange> readingStrings;
     BOOL isWildcardIncluded = TRUE;
 
     //
@@ -190,7 +190,7 @@ HRESULT CIME::_HandleCompositionInputWorker(_In_ CCompositionProcessorEngine *pC
     //
     // Get candidate string from composition processor engine
     //
-    CSampleImeArray<CCandidateListItem> candidateList;
+    CIMEArray<CCandidateListItem> candidateList;
 
     pCompositionProcessorEngine->GetCandidateList(&candidateList, TRUE, FALSE);
 
@@ -345,7 +345,7 @@ HRESULT CIME::_HandleCompositionConvert(TfEditCookie ec, _In_ ITfContext *pConte
 {
     HRESULT hr = S_OK;
 
-    CSampleImeArray<CCandidateListItem> candidateList;
+    CIMEArray<CCandidateListItem> candidateList;
 
     //
     // Get candidate string from composition processor engine
