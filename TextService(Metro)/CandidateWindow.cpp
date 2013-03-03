@@ -615,13 +615,11 @@ void CCandidateWindow::_DrawList(_In_ HDC dcHandle, _In_ UINT iIndex, _In_ RECT 
 
     RECT rc;
 
-	const size_t lenOfPageCount = 16;
-    for (;
+	for (;
         (iIndex < _candidateList.Count()) && (pageCount < candidateListPageCnt);
         iIndex++, pageCount++)
     {
-        WCHAR pageCountString[lenOfPageCount] = {'\0'};
-        CCandidateListItem* pItemList = nullptr;
+        CCandidateListItem* pItemList = _candidateList.GetAt(iIndex);
 
         rc.top = prc->top + pageCount * cyLine;
         rc.bottom = rc.top + cyLine;
@@ -633,8 +631,7 @@ void CCandidateWindow::_DrawList(_In_ HDC dcHandle, _In_ UINT iIndex, _In_ RECT 
         SetTextColor(dcHandle, CANDWND_NUM_COLOR);
         SetBkColor(dcHandle, GetSysColor(COLOR_3DHIGHLIGHT));
 
-        StringCchPrintf(pageCountString, ARRAYSIZE(pageCountString), L"%d", (LONG)*_pIndexRange->GetAt(pageCount));
-        ExtTextOut(dcHandle, PageCountPosition * cxLine, pageCount * cyLine + cyOffset, ETO_OPAQUE, &rc, pageCountString, lenOfPageCount, NULL);
+        ExtTextOut(dcHandle, PageCountPosition * cxLine, pageCount * cyLine + cyOffset, ETO_OPAQUE, &rc, pItemList->_FindKeyCode.Get(), (DWORD) pItemList->_FindKeyCode.GetLength(), NULL);
 
         rc.left = prc->left + StringPosition * cxLine;
         rc.right = prc->right;
@@ -651,7 +648,6 @@ void CCandidateWindow::_DrawList(_In_ HDC dcHandle, _In_ UINT iIndex, _In_ RECT 
             SetBkColor(dcHandle, CANDWND_SELECTED_BK_COLOR);
         }
 
-        pItemList = _candidateList.GetAt(iIndex);
         ExtTextOut(dcHandle, StringPosition * cxLine, pageCount * cyLine + cyOffset, ETO_OPAQUE, &rc, pItemList->_ItemString.Get(), (DWORD)pItemList->_ItemString.GetLength(), NULL);
     }
     for (; (pageCount < candidateListPageCnt); pageCount++)
