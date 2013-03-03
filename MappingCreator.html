@@ -74,7 +74,8 @@ function inputCharacter(){
 
 	$('map_area').value = '';
 	for(var i in u_i){
-		$('map_area').value += parseInt(i, 10).toString(16).toUpperCase() + ' = ' + u_i[i] + '\n';
+		var ch = unescape('%u' + parseInt(i, 10).toString(16));
+		$('map_area').value += '"' + u_i[i] + '"="' + ch + '"\n';
 	}
 }
 
@@ -142,13 +143,16 @@ function handleAreaLine(){
 		return;
 	}
 
-	var line = import_area_txt[current_line_i].split(' = ');
+	var line = import_area_txt[current_line_i].split('=');
 	if(line[1] == undefined){
 		return;
 	}
 
-	current_character = parseInt('0x' + line[0]);
-	$('input_code').value = line[1];
+	line[0] = line[0].substr(1, line[0].length - 2);
+	line[1] = line[1].substr(1, line[1].length - 2);
+
+	current_character = parseInt('0x' + line[1]);
+	$('input_code').value = line[0];
 	$('input_button').click();
 
 	current_line_i++;
@@ -189,7 +193,7 @@ function importFromArea(){
 	</tr>
 	<tr>
 		<td><h6>代码：</h6><textarea id="code_area" name="code_area"></textarea></td>
-		<td><h6>字符-输入码：</h6><textarea id="map_area" name="map_area" onblur="importFromArea()"></textarea></td>
+		<td><h6>输入码-字符：</h6><textarea id="map_area" name="map_area" onblur="importFromArea()"></textarea></td>
 	</tr>
 </table>
 
