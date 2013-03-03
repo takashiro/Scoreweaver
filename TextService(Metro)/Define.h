@@ -20,12 +20,12 @@
 #define IME_PUNCTUATION_ON_INDEX    IDI_PUNCTUATION_ON
 #define IME_PUNCTUATION_OFF_INDEX   IDI_PUNCTUATION_OFF
 
-#define SAMPLEIME_FONT_DEFAULT L"Microsoft YaHei UI"
+#define IME_FONT_DEFAULT L"¹ÅÇÙÆ×ÎÄ×Ö"
 
 //---------------------------------------------------------------------
 // defined Candidated Window
 //---------------------------------------------------------------------
-#define CANDWND_ROW_WIDTH				(30)
+#define CANDWND_ROW_WIDTH				(40)
 #define CANDWND_BORDER_COLOR			(RGB(0x00, 0x00, 0x00))
 #define CANDWND_BORDER_WIDTH			(2)
 #define CANDWND_NUM_COLOR				(RGB(0xB4, 0xB4, 0xB4))

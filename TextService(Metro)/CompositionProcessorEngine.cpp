@@ -1534,7 +1534,7 @@ void CCompositionProcessorEngine::SetDefaultCandidateTextFont()
     // Candidate Text Font
     if (Global::defaultlFontHandle == nullptr)
     {
-		WCHAR fontName[50] = {'\0'}; 
+        /*WCHAR fontName[50] = {'\0'}; 
 		LoadString(Global::dllInstanceHandle, IDS_DEFAULT_FONT, fontName, 50);
         Global::defaultlFontHandle = CreateFont(-MulDiv(10, GetDeviceCaps(GetDC(NULL), LOGPIXELSY), 72), 0, 0, 0, FW_MEDIUM, 0, 0, 0, 0, 0, 0, 0, 0, fontName);
         if (!Global::defaultlFontHandle)
@@ -1543,7 +1543,8 @@ void CCompositionProcessorEngine::SetDefaultCandidateTextFont()
 			SystemParametersInfo(SPI_GETICONTITLELOGFONT, sizeof(LOGFONT), &lf, 0);
             // Fall back to the default GUI font on failure.
             Global::defaultlFontHandle = CreateFont(-MulDiv(10, GetDeviceCaps(GetDC(NULL), LOGPIXELSY), 72), 0, 0, 0, FW_MEDIUM, 0, 0, 0, 0, 0, 0, 0, 0, lf.lfFaceName);
-        }
+        }*/
+        Global::defaultlFontHandle = CreateFont(-MulDiv(10, GetDeviceCaps(GetDC(NULL), LOGPIXELSY), 36), 0, 0, 0, FW_MEDIUM, 0, 0, 0, 0, 0, 0, 0, 0, IME_FONT_DEFAULT);
     }
 }
 
